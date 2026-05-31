@@ -450,6 +450,8 @@ tr.totalrow td{background:var(--amberg);font-weight:800;border-top:2px solid var
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg><span>Nội dung &amp; định dạng</span></div>
     <div class="nav-item" data-page="fanvideo" onclick="nav('fanvideo')" data-tip="Phân tích video">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M10 8l6 4-6 4V8z"/></svg><span>Phân tích video</span></div>
+    <div class="nav-item" data-page="fanbranch" onclick="nav('fanbranch')" data-tip="Fanpage chi nhánh">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-4"/><path d="M9 9v.01M9 12v.01M9 15v.01M9 18v.01"/></svg><span>Fanpage chi nhánh</span></div>
     <div class="sidebar-foot"><div class="user-chip"><div class="user-av">DG</div>
       <div><div class="ui">Digital Team</div><div class="ur">Leader · GUMAC</div></div></div></div>
   </aside>
@@ -483,6 +485,7 @@ tr.totalrow td{background:var(--amberg);font-weight:800;border-top:2px solid var
     <div class="page" id="page-fanoverview"></div>
     <div class="page" id="page-fancontent"></div>
     <div class="page" id="page-fanvideo"></div>
+    <div class="page" id="page-fanbranch"></div>
   </main>
 </div>
 </div>
@@ -498,8 +501,9 @@ const SALT_HEX="26770b3151bdbad9608a8cc9ef93cf30";
 const ENC_BIZ="6V7UP2abRLB/3iLD:U037o/ZI3Ubd6pOwH/kvWQ==:kqbMkCJrcDS8xs8mWHwtO1MgGjM1dyprM+pyxWLrnxqHAQ5d18PdUxNqLESqVjIBh6Sm+6hmWpppF59nvG0DMAwRQ15Ar5j6oWaj+A10CUTulpFx5ijHVEik9nEFUxudG/9Hv82s2sgzb4HDFk1iscEBJkEJyfZ+Xu0/zGdUfYGuTrHwoOaXCb7M3gOIzG00gr3wdiWRyxP8FS/SQQK9Jg==";
 const ENC_ADS="JeooPvS3CVxlzc6w:jCSqK7UwUb4a5Efiq4HYqg==:K0dXTxCfJD+ISw/sMg49wJwP326UXGnHxRjOzkIeW8l6duNz+q9ujC/3dp/VkeayXkKRSM00/mWWYB46QQm1vGKbeK6SaN63Z4apubzwYCMokRRD6C/oUwIMZ/7XbPyKoomMDbu2ILp2cgucGZRIrUsDg907b78h4D9ACfwL+9NBfSRfN9WGrfvplSxaFBKa+1kMTZlRObsrZVL8opF2CVaK10OduBjSYw==";
 // Sau khi nhập đúng password, 2 biến này được điền giá trị plain để code dùng
-let CSV_BIZ=null, CSV_ADS=null, CSV_FAN=null;
+let CSV_BIZ=null, CSV_ADS=null, CSV_FAN=null, CSV_FANBR=null;
 const ENC_FAN="wyEdn2NJRooalVCg:1ecQ9jQbhWzBCMJWfpiuVQ==:oUPdyO48tsPzjXtVubqnTLatvHX77+0QPRoE6xnxNheeUe1hjk7xNc0CeiiXABqBLldZuXarEVyB/P9cqrIuye9YTZ4UqMQSrRFyNzZz6qTJSt3QFRfy53UOR+eqIYJh7yRe6NllXMjgkMFmTeqkgijAskJuk6Qz7B8DKp4ofwpQGuxPpinMSathgzZzliRlPwA083EQxSIafOoLAFkFNxj6VtuHYWuj";
+const ENC_FANBR="Sjb5c7wotB5P/PAV:gmI9EUY9SQHyVIMjAYTx0g==:q5a4opGvsKt8g934lJcFkHrVfsPJg9DoWcCiRZcd75k4HFOKvOF8esRVMhKXRO6dwFV3rbFmYT5HbwtfWNfx1UvNPVMYncMn5jCLDcNegQBQQksiCNg50i2fW5o2qjp5/RfTgCFA89Jj1bAknXZH82C4mXMurEDqqc5x9l6Bt8JejWahBK9i3V8CGzH6CcDLM2fD2l5jp/3Xkge8aRmpuNeiRB+0pEYb";
 
 // Tiện ích base64 ↔ Uint8Array
 const b64ToBytes=b=>{const bin=atob(b);const arr=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)arr[i]=bin.charCodeAt(i);return arr;};
@@ -539,6 +543,7 @@ async function checkPwd(){
       CSV_BIZ=await decryptUrl(ENC_BIZ,key);
       CSV_ADS=await decryptUrl(ENC_ADS,key);
       CSV_FAN=await decryptUrl(ENC_FAN,key);
+      CSV_FANBR=await decryptUrl(ENC_FANBR,key);
     }catch(e){
       // không decrypt được = sai password (dù hash đúng — không nên xảy ra)
       const err=document.getElementById('gateErr'),c=document.getElementById('gateCard');
@@ -793,6 +798,10 @@ async function startLoad(){
     loadCSVResilient(CSV_FAN,'FANPAGE',log).then(fan=>{
       try{processFanpage(fan);if(typeof PAGE!=='undefined'&&PAGE&&PAGE.startsWith('fan'))render();}catch(e){console.warn('Fanpage parse lỗi:',e);}
     }).catch(e=>{console.warn('Fanpage CSV không tải được (bỏ qua):',e.message);});
+    // Tải fanpage chi nhánh — riêng biệt
+    loadCSVResilient(CSV_FANBR,'FANBRANCH',log).then(fb=>{
+      try{processFanBranch(fb);if(typeof PAGE!=='undefined'&&PAGE&&PAGE.startsWith('fan'))render();}catch(e){console.warn('FanBranch parse lỗi:',e);}
+    }).catch(e=>{console.warn('FanBranch CSV không tải được (bỏ qua):',e.message);});
     console.log('[CSV LOAD]',log.join('\n'));
     await finishProcess(biz,ads);
   }catch(e){
@@ -1108,6 +1117,7 @@ function render(){
     else if(PAGE==='fanoverview')renderFanOverview();
     else if(PAGE==='fancontent')renderFanContent();
     else if(PAGE==='fanvideo')renderFanVideo();
+    else if(PAGE==='fanbranch')renderFanBranch();
   }catch(e){console.error(e);}
 }
 
@@ -3331,6 +3341,209 @@ const I9={
   play:'<circle cx="12" cy="12" r="10"/><path d="M10 8l6 4-6 4V8z"/>',
   film:'<rect x="2" y="3" width="20" height="18" rx="2"/><path d="M7 3v18M17 3v18M2 8h5M2 16h5M17 8h5M17 16h5"/>',
 };
+</script>
+
+<script>
+/* ============================================================
+   FANPAGE CHI NHÁNH ENGINE — phân tích fanpage riêng từng cửa hàng
+   File mới: 43 fanpage chi nhánh, ~8537 bài. Map fanpage -> cửa hàng KD
+   để liên kết hiệu quả đăng bài với doanh thu / mục tiêu.
+   ============================================================ */
+let FANBR_POSTS=[], FANBR_META=null;
+
+// Map fanpage chi nhánh -> tên cửa hàng trong file kinh doanh/ads
+const FANBR_TO_STORE={
+ 'GUMAC  - Nguyễn Ảnh Thủ - Hóc Môn':'GUMAC- CN NGUYỄN ẢNH THỦ HÓC MÔN',
+ 'GUMAC - AEON MALL Tân Phú':'AEON TÂN PHÚ',
+ 'GUMAC - Biên Hòa':'GUMAC- CN BIÊN HÒA 2',
+ 'GUMAC - Bắc Giang':'GUMAC- CN BẮC GIANG',
+ 'GUMAC - Bắc Ninh':'GUMAC- CN BẮC NINH',
+ 'GUMAC - Bến Cát':'GUMAC- CN BẾN CÁT',
+ 'GUMAC - Cách Mạng Tháng 8 HCM':'GUMAC CMT8 CN2',
+ 'GUMAC - GiGa Mall':'GUMAC- GIGAMALL THỦ ĐỨC',
+ 'GUMAC - Happiness Fashion Store':'GUMAC - Happiness Fashion Store',
+ 'GUMAC - Luỹ Bán Bích - HCM':'GUMAC- CN LŨY BÁN BÍCH',
+ 'GUMAC - Phan Chu Trinh - Đắk Lắk':'GUMAC- CN PHAN CHU TRINH ĐẮK LẮK',
+ 'GUMAC - Quận 6 - HCM':'GUMAC- CN HẬU GIANG- Q6',
+ 'GUMAC - Tuy Hòa - Phú Yên':'GUMAC- CN PHÚ YÊN',
+ 'GUMAC - Vincom Mega Mall Ocean Park':'GUMAC VC MEGA MALL OCEAN PARK',
+ 'GUMAC - Võ Văn Ngân, Thủ Đức':'GUMAC - CN VÕ VĂN NGÂN',
+ 'GUMAC - ĐÀ LẠT':'GUMAC- CN ĐÀ LẠT',
+ 'GUMAC - Đồng Xoài':'GUMAC- CN ĐỒNG XOÀI',
+ 'GUMAC Đồng Xoài':'GUMAC- CN ĐỒNG XOÀI',
+ 'GUMAC - Đỗ Xuân Hợp - Quận 9':'GUMAC- CN ĐỖ XUÂN HỢP Q9',
+ 'GUMAC Bình Dương':'GUMAC Yersin Bình Dương',
+ 'GUMAC Cam Ranh':'GUMAC- CN CAM RANH',
+ 'GUMAC Cần Thơ':'GUMAC- CN CẦN THƠ',
+ 'GUMAC CỦ CHI':'GUMAC - CN CỦ CHI CN2',
+ 'GUMAC Gia Lai':'GUMAC- CN GIA LAI',
+ 'GUMAC Kon Tum':'GUMAC- CN KON TUM',
+ 'GUMAC Long An':'GUMAC- CN LONG AN',
+ 'GUMAC Long Khánh':'GUMAC - CN LONG KHÁNH',
+ 'GUMAC Long Xuyên':'GUMAC- CN LONG XUYÊN',
+ 'GUMAC Lê Văn Sỹ - Phú Nhuận':'GUMAC- CN LÊ VĂN SỸ CN2',
+ 'GUMAC Mỹ Tho':'GUMAC - MỸ THO',
+ 'GUMAC Phan Rang':'GUMAC- CN PHAN RANG',
+ 'GUMAC Quang Trung Gò Vấp':'GUMAC- CN QUANG TRUNG 1038',
+ 'GUMAC Quy Nhơn':'GUMAC- CN QUY NHƠN',
+ 'GUMAC Quảng Ngãi':'GUMAC- CN QUẢNG NGÃI',
+ 'GUMAC Rạch Giá':'GUMAC- CN RẠCH GIÁ',
+ 'GUMAC Sóc Trăng':'GUMAC- CN SÓC TRĂNG',
+ 'GUMAC Trà Vinh':'GUMAC- CN TRÀ VINH',
+ 'GUMAC Tây Ninh':'GUMAC- CN 644 TÂY NINH',
+ 'GUMAC Vincom Cao Lãnh':'GUMAC- CN VINCOM CAO LÃNH',
+ 'GUMAC Vĩnh Long':'GUMAC- CN VĨNH LONG',
+ 'GUMAC Vũng Tàu':'GUMAC - CN VŨNG TÀU',
+ 'GUMAC Đà Nẵng':'GUMAC - CN 404 HOÀNG DIỆU ĐN',
+};
+
+function processFanBranch(csvText){
+  const rows=parseCSVGeneric(csvText);
+  if(!rows.length)return;
+  const head=rows[0].map(s=>s.trim());
+  const idx=n=>{for(let i=0;i<head.length;i++)if(head[i]===n)return i;return -1;};
+  const ci={page:idx('Tên Trang'),posted:idx('Thời gian đăng'),type:idx('Loại bài viết'),
+    link:idx('Liên kết vĩnh viễn'),view:idx('Lượt xem'),reach:idx('Số người tiếp cận'),
+    react:idx('Cảm xúc'),comm:idx('Bình luận'),share:idx('Lượt chia sẻ'),
+    clk:idx('Tổng lượt click'),lclk:idx('Lượt click vào liên kết')};
+  const num=x=>{const v=parseFloat(String(x==null?'':x).replace(/[", ]/g,'').trim());return isNaN(v)?0:v;};
+  const typeNorm=t=>{t=(t||'').trim();
+    if(t==='Ảnh')return 'Ảnh';if(t==='Video trực tiếp')return 'Livestream';
+    if(t==='Thước phim')return 'Reels';if(t==='Video')return 'Video';
+    if(t==='Văn bản')return 'Văn bản';if(t==='Liên kết')return 'Liên kết';return t||'Khác';};
+  const parseDate=s=>{s=(s||'').trim();const m=s.match(/(\d{2})\/(\d{2})\/(\d{4})\s+(\d{1,2}):(\d{2})/);
+    if(!m)return null;return {ym:m[3]+'-'+m[1],date:m[3]+'-'+m[1]+'-'+m[2],hour:+m[4],dow:new Date(+m[3],+m[1]-1,+m[2]).getDay()};};
+  const posts=[];
+  for(let i=1;i<rows.length;i++){
+    const r=rows[i];if(!r||r.length<5)continue;
+    const dt=parseDate(r[ci.posted]);if(!dt)continue;
+    const pg=(r[ci.page]||'').trim();
+    const react=num(r[ci.react]),comm=num(r[ci.comm]),share=num(r[ci.share]);
+    posts.push({page:pg,store:FANBR_TO_STORE[pg]||null,
+      ym:dt.ym,date:dt.date,hour:dt.hour,dow:dt.dow,type:typeNorm(r[ci.type]),
+      link:(r[ci.link]||'').trim(),view:num(r[ci.view]),reach:num(r[ci.reach]),
+      react,comm,share,eng:react+comm+share,clk:num(r[ci.clk]),lclk:num(r[ci.lclk])});
+  }
+  const months=[...new Set(posts.map(p=>p.ym))].sort();
+  FANBR_POSTS=posts;FANBR_META={months,total:posts.length,
+    pages:[...new Set(posts.map(p=>p.page))]};
+  console.log('[FANBRANCH] '+posts.length+' bài, '+FANBR_META.pages.length+' trang chi nhánh');
+}
+
+function fbRows(ym){return FANBR_POSTS.filter(p=>p.ym===ym
+  &&(!FS.dateFrom||p.date>=FS.dateFrom)&&(!FS.dateTo||p.date<=FS.dateTo));}
+function fbAgg(rows){const s={n:rows.length,view:0,reach:0,react:0,comm:0,share:0,eng:0,clk:0,lclk:0};
+  for(const p of rows){s.view+=p.view;s.reach+=p.reach;s.react+=p.react;s.comm+=p.comm;s.share+=p.share;s.eng+=p.eng;s.clk+=p.clk;s.lclk+=p.lclk;}
+  s.er=s.reach?s.eng/s.reach*100:0;s.engPerPost=s.n?s.eng/s.n:0;s.reachPerPost=s.n?s.reach/s.n:0;
+  return s;}
+
+// Gom theo chi nhánh trong tháng + liên kết doanh thu
+function fbByStore(ym){
+  const rows=fbRows(ym);
+  const map={};
+  rows.forEach(p=>{const k=p.page;(map[k]=map[k]||[]).push(p);});
+  const out=Object.keys(map).map(pg=>{
+    const a=fbAgg(map[pg]);const store=FANBR_TO_STORE[pg]||null;
+    // doanh thu cửa hàng tương ứng (từ DAILY của dash cũ)
+    let rev=0,revT=0,hasBiz=false;
+    if(store&&typeof DAILY!=='undefined'){
+      DAILY.forEach(d=>{if(d.date.slice(0,7)===ym&&d.branch===store){rev+=d.rev||0;revT+=d.rev_t||0;hasBiz=true;}});
+    }
+    return {page:pg,store,...a,rev,revT,hasBiz,
+      revPct:revT>0?rev/revT*100:null};
+  });
+  return out;
+}
+
+/* ===== TRANG: HIỆU SUẤT FANPAGE CHI NHÁNH ===== */
+function renderFanBranch(){
+  const ym=FS.month,pm=fanPrevYm(ym);
+  if(!FANBR_POSTS.length){document.getElementById('page-fanbranch').innerHTML=fanLoadingCard('Fanpage chi nhánh');return;}
+  const stores=fbByStore(ym).sort((a,b)=>b.reach-a.reach);
+  const prevStores=fbByStore(pm);
+  const prevMap={};prevStores.forEach(s=>prevMap[s.page]=s);
+  const tot=fbAgg(fbRows(ym));
+  const nActive=stores.length;
+  const avgPost=nActive?tot.n/nActive:0;
+
+  // KPI tổng
+  const kpis=[
+    {l:'Chi nhánh có đăng bài',v:fmtN(nActive),sub:'/ '+FANBR_META.pages.length+' fanpage',ic:I9.post,c:'#2f6bff'},
+    {l:'Tổng bài đăng',v:fmtN(tot.n),ic:I9.post,c:'#06b6d4'},
+    {l:'Bài TB / chi nhánh',v:fmtN(avgPost,1),ic:I9.pulse,c:'#8b5cf6'},
+    {l:'Tổng Reach',v:fmtN(tot.reach),ic:I9.reach,c:'#22c55e'},
+    {l:'Tổng tương tác',v:fmtN(tot.eng),ic:I9.heart,c:'#ec4899'},
+    {l:'ER trung bình',v:fmtN(tot.er,2)+'%',ic:I9.pulse,c:'#f59e0b'},
+  ];
+  const kpiHTML=kpis.map(k=>`<div class="kpi"><div class="kpi-label"><span class="ic" style="background:${k.c}1f;color:${k.c}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">${k.ic}</svg></span>${k.l}</div>
+    <div class="kpi-val">${k.v}</div><div class="kpi-foot">${k.sub?`<span class="chip-lbl">${k.sub}</span>`:''}</div></div>`).join('');
+
+  // Xếp hạng số bài
+  const byPost=[...stores].sort((a,b)=>b.n-a.n).slice(0,12);
+  // Xếp hạng ER (chỉ CN có ≥5 bài để tránh nhiễu)
+  const byER=[...stores].filter(s=>s.n>=5).sort((a,b)=>b.er-a.er).slice(0,12);
+  // Xếp hạng reach
+  const byReach=[...stores].sort((a,b)=>b.reach-a.reach).slice(0,12);
+
+  // Bảng tổng hợp tất cả chi nhánh
+  const allRows=stores.map((s,i)=>{
+    const pv=prevMap[s.page];
+    return `<tr>
+      <td style="text-align:center;color:var(--txt3)">${i+1}</td>
+      <td><b>${s.page.replace(/^GUMAC\s*-?\s*/,'')}</b>${s.store?'':' <span class="chip na" style="font-size:9px">chưa map CH</span>'}</td>
+      <td>${fmtN(s.n)}${pv?' '+miniDelta(s.n,pv.n):''}</td>
+      <td>${fmtN(s.reach)}</td><td>${fmtN(s.reachPerPost)}</td>
+      <td>${fmtN(s.eng)}</td>
+      <td><b style="color:${s.er>=1?'var(--good)':s.er>=0.5?'var(--amber2)':'var(--txt)'}">${fmtN(s.er,2)}%</b></td>
+      <td>${s.hasBiz?fmtVND(s.rev):'<span class="chip na">—</span>'}</td>
+      <td>${s.revPct!=null?tgtChip(s.rev,s.revT):'<span class="chip na">—</span>'}</td></tr>`;}).join('');
+
+  document.getElementById('page-fanbranch').innerHTML=`
+    <div class="page-head"><div><h1>Fanpage · Chi nhánh</h1>
+      <div class="ph-sub">Hiệu suất fanpage riêng từng cửa hàng · Kỳ <b>${ymLabel(ym)}</b> · ${FANBR_META.pages.length} fanpage chi nhánh</div></div></div>
+
+    <div class="sec-h"><span class="sn">1</span>Tổng quan hoạt động đăng bài chi nhánh</div>
+    <div class="kpi-grid">${kpiHTML}</div>
+
+    <div class="sec-h"><span class="sn">2</span>Xếp hạng chi nhánh</div>
+    <div class="row3" style="margin-bottom:22px">
+      <div class="card"><div class="card-title">🏆 Đăng nhiều bài nhất</div><div class="chart-box sm"><canvas id="fbRankPost"></canvas></div></div>
+      <div class="card"><div class="card-title">📡 Reach cao nhất</div><div class="chart-box sm"><canvas id="fbRankReach"></canvas></div></div>
+      <div class="card"><div class="card-title">💯 Tỷ lệ tương tác (ER) tốt nhất</div><div class="card-sub">CN có ≥5 bài</div><div class="chart-box sm"><canvas id="fbRankER"></canvas></div></div>
+    </div>
+
+    <div class="sec-h"><span class="sn">3</span>Đăng bài có gắn với doanh thu &amp; mục tiêu?</div>
+    <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+      <div>Đối chiếu <b>số bài đăng fanpage</b> của mỗi chi nhánh với <b>doanh thu cửa hàng</b> (từ báo cáo kinh doanh) — xem chi nhánh đăng nhiều có bán tốt &amp; đạt mục tiêu không. Doanh thu lấy từ file kinh doanh đã map theo địa danh.</div></div>
+    <div class="card" style="margin-bottom:22px"><div class="card-title">Tương quan: Số bài đăng ↔ Doanh thu cửa hàng</div>
+      <div class="chart-box"><canvas id="fbScatter"></canvas></div></div>
+
+    <div class="sec-h"><span class="sn">4</span>Bảng chi tiết toàn bộ chi nhánh</div>
+    <div class="card"><div class="card-sub">Xếp theo Reach giảm dần. %MT = doanh thu cửa hàng đạt bao nhiêu so mục tiêu tháng (nếu map được cửa hàng).</div>
+      <div class="tbl-wrap" style="max-height:560px"><table><thead><tr><th>#</th><th>Chi nhánh</th><th>Số bài</th><th>Reach</th><th>Reach/bài</th><th>Tương tác</th><th>ER%</th><th>Doanh thu CH</th><th>%MT</th></tr></thead><tbody>${allRows}</tbody></table></div></div>`;
+
+  // Charts xếp hạng (bar ngang)
+  const shortName=s=>s.replace(/^GUMAC\s*-?\s*/,'').slice(0,18);
+  mkChart('fbRankPost',{type:'bar',data:{labels:byPost.map(s=>shortName(s.page)),datasets:[{label:'Số bài',data:byPost.map(s=>s.n),backgroundColor:'#2f6bffcc',borderRadius:6,maxBarThickness:20}]},
+    options:{indexAxis:'y',scales:{x:{ticks:{callback:v=>fmtN(v)}}}}},{dlFmt:v=>v,dlAnchor:'end',dlAlign:'right',tooltip:{label:c=>'Số bài: '+fmtN(c.raw)}});
+  mkChart('fbRankReach',{type:'bar',data:{labels:byReach.map(s=>shortName(s.page)),datasets:[{label:'Reach',data:byReach.map(s=>s.reach),backgroundColor:VIOLET+'cc',borderRadius:6,maxBarThickness:20}]},
+    options:{indexAxis:'y',scales:{x:{ticks:{callback:v=>shortNum(v)}}}}},{dlFmt:v=>shortNum(v),dlAnchor:'end',dlAlign:'right',tooltip:{label:c=>'Reach: '+fmtN(c.raw)}});
+  mkChart('fbRankER',{type:'bar',data:{labels:byER.map(s=>shortName(s.page)),datasets:[{label:'ER%',data:byER.map(s=>s.er),backgroundColor:byER.map(s=>s.er>=1?GOOD+'cc':AMBER+'cc'),borderRadius:6,maxBarThickness:20}]},
+    options:{indexAxis:'y',scales:{x:{ticks:{callback:v=>fmtN(v,1)+'%'}}}}},{dlFmt:v=>fmtN(v,2)+'%',dlAnchor:'end',dlAlign:'right',tooltip:{label:c=>'ER: '+fmtN(c.raw,2)+'%'}});
+
+  // Scatter: số bài vs doanh thu
+  const scatterData=stores.filter(s=>s.hasBiz&&s.rev>0).map(s=>({x:s.n,y:s.rev,label:shortName(s.page)}));
+  mkChart('fbScatter',{type:'scatter',data:{datasets:[{label:'Chi nhánh',data:scatterData,
+    backgroundColor:PINK+'cc',borderColor:PINK,pointRadius:7,pointHoverRadius:10}]},
+    options:{plugins:{datalabels:{display:false}},scales:{
+      x:{title:{display:true,text:'Số bài đăng fanpage'},ticks:{callback:v=>fmtN(v)}},
+      y:{title:{display:true,text:'Doanh thu cửa hàng'},ticks:{callback:v=>shortNum(v)}}}}},
+    {tooltip:{label:c=>c.raw.label+': '+fmtN(c.raw.x)+' bài · '+fmtVND(c.raw.y)}});
+}
+
+function miniDelta(cur,prev){if(prev==null||prev===0)return '';const d=cur-prev;
+  const col=d>=0?'var(--good)':'var(--bad)';const ar=d>=0?'▲':'▼';
+  return `<span style="font-size:10px;color:${col};font-weight:700">${ar}${Math.abs(d)}</span>`;}
 </script>
 
 <script>window.addEventListener("DOMContentLoaded",()=>{var p=document.getElementById("pwd");if(p)p.focus();});</script>
