@@ -425,6 +425,13 @@ tr.totalrow td{background:var(--amberg);font-weight:800;border-top:2px solid var
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg><span>Vùng &amp; Loại cửa hàng</span></div>
     <div class="nav-item" data-page="forecast" onclick="nav('forecast')" data-tip="Dự báo doanh số">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 8-8M21 7v5h-5"/></svg><span>Dự báo doanh số</span></div>
+    <div class="nav-label">Hiệu suất Fanpage</div>
+    <div class="nav-item" data-page="fanoverview" onclick="nav('fanoverview')" data-tip="Fanpage tổng quan">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a4 4 0 00-4 4v3H8v4h3v8h4v-8h3l1-4h-4V6a1 1 0 011-1h3z"/></svg><span>Fanpage tổng quan</span></div>
+    <div class="nav-item" data-page="fancontent" onclick="nav('fancontent')" data-tip="Nội dung & định dạng">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg><span>Nội dung &amp; định dạng</span></div>
+    <div class="nav-item" data-page="fanvideo" onclick="nav('fanvideo')" data-tip="Phân tích video">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M10 8l6 4-6 4V8z"/></svg><span>Phân tích video</span></div>
     <div class="nav-label">Hiệu suất quảng cáo</div>
     <div class="nav-item" data-page="ads" onclick="nav('ads')" data-tip="Quảng cáo tổng quan">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l18-5v12L3 14v-3zM11.6 16.8a3 3 0 11-5.8-1.6"/></svg><span>Quảng cáo tổng quan</span></div>
@@ -466,6 +473,9 @@ tr.totalrow td{background:var(--amberg);font-weight:800;border-top:2px solid var
     <div class="page" id="page-adstores"></div>
     <div class="page" id="page-formats"></div>
     <div class="page" id="page-roi"></div>
+    <div class="page" id="page-fanoverview"></div>
+    <div class="page" id="page-fancontent"></div>
+    <div class="page" id="page-fanvideo"></div>
   </main>
 </div>
 </div>
@@ -481,7 +491,8 @@ const SALT_HEX="26770b3151bdbad9608a8cc9ef93cf30";
 const ENC_BIZ="6V7UP2abRLB/3iLD:U037o/ZI3Ubd6pOwH/kvWQ==:kqbMkCJrcDS8xs8mWHwtO1MgGjM1dyprM+pyxWLrnxqHAQ5d18PdUxNqLESqVjIBh6Sm+6hmWpppF59nvG0DMAwRQ15Ar5j6oWaj+A10CUTulpFx5ijHVEik9nEFUxudG/9Hv82s2sgzb4HDFk1iscEBJkEJyfZ+Xu0/zGdUfYGuTrHwoOaXCb7M3gOIzG00gr3wdiWRyxP8FS/SQQK9Jg==";
 const ENC_ADS="JeooPvS3CVxlzc6w:jCSqK7UwUb4a5Efiq4HYqg==:K0dXTxCfJD+ISw/sMg49wJwP326UXGnHxRjOzkIeW8l6duNz+q9ujC/3dp/VkeayXkKRSM00/mWWYB46QQm1vGKbeK6SaN63Z4apubzwYCMokRRD6C/oUwIMZ/7XbPyKoomMDbu2ILp2cgucGZRIrUsDg907b78h4D9ACfwL+9NBfSRfN9WGrfvplSxaFBKa+1kMTZlRObsrZVL8opF2CVaK10OduBjSYw==";
 // Sau khi nhập đúng password, 2 biến này được điền giá trị plain để code dùng
-let CSV_BIZ=null, CSV_ADS=null;
+let CSV_BIZ=null, CSV_ADS=null, CSV_FAN=null;
+const ENC_FAN="wyEdn2NJRooalVCg:1ecQ9jQbhWzBCMJWfpiuVQ==:oUPdyO48tsPzjXtVubqnTLatvHX77+0QPRoE6xnxNheeUe1hjk7xNc0CeiiXABqBLldZuXarEVyB/P9cqrIuye9YTZ4UqMQSrRFyNzZz6qTJSt3QFRfy53UOR+eqIYJh7yRe6NllXMjgkMFmTeqkgijAskJuk6Qz7B8DKp4ofwpQGuxPpinMSathgzZzliRlPwA083EQxSIafOoLAFkFNxj6VtuHYWuj";
 
 // Tiện ích base64 ↔ Uint8Array
 const b64ToBytes=b=>{const bin=atob(b);const arr=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)arr[i]=bin.charCodeAt(i);return arr;};
@@ -520,6 +531,7 @@ async function checkPwd(){
       const key=await deriveKey(v);
       CSV_BIZ=await decryptUrl(ENC_BIZ,key);
       CSV_ADS=await decryptUrl(ENC_ADS,key);
+      CSV_FAN=await decryptUrl(ENC_FAN,key);
     }catch(e){
       // không decrypt được = sai password (dù hash đúng — không nên xảy ra)
       const err=document.getElementById('gateErr'),c=document.getElementById('gateCard');
@@ -770,6 +782,10 @@ async function startLoad(){
     ]);
     setStep('Đã tải xong, đang xử lý & ghép dữ liệu...',55);
     _bizText=biz;_adsText=ads;
+    // Tải fanpage riêng — KHÔNG chặn dash chính, lỗi thì bỏ qua
+    loadCSVResilient(CSV_FAN,'FANPAGE',log).then(fan=>{
+      try{processFanpage(fan);if(typeof PAGE!=='undefined'&&PAGE&&PAGE.startsWith('fan'))render();}catch(e){console.warn('Fanpage parse lỗi:',e);}
+    }).catch(e=>{console.warn('Fanpage CSV không tải được (bỏ qua):',e.message);});
     console.log('[CSV LOAD]',log.join('\n'));
     await finishProcess(biz,ads);
   }catch(e){
@@ -1082,6 +1098,9 @@ function render(){
     else if(PAGE==='adstores')renderAdStores();
     else if(PAGE==='formats')renderFormats();
     else if(PAGE==='roi')renderContribution();
+    else if(PAGE==='fanoverview')renderFanOverview();
+    else if(PAGE==='fancontent')renderFanContent();
+    else if(PAGE==='fanvideo')renderFanVideo();
   }catch(e){console.error(e);}
 }
 
@@ -2842,6 +2861,369 @@ function vnMapMove(e){const tip=document.getElementById('vnTip');if(!tip||tip.st
 </script>
 
 
+
+<script>
+/* ============================================================
+   FANPAGE ANALYTICS ENGINE — xử lý dữ liệu post-level từ Meta Business Suite
+   Dữ liệu: mỗi dòng = 1 bài viết, 35 cột. Dùng chung bộ lọc tháng (FS.month).
+   Tách biệt hoàn toàn với engine BIZ/ADS của dash cũ.
+   ============================================================ */
+let FANPOSTS=[], FANMETA=null;
+
+function processFanpage(csvText){
+  // Parse CSV (tái dùng parser của dash cũ qua hàm parseCSVRows nếu có, fallback tự parse)
+  const rows = parseCSVGeneric(csvText);
+  if(!rows.length){console.warn('Fanpage rỗng');return;}
+  const head = rows[0].map(s=>s.trim());
+  const idx = name=>{for(let i=0;i<head.length;i++)if(head[i]===name)return i;return -1;};
+  const ci={
+    posted:idx('Thời gian đăng'), type:idx('Loại bài viết'), page:idx('Tên Trang'),
+    title:idx('Tiêu đề'), link:idx('Liên kết vĩnh viễn'), dur:idx('Thời lượng (giây)'),
+    view:idx('Lượt xem'), reach:idx('Số người tiếp cận'),
+    react:idx('Cảm xúc'), comm:idx('Bình luận'), share:idx('Lượt chia sẻ'),
+    clk:idx('Tổng lượt click'), lclk:idx('Lượt click vào liên kết'),
+    sec:idx('Số Giây xem'), secavg:idx('Số Giây xem trung bình'),
+  };
+  const num=x=>{const v=parseFloat(String(x==null?'':x).replace(/[", ]/g,'').trim());return isNaN(v)?0:v;};
+  // Chuẩn hoá loại bài về nhóm
+  const typeNorm=t=>{t=(t||'').trim();
+    if(t==='Ảnh')return 'Ảnh';
+    if(t==='Video trực tiếp')return 'Livestream';
+    if(t==='Thước phim')return 'Reels';
+    if(t==='Video')return 'Video';
+    if(t==='Văn bản')return 'Văn bản';
+    if(t==='Liên kết')return 'Liên kết';
+    return t||'Khác';};
+  // Parse ngày MM/DD/YYYY HH:MM -> {ym, date, hour, dow}
+  const parseDate=s=>{s=(s||'').trim();const m=s.match(/(\d{2})\/(\d{2})\/(\d{4})\s+(\d{1,2}):(\d{2})/);
+    if(!m)return null;const mm=m[1],dd=m[2],yy=m[3],hh=+m[4];
+    const d=new Date(+yy,+mm-1,+dd);
+    return {ym:yy+'-'+mm, date:yy+'-'+mm+'-'+dd, hour:hh, dow:d.getDay()};};
+
+  const posts=[];
+  for(let i=1;i<rows.length;i++){
+    const r=rows[i];if(!r||r.length<5)continue;
+    const dt=parseDate(r[ci.posted]);if(!dt)continue;
+    const react=num(r[ci.react]),comm=num(r[ci.comm]),share=num(r[ci.share]);
+    posts.push({
+      ym:dt.ym, date:dt.date, hour:dt.hour, dow:dt.dow,
+      type:typeNorm(r[ci.type]), page:(r[ci.page]||'').trim(),
+      title:(r[ci.title]||'').trim().slice(0,90), link:(r[ci.link]||'').trim(),
+      dur:num(r[ci.dur]),
+      view:num(r[ci.view]), reach:num(r[ci.reach]),
+      react, comm, share, eng:react+comm+share,
+      clk:num(r[ci.clk]), lclk:num(r[ci.lclk]),
+      sec:num(r[ci.sec]), secavg:num(r[ci.secavg]),
+    });
+  }
+  // META: danh sách tháng có dữ liệu
+  const months=[...new Set(posts.map(p=>p.ym))].sort();
+  FANPOSTS=posts; FANMETA={months, total:posts.length};
+  console.log('[FANPAGE] '+posts.length+' bài, '+months.length+' tháng:',months.join(', '));
+}
+
+// CSV parser tổng quát (xử lý dấu phẩy trong ngoặc kép, xuống dòng trong field)
+function parseCSVGeneric(text){
+  const rows=[];let row=[],field='',inQ=false;
+  for(let i=0;i<text.length;i++){
+    const c=text[i];
+    if(inQ){
+      if(c==='"'){if(text[i+1]==='"'){field+='"';i++;}else inQ=false;}
+      else field+=c;
+    }else{
+      if(c==='"')inQ=true;
+      else if(c===','){row.push(field);field='';}
+      else if(c==='\n'){row.push(field);rows.push(row);row=[];field='';}
+      else if(c==='\r'){}
+      else field+=c;
+    }
+  }
+  if(field.length||row.length){row.push(field);rows.push(row);}
+  return rows;
+}
+
+// Lấy bài theo tháng đang chọn (FS.month) — áp lọc khoảng ngày nếu có
+function fanRows(ym){
+  return FANPOSTS.filter(p=>{
+    if(p.ym!==ym)return false;
+    if(FS.dateFrom&&p.date<FS.dateFrom)return false;
+    if(FS.dateTo&&p.date>FS.dateTo)return false;
+    return true;
+  });
+}
+function fanAgg(rows){
+  const s={n:rows.length,view:0,reach:0,react:0,comm:0,share:0,eng:0,clk:0,lclk:0,sec:0};
+  for(const p of rows){s.view+=p.view;s.reach+=p.reach;s.react+=p.react;s.comm+=p.comm;
+    s.share+=p.share;s.eng+=p.eng;s.clk+=p.clk;s.lclk+=p.lclk;s.sec+=p.sec;}
+  s.er=s.reach?s.eng/s.reach*100:0;          // engagement rate / reach
+  s.erView=s.view?s.eng/s.view*100:0;
+  s.ctr=s.reach?s.lclk/s.reach*100:0;          // CTR (link click / reach)
+  s.viewPerReach=s.reach?s.view/s.reach:0;     // tần suất hiển thị
+  s.engPerPost=s.n?s.eng/s.n:0;
+  s.reachPerPost=s.n?s.reach/s.n:0;
+  s.viewPerPost=s.n?s.view/s.n:0;
+  s.watchMin=s.sec/60;
+  return s;
+}
+function fanPrevYm(ym){const[y,m]=ym.split('-').map(Number);const d=new Date(y,m-2,1);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');}
+function fanPrevYearYm(ym){const[y,m]=ym.split('-').map(Number);return (y-1)+'-'+String(m).padStart(2,'0');}
+
+/* ============ RENDER ============ */
+function renderFanOverview(){
+  const ym=FS.month, pm=fanPrevYm(ym), py=fanPrevYearYm(ym);
+  if(!FANPOSTS.length){
+    document.getElementById('page-fanoverview').innerHTML=fanLoadingCard('Tổng quan Fanpage');return;}
+  const cur=fanAgg(fanRows(ym)),prev=fanAgg(fanRows(pm)),prevY=fanAgg(fanRows(py));
+  const kpis=[
+    {l:'Lượt tiếp cận (Reach)',v:fmtN(cur.reach),ic:I9.reach,c:'#2f6bff',mom:[cur.reach,prev.reach],yoy:[cur.reach,prevY.reach]},
+    {l:'Lượt xem (Views)',v:fmtN(cur.view),ic:I9.eye,c:'#8b5cf6',mom:[cur.view,prev.view],yoy:[cur.view,prevY.view]},
+    {l:'Số bài đăng',v:fmtN(cur.n),ic:I9.post,c:'#06b6d4',mom:[cur.n,prev.n],yoy:[cur.n,prevY.n]},
+    {l:'Tổng tương tác',v:fmtN(cur.eng),ic:I9.heart,c:'#ec4899',mom:[cur.eng,prev.eng],yoy:[cur.eng,prevY.eng]},
+    {l:'Tỷ lệ tương tác (ER)',v:fmtN(cur.er,2)+'%',ic:I9.pulse,c:'#22c55e',mom:[cur.er,prev.er]},
+    {l:'Lượt click',v:fmtN(cur.clk),ic:I9.click,c:'#f59e0b',mom:[cur.clk,prev.clk],yoy:[cur.clk,prevY.clk]},
+    {l:'Click vào link',v:fmtN(cur.lclk),ic:I9.link,c:'#2f6bff',mom:[cur.lclk,prev.lclk]},
+    {l:'Thời lượng xem (phút)',v:fmtN(cur.watchMin),ic:I9.clock,c:'#8b5cf6',mom:[cur.watchMin,prev.watchMin]},
+  ];
+  const kpiHTML=kpis.map(k=>{let foot='';
+    if(k.mom)foot+=`<span class="chip-lbl">MoM</span>${deltaChip(k.mom[0],k.mom[1])}`;
+    if(k.yoy&&k.yoy[1]>0)foot+=`<span class="chip-lbl">YoY</span>${deltaChip(k.yoy[0],k.yoy[1])}`;
+    return `<div class="kpi"><div class="kpi-label"><span class="ic" style="background:${k.c}1f;color:${k.c}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">${k.ic}</svg></span>${k.l}</div>
+      <div class="kpi-val">${k.v}</div><div class="kpi-foot">${foot}</div></div>`;}).join('');
+
+  // engagement breakdown
+  const engTot=cur.react+cur.comm+cur.share||1;
+
+  document.getElementById('page-fanoverview').innerHTML=`
+    <div class="page-head"><div><h1>Fanpage · Tổng quan</h1>
+      <div class="ph-sub">Hiệu suất trang Facebook · Kỳ <b>${ymLabel(ym)}</b> · MoM vs ${ymLabel(pm)} · YoY vs ${ymLabel(py)}</div></div></div>
+    <div class="sec-h"><span class="sn">1</span>Chỉ số tổng quan</div>
+    <div class="kpi-grid">${kpiHTML}</div>
+
+    <div class="sec-h"><span class="sn">2</span>Xu hướng theo ngày</div>
+    <div class="card" style="margin-bottom:20px"><div class="chart-controls" id="fanDayCtrl"></div>
+      <div class="chart-box"><canvas id="fanDayChart"></canvas></div></div>
+
+    <div class="sec-h"><span class="sn">3</span>Xu hướng theo tháng (12 tháng · so năm trước)</div>
+    <div class="card" style="margin-bottom:20px"><div class="chart-controls" id="fanMonCtrl"></div>
+      <div class="chart-box"><canvas id="fanMonChart"></canvas></div></div>
+
+    <div class="sec-h"><span class="sn">4</span>Cơ cấu tương tác</div>
+    <div class="row2">
+      <div class="card"><div class="card-title">Phân bổ Cảm xúc · Bình luận · Chia sẻ</div><div class="chart-box sm"><canvas id="fanEngPie"></canvas></div></div>
+      <div class="card"><div class="card-title">Chỉ số tương tác chi tiết</div>
+        <div class="tbl-wrap"><table><tbody>
+          <tr><td>❤️ Cảm xúc</td><td style="text-align:right"><b>${fmtN(cur.react)}</b></td><td style="text-align:right;color:var(--txt3)">${fmtN(cur.react/engTot*100,1)}%</td><td style="text-align:right">${deltaChip(cur.react,prev.react)}</td></tr>
+          <tr><td>💬 Bình luận</td><td style="text-align:right"><b>${fmtN(cur.comm)}</b></td><td style="text-align:right;color:var(--txt3)">${fmtN(cur.comm/engTot*100,1)}%</td><td style="text-align:right">${deltaChip(cur.comm,prev.comm)}</td></tr>
+          <tr><td>🔁 Chia sẻ</td><td style="text-align:right"><b>${fmtN(cur.share)}</b></td><td style="text-align:right;color:var(--txt3)">${fmtN(cur.share/engTot*100,1)}%</td><td style="text-align:right">${deltaChip(cur.share,prev.share)}</td></tr>
+          <tr class="totalrow"><td>Tổng tương tác</td><td style="text-align:right">${fmtN(cur.eng)}</td><td style="text-align:right">100%</td><td style="text-align:right">${deltaChip(cur.eng,prev.eng)}</td></tr>
+          <tr><td>Tỷ lệ tương tác / Reach</td><td style="text-align:right" colspan="3"><b style="color:var(--good)">${fmtN(cur.er,2)}%</b></td></tr>
+          <tr><td>Tỷ lệ click / Reach (CTR)</td><td style="text-align:right" colspan="3"><b style="color:var(--amber2)">${fmtN(cur.ctr,2)}%</b></td></tr>
+          <tr><td>Tương tác TB / bài</td><td style="text-align:right" colspan="3"><b>${fmtN(cur.engPerPost)}</b></td></tr>
+        </tbody></table></div></div>
+    </div>`;
+
+  // charts
+  buildFanDayCtrl(ym);
+  buildFanMonCtrl();
+  mkChart('fanEngPie',{type:'doughnut',data:{labels:['Cảm xúc','Bình luận','Chia sẻ'],datasets:[{data:[cur.react,cur.comm,cur.share],backgroundColor:[PINK,VIOLET,TEAL],borderColor:css('--bg'),borderWidth:3}]},
+    options:{cutout:'60%'}},{legendPos:'right',dlFmt:v=>(v/engTot*100>=4?(v/engTot*100).toFixed(0)+'%':''),dlAnchor:'center',dlAlign:'center',dlColor:'#fff',
+    tooltip:{label:c=>c.label+': '+fmtN(c.raw)+' ('+(c.raw/engTot*100).toFixed(1)+'%)'}});
+}
+
+const FAN_METRICS=[['reach','Reach','n','#2f6bff'],['view','Lượt xem','n','#8b5cf6'],
+  ['eng','Tương tác','n','#ec4899'],['react','Cảm xúc','n','#f43f5e'],['comm','Bình luận','n','#06b6d4'],
+  ['clk','Click','n','#f59e0b'],['n','Số bài','n','#22c55e']];
+let fanDaySel='reach',fanMonSel='reach';
+function buildFanDayCtrl(ym){
+  document.getElementById('fanDayCtrl').innerHTML=FAN_METRICS.map(m=>`<button class="cc-btn ${m[0]===fanDaySel?'active':''}" onclick="fanDaySel='${m[0]}';buildFanDayCtrl('${ym}')">${m[1]}</button>`).join('');
+  const meta=FAN_METRICS.find(m=>m[0]===fanDaySel),[y,mm]=ym.split('-').map(Number),dim=new Date(y,mm,0).getDate();
+  const labels=[],data=[];
+  for(let d=1;d<=dim;d++){const ds=ym+'-'+String(d).padStart(2,'0');
+    const rows=FANPOSTS.filter(p=>p.date===ds&&(!FS.dateFrom||p.date>=FS.dateFrom)&&(!FS.dateTo||p.date<=FS.dateTo));
+    labels.push(d);
+    if(meta[0]==='n')data.push(rows.length);
+    else data.push(rows.reduce((s,p)=>s+p[meta[0]],0));}
+  mkChart('fanDayChart',{type:'line',data:{labels,datasets:[{label:meta[1]+' theo ngày · '+ymLabel(ym),data,borderColor:meta[3],
+    backgroundColor:c=>grad(c.chart.ctx,meta[3]+'40',meta[3]+'02'),fill:true,tension:.35,borderWidth:2.5,pointRadius:0,pointHoverRadius:5}]},
+    options:{scales:{x:{title:{display:true,text:'Ngày trong tháng'}},y:{ticks:{callback:v=>fmtN(v)},grace:'15%'}}}},
+    {dlSize:dim>20?8:9,dlAnchor:'end',dlAlign:'top',dlOffset:5,dlFmt:v=>(v==null||v===0)?'':shortNum(v),
+     tooltip:{label:c=>meta[1]+': '+fmtN(c.raw)}});
+}
+function buildFanMonCtrl(){
+  document.getElementById('fanMonCtrl').innerHTML=FAN_METRICS.map(m=>`<button class="cc-btn ${m[0]===fanMonSel?'active':''}" onclick="fanMonSel='${m[0]}';buildFanMonCtrl()">${m[1]}</button>`).join('');
+  const meta=FAN_METRICS.find(m=>m[0]===fanMonSel),year=+FS.month.slice(0,4),labels=[],data=[],dataPrev=[];
+  for(let m=1;m<=12;m++){const ym=year+'-'+String(m).padStart(2,'0'),pyym=(year-1)+'-'+String(m).padStart(2,'0');
+    const rows=FANPOSTS.filter(p=>p.ym===ym),rp=FANPOSTS.filter(p=>p.ym===pyym);
+    labels.push('T'+m);
+    const sum=(arr)=>meta[0]==='n'?arr.length:arr.reduce((s,p)=>s+p[meta[0]],0);
+    data.push(rows.length?sum(rows):null);dataPrev.push(rp.length?sum(rp):null);}
+  mkChart('fanMonChart',{data:{labels,datasets:[
+    {type:'bar',label:'Năm '+year,data,backgroundColor:meta[3]+'cc',borderRadius:8,maxBarThickness:34,datalabels:{anchor:'end',align:'top',color:css('--txt'),font:{size:8.5,weight:'700'},formatter:v=>(v==null||v===0)?'':shortNum(v)}},
+    {type:'line',label:'Năm '+(year-1),data:dataPrev,borderColor:css('--txt3'),borderDash:[5,4],borderWidth:2,pointRadius:3,pointBackgroundColor:css('--txt3'),tension:.3,datalabels:{display:false}}]},
+    options:{scales:{y:{ticks:{callback:v=>fmtN(v)},grace:'20%'}}}},
+    {tooltip:{label:c=>c.dataset.label+': '+fmtN(c.raw)}});
+}
+
+/* ===== TRANG 2: NỘI DUNG & ĐỊNH DẠNG ===== */
+function renderFanContent(){
+  const ym=FS.month, pm=fanPrevYm(ym);
+  if(!FANPOSTS.length){document.getElementById('page-fancontent').innerHTML=fanLoadingCard('Nội dung Fanpage');return;}
+  const rows=fanRows(ym), prevRows=fanRows(pm);
+  // gom theo loại bài
+  const types=[...new Set(rows.map(p=>p.type))];
+  const byType=types.map(t=>{const tr=rows.filter(p=>p.type===t);const a=fanAgg(tr);
+    return {type:t,...a};}).sort((a,b)=>b.reach-a.reach);
+  const totReach=byType.reduce((s,t)=>s+t.reach,0)||1;
+  const totView=byType.reduce((s,t)=>s+t.view,0)||1;
+
+  const typeRows=byType.map(t=>`<tr>
+    <td><b>${t.type}</b></td><td>${fmtN(t.n)}</td>
+    <td>${fmtN(t.reach)} <span class="chip-lbl">${fmtN(t.reach/totReach*100,0)}%</span></td>
+    <td>${fmtN(t.view)}</td><td>${fmtN(t.reachPerPost)}</td>
+    <td>${fmtN(t.eng)}</td><td><b style="color:${t.er>=1?'var(--good)':'var(--txt)'}">${fmtN(t.er,2)}%</b></td>
+    <td>${fmtN(t.engPerPost)}</td></tr>`).join('');
+  const tA=fanAgg(rows);
+  const typeTot=`<tr class="totalrow"><td><b>TỔNG</b></td><td>${fmtN(tA.n)}</td><td>${fmtN(tA.reach)}</td><td>${fmtN(tA.view)}</td><td>${fmtN(tA.reachPerPost)}</td><td>${fmtN(tA.eng)}</td><td>${fmtN(tA.er,2)}%</td><td>${fmtN(tA.engPerPost)}</td></tr>`;
+
+  // Top bài viết theo reach
+  const topPosts=[...rows].sort((a,b)=>b.reach-a.reach).slice(0,15);
+  const topRows=topPosts.map((p,i)=>`<tr>
+    <td style="text-align:center;color:var(--txt3)">${i+1}</td>
+    <td><div style="max-width:340px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${p.title||'(không tiêu đề)'}</div>
+      <span style="font-size:10px;color:var(--txt3)">${p.type} · ${p.date}</span></td>
+    <td>${fmtN(p.reach)}</td><td>${fmtN(p.view)}</td><td>${fmtN(p.eng)}</td>
+    <td><b style="color:${p.reach&&p.eng/p.reach*100>=2?'var(--good)':'var(--txt)'}">${p.reach?fmtN(p.eng/p.reach*100,2):'0'}%</b></td>
+    <td>${p.link?`<a href="${p.link}" target="_blank" style="color:var(--amber)">Xem ↗</a>`:'—'}</td></tr>`).join('');
+
+  document.getElementById('page-fancontent').innerHTML=`
+    <div class="page-head"><div><h1>Fanpage · Nội dung &amp; Định dạng</h1>
+      <div class="ph-sub">Phân tích hiệu suất theo loại nội dung · Kỳ <b>${ymLabel(ym)}</b></div></div></div>
+
+    <div class="sec-h"><span class="sn">1</span>Hiệu suất theo định dạng nội dung</div>
+    <div class="row2" style="margin-bottom:18px">
+      <div class="card"><div class="card-title">Reach theo định dạng</div><div class="chart-box sm"><canvas id="fanTypeReach"></canvas></div></div>
+      <div class="card"><div class="card-title">Tỷ lệ tương tác (ER%) theo định dạng</div><div class="chart-box sm"><canvas id="fanTypeER"></canvas></div></div></div>
+    <div class="card" style="margin-bottom:24px"><div class="card-title">Bảng so sánh định dạng nội dung</div>
+      <div class="card-sub">ER% (Engagement Rate) = Tương tác / Reach. Định dạng nào ER cao = nội dung chạm khách tốt hơn.</div>
+      <div class="tbl-wrap"><table><thead><tr><th>Định dạng</th><th>Số bài</th><th>Reach</th><th>Lượt xem</th><th>Reach/bài</th><th>Tương tác</th><th>ER%</th><th>TT/bài</th></tr></thead><tbody>${typeRows}${typeTot}</tbody></table></div></div>
+
+    <div class="sec-h"><span class="sn">2</span>Tần suất &amp; thời điểm đăng bài</div>
+    <div class="row2" style="margin-bottom:24px">
+      <div class="card"><div class="card-title">Số bài đăng theo ngày trong tuần</div><div class="chart-box sm"><canvas id="fanDow"></canvas></div></div>
+      <div class="card"><div class="card-title">Reach trung bình theo khung giờ đăng</div><div class="chart-box sm"><canvas id="fanHour"></canvas></div></div></div>
+
+    <div class="sec-h"><span class="sn">3</span>Top 15 bài viết hiệu quả nhất (theo Reach)</div>
+    <div class="card"><div class="tbl-wrap" style="max-height:560px"><table><thead><tr><th>#</th><th>Bài viết</th><th>Reach</th><th>Lượt xem</th><th>Tương tác</th><th>ER%</th><th>Link</th></tr></thead><tbody>${topRows}</tbody></table></div></div>`;
+
+  // charts
+  mkChart('fanTypeReach',{type:'bar',data:{labels:byType.map(t=>t.type),datasets:[{label:'Reach',data:byType.map(t=>t.reach),backgroundColor:PALETTE,borderRadius:8,maxBarThickness:46}]},
+    options:{indexAxis:'y',scales:{x:{ticks:{callback:v=>shortNum(v)}}}}},{dlFmt:v=>shortNum(v),dlAnchor:'end',dlAlign:'right',
+    tooltip:{label:c=>'Reach: '+fmtN(c.raw)}});
+  mkChart('fanTypeER',{type:'bar',data:{labels:byType.map(t=>t.type),datasets:[{label:'ER%',data:byType.map(t=>t.er),
+    backgroundColor:byType.map(t=>t.er>=1?GOOD+'cc':AMBER+'cc'),borderRadius:8,maxBarThickness:46}]},
+    options:{indexAxis:'y',scales:{x:{ticks:{callback:v=>fmtN(v,1)+'%'}}}}},{dlFmt:v=>fmtN(v,2)+'%',dlAnchor:'end',dlAlign:'right',
+    tooltip:{label:c=>'ER: '+fmtN(c.raw,2)+'%'}});
+
+  // DOW
+  const dowNames=['CN','T2','T3','T4','T5','T6','T7'];
+  const dowCnt=[0,0,0,0,0,0,0],dowReach=[0,0,0,0,0,0,0];
+  rows.forEach(p=>{dowCnt[p.dow]++;dowReach[p.dow]+=p.reach;});
+  const dowOrder=[1,2,3,4,5,6,0]; // T2..CN
+  mkChart('fanDow',{type:'bar',data:{labels:dowOrder.map(d=>dowNames[d]),datasets:[{label:'Số bài',data:dowOrder.map(d=>dowCnt[d]),backgroundColor:VIOLET+'cc',borderRadius:8,maxBarThickness:40}]},
+    options:{scales:{y:{ticks:{callback:v=>fmtN(v)}}}}},{dlFmt:v=>v||'',tooltip:{label:c=>'Số bài: '+fmtN(c.raw)}});
+  // Hour buckets
+  const hb=[[0,6,'0-6h'],[6,9,'6-9h'],[9,12,'9-12h'],[12,15,'12-15h'],[15,18,'15-18h'],[18,21,'18-21h'],[21,24,'21-24h']];
+  const hbReach=hb.map(([a,b])=>{const ps=rows.filter(p=>p.hour>=a&&p.hour<b);return ps.length?ps.reduce((s,p)=>s+p.reach,0)/ps.length:0;});
+  mkChart('fanHour',{type:'bar',data:{labels:hb.map(x=>x[2]),datasets:[{label:'Reach TB',data:hbReach,
+    backgroundColor:hbReach.map(v=>v>=Math.max(...hbReach)*0.8?PINK+'dd':'#2f6bffcc'),borderRadius:8,maxBarThickness:38}]},
+    options:{scales:{y:{ticks:{callback:v=>shortNum(v)}}}}},{dlFmt:v=>shortNum(v),tooltip:{label:c=>'Reach TB/bài: '+fmtN(c.raw,0)}});
+}
+
+/* ===== TRANG 3: PHÂN TÍCH VIDEO ===== */
+function renderFanVideo(){
+  const ym=FS.month, pm=fanPrevYm(ym);
+  if(!FANPOSTS.length){document.getElementById('page-fanvideo').innerHTML=fanLoadingCard('Video Fanpage');return;}
+  // chỉ bài video/reels/livestream
+  const vidTypes=['Video','Reels','Livestream'];
+  const rows=fanRows(ym).filter(p=>vidTypes.includes(p.type));
+  const prevRows=fanRows(pm).filter(p=>vidTypes.includes(p.type));
+  const a=fanAgg(rows),pa=fanAgg(prevRows);
+  const totSec=rows.reduce((s,p)=>s+p.sec,0);
+  const totView=rows.reduce((s,p)=>s+p.view,0);
+  const avgWatch=totView?totSec/totView:0; // giây xem TB / view
+  const pAvgWatch=(()=>{const ts=prevRows.reduce((s,p)=>s+p.sec,0),tv=prevRows.reduce((s,p)=>s+p.view,0);return tv?ts/tv:0;})();
+
+  // theo từng loại video
+  const byVT=vidTypes.map(t=>{const tr=rows.filter(p=>p.type===t);const ag=fanAgg(tr);
+    const sec=tr.reduce((s,p)=>s+p.sec,0),vw=tr.reduce((s,p)=>s+p.view,0);
+    return {type:t,n:tr.length,view:ag.view,reach:ag.reach,eng:ag.eng,sec,avgWatch:vw?sec/vw:0,er:ag.er};}).filter(x=>x.n>0);
+
+  const kpis=[
+    {l:'Tổng lượt xem video',v:fmtN(a.view),ic:I9.play,c:'#8b5cf6',mom:[a.view,pa.view]},
+    {l:'Số video đăng',v:fmtN(rows.length),ic:I9.film,c:'#2f6bff',mom:[rows.length,prevRows.length]},
+    {l:'Tổng phút xem',v:fmtN(totSec/60),ic:I9.clock,c:'#06b6d4',mom:[totSec,prevRows.reduce((s,p)=>s+p.sec,0)]},
+    {l:'Thời lượng xem TB/view',v:fmtN(avgWatch,1)+'s',ic:I9.pulse,c:'#ec4899',mom:[avgWatch,pAvgWatch]},
+    {l:'Reach video',v:fmtN(a.reach),ic:I9.reach,c:'#22c55e',mom:[a.reach,pa.reach]},
+    {l:'Tương tác video',v:fmtN(a.eng),ic:I9.heart,c:'#f59e0b',mom:[a.eng,pa.eng]},
+  ];
+  const kpiHTML=kpis.map(k=>`<div class="kpi"><div class="kpi-label"><span class="ic" style="background:${k.c}1f;color:${k.c}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">${k.ic}</svg></span>${k.l}</div>
+    <div class="kpi-val">${k.v}</div><div class="kpi-foot"><span class="chip-lbl">MoM</span>${deltaChip(k.mom[0],k.mom[1])}</div></div>`).join('');
+
+  const vtRows=byVT.map(t=>`<tr><td><b>${t.type}</b></td><td>${fmtN(t.n)}</td><td>${fmtN(t.view)}</td>
+    <td>${fmtN(t.reach)}</td><td>${fmtN(t.sec/60)}</td><td><b style="color:var(--violet)">${fmtN(t.avgWatch,1)}s</b></td>
+    <td>${fmtN(t.eng)}</td><td>${fmtN(t.er,2)}%</td></tr>`).join('');
+
+  // top video theo view
+  const topVid=[...rows].sort((x,y)=>y.view-x.view).slice(0,10);
+  const topVidRows=topVid.map((p,i)=>`<tr><td style="text-align:center;color:var(--txt3)">${i+1}</td>
+    <td><div style="max-width:320px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${p.title||'(không tiêu đề)'}</div>
+      <span style="font-size:10px;color:var(--txt3)">${p.type} · ${p.date}</span></td>
+    <td>${fmtN(p.view)}</td><td>${fmtN(p.reach)}</td><td>${p.view?fmtN(p.sec/p.view,1):'0'}s</td>
+    <td>${fmtN(p.eng)}</td><td>${p.link?`<a href="${p.link}" target="_blank" style="color:var(--amber)">Xem ↗</a>`:'—'}</td></tr>`).join('');
+
+  document.getElementById('page-fanvideo').innerHTML=`
+    <div class="page-head"><div><h1>Fanpage · Phân tích Video</h1>
+      <div class="ph-sub">Hiệu suất nội dung video, reels &amp; livestream · Kỳ <b>${ymLabel(ym)}</b></div></div></div>
+    <div class="sec-h"><span class="sn">1</span>Chỉ số video tổng quan</div>
+    <div class="kpi-grid">${kpiHTML}</div>
+
+    <div class="sec-h"><span class="sn">2</span>So sánh hiệu suất theo loại video</div>
+    <div class="row2" style="margin-bottom:18px">
+      <div class="card"><div class="card-title">Lượt xem theo loại video</div><div class="chart-box sm"><canvas id="fanVidView"></canvas></div></div>
+      <div class="card"><div class="card-title">Thời lượng xem TB/view (giây)</div><div class="chart-box sm"><canvas id="fanVidWatch"></canvas></div></div></div>
+    <div class="card" style="margin-bottom:24px"><div class="tbl-wrap"><table><thead><tr><th>Loại</th><th>Số video</th><th>Lượt xem</th><th>Reach</th><th>Phút xem</th><th>Xem TB/view</th><th>Tương tác</th><th>ER%</th></tr></thead><tbody>${vtRows}</tbody></table></div></div>
+
+    <div class="sec-h"><span class="sn">3</span>Top 10 video xem nhiều nhất</div>
+    <div class="card"><div class="tbl-wrap" style="max-height:480px"><table><thead><tr><th>#</th><th>Video</th><th>Lượt xem</th><th>Reach</th><th>Xem TB</th><th>Tương tác</th><th>Link</th></tr></thead><tbody>${topVidRows}</tbody></table></div></div>`;
+
+  mkChart('fanVidView',{type:'doughnut',data:{labels:byVT.map(t=>t.type),datasets:[{data:byVT.map(t=>t.view),backgroundColor:[VIOLET,'#2f6bff',TEAL],borderColor:css('--bg'),borderWidth:3}]},
+    options:{cutout:'58%'}},{legendPos:'right',dlFmt:(v)=>{const tot=byVT.reduce((s,t)=>s+t.view,0);return v/tot*100>=5?(v/tot*100).toFixed(0)+'%':'';},dlAnchor:'center',dlAlign:'center',dlColor:'#fff',tooltip:{label:c=>c.label+': '+fmtN(c.raw)}});
+  mkChart('fanVidWatch',{type:'bar',data:{labels:byVT.map(t=>t.type),datasets:[{label:'Giây xem TB',data:byVT.map(t=>t.avgWatch),backgroundColor:PINK+'cc',borderRadius:8,maxBarThickness:50}]},
+    options:{scales:{y:{ticks:{callback:v=>fmtN(v,0)+'s'}}}}},{dlFmt:v=>fmtN(v,1)+'s',tooltip:{label:c=>'Xem TB/view: '+fmtN(c.raw,1)+'s'}});
+}
+
+function fanLoadingCard(title){
+  return `<div class="page-head"><div><h1>${title}</h1><div class="ph-sub">Đang tải dữ liệu Fanpage…</div></div></div>
+    <div class="card" style="text-align:center;padding:50px 20px;color:var(--txt2)">
+      <div style="font-size:40px;margin-bottom:14px">📊</div>
+      <div style="font-weight:700;margin-bottom:6px">Đang tải dữ liệu Fanpage từ Google Sheet…</div>
+      <div style="font-size:12px;color:var(--txt3)">Dữ liệu Fanpage tải riêng nên có thể mất vài giây. Nếu mãi không hiện, có thể link CSV Fanpage chưa truy cập được — thử nút Tải lại.</div></div>`;
+}
+
+// Icons cho fanpage
+const I9={
+  reach:'<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/>',
+  eye:'<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/>',
+  post:'<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>',
+  heart:'<path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 00-7.8 7.8l1.1 1L12 21l7.7-7.6 1.1-1a5.5 5.5 0 000-7.8z"/>',
+  pulse:'<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>',
+  click:'<path d="M9 9l5 12 1.8-5.2L21 14z"/><path d="M7.2 2.2L8 5.1M5.1 8L2.2 7.2M14 4.1L12 6M6 12l-1.9 2"/>',
+  link:'<path d="M10 13a5 5 0 007 0l3-3a5 5 0 00-7-7l-1 1M14 11a5 5 0 00-7 0l-3 3a5 5 0 007 7l1-1"/>',
+  clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l4 2"/>',
+  play:'<circle cx="12" cy="12" r="10"/><path d="M10 8l6 4-6 4V8z"/>',
+  film:'<rect x="2" y="3" width="20" height="18" rx="2"/><path d="M7 3v18M17 3v18M2 8h5M2 16h5M17 8h5M17 16h5"/>',
+};
+</script>
 
 <script>window.addEventListener("DOMContentLoaded",()=>{var p=document.getElementById("pwd");if(p)p.focus();});</script>
 </body>
