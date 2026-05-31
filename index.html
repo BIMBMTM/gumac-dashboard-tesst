@@ -343,6 +343,13 @@ tr.totalrow td{background:var(--amberg);font-weight:800;border-top:2px solid var
   .topbar-actions .user-av{display:none}
   .hero-main .hv{font-size:32px}
 }
+/* tooltip bản đồ VN */
+.vn-tip{position:absolute;z-index:50;min-width:190px;background:var(--panel);border:1px solid var(--line2);
+  border-radius:12px;padding:11px 13px;box-shadow:var(--shadow);pointer-events:none;font-size:12px}
+.vn-tip .vt-name{font-weight:800;font-size:13px;margin-bottom:7px;color:var(--txt);border-bottom:1px solid var(--line);padding-bottom:6px}
+.vn-tip .vt-row{display:flex;justify-content:space-between;gap:14px;margin-top:4px;color:var(--txt2)}
+.vn-tip .vt-row b{color:var(--txt);font-weight:700}
+.vn-dot{transition:fill-opacity .15s}.vn-dot:hover{fill-opacity:1!important;stroke-width:1.5}
 </style>
 </head>
 
@@ -2778,23 +2785,62 @@ function vnMapSVG(fill,regNorm,mapMax,regName,branchByReg,branchMaxRev){
   // gom doanh thu từng cửa hàng (mọi vùng)
   const allB=[];
   Object.keys(branchByReg||{}).forEach(k=>(branchByReg[k]||[]).forEach(b=>allB.push(b)));
+  const totalRev=allB.reduce((s,b)=>s+b.rev,0)||1;
+  // xếp hạng doanh thu (rank 1 = cao nhất)
+  const ranked=[...allB].sort((a,b)=>b.rev-a.rev);
+  const rankMap={};ranked.forEach((b,i)=>rankMap[b.name]=i+1);
+  const nStore=allB.length;
   let dots='';
   allB.sort((a,b)=>a.rev-b.rev).forEach(b=>{
     const co=STORE_COORDS[b.name];if(!co)return;
     const [x,y]=proj(co[1],co[0]);
     const t=branchMaxRev?b.rev/branchMaxRev:0, rad=2.5+t*5.5, isHot=t>=0.5;
     const col=t>=0.66?'#1e56e8':t>=0.4?'#2f6bff':t>=0.18?'#5e8bff':'#9db9ff';
-    dots+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${rad.toFixed(1)}" fill="${col}" fill-opacity="${(0.6+t*0.4).toFixed(2)}" stroke="#fff" stroke-width="0.7"><title>${b.name}: ${fmtVND(b.rev)}</title>`;
+    const share=(b.rev/totalRev*100);
+    // data-* để tooltip JS đọc
+    const dataAttr=`data-mn="${b.name.replace(/"/g,'&quot;')}" data-mr="${rankMap[b.name]}" data-mtot="${nStore}" data-mrev="${fmtVND(b.rev)}" data-mshare="${fmtN(share,1)}%"`;
+    dots+=`<circle class="vn-dot" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${rad.toFixed(1)}" fill="${col}" fill-opacity="${(0.6+t*0.4).toFixed(2)}" stroke="#fff" stroke-width="0.7" ${dataAttr} style="cursor:pointer">`;
     if(isHot)dots+=`<animate attributeName="r" values="${rad.toFixed(1)};${(rad+1.5).toFixed(1)};${rad.toFixed(1)}" dur="2.5s" repeatCount="indefinite"/>`;
     dots+='</circle>';
-    if(t>=0.66)dots+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(rad+3).toFixed(1)}" fill="none" stroke="#2f6bff" stroke-width="1" opacity="0.4"><animate attributeName="r" values="${(rad+3).toFixed(1)};${(rad+10).toFixed(1)};${(rad+3).toFixed(1)}" dur="2.5s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.5;0;0.5" dur="2.5s" repeatCount="indefinite"/></circle>`;
+    if(t>=0.66)dots+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(rad+3).toFixed(1)}" fill="none" stroke="#2f6bff" stroke-width="1" opacity="0.4" pointer-events="none"><animate attributeName="r" values="${(rad+3).toFixed(1)};${(rad+10).toFixed(1)};${(rad+3).toFixed(1)}" dur="2.5s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.5;0;0.5" dur="2.5s" repeatCount="indefinite"/></circle>`;
   });
-  return `<svg viewBox="0 0 ${M.W} ${M.H}" style="width:100%;max-width:300px;height:auto">
-    <defs><linearGradient id="vnLand" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#eef2f9"/><stop offset="100%" stop-color="#dfe6f1"/></linearGradient></defs>
-    <path d="${M.path}" fill="url(#vnLand)" stroke="#b3c0d8" stroke-width="1" stroke-linejoin="round"/>
-    ${dots}</svg>`;
+  // Quần đảo Hoàng Sa (~16.5°N,112°E) & Trường Sa (~10°N,114°E) — nằm ngoài viewBox kinh độ,
+  // nên đặt thủ công ở mép phải bản đồ kèm khung nét đứt + nhãn (theo quy ước bản đồ VN)
+  const islands=`
+    <g font-family="Be Vietnam Pro" pointer-events="none">
+      <rect x="${M.W-66}" y="${M.H*0.30}" width="58" height="46" rx="6" fill="none" stroke="#b3c0d8" stroke-width="0.8" stroke-dasharray="3 2"/>
+      <circle cx="${M.W-46}" cy="${M.H*0.33}" r="1.6" fill="#7da3ff"/><circle cx="${M.W-38}" cy="${M.H*0.35}" r="1.3" fill="#7da3ff"/><circle cx="${M.W-30}" cy="${M.H*0.34}" r="1.1" fill="#9db9ff"/>
+      <text x="${M.W-37}" y="${M.H*0.30+40}" font-size="7.5" fill="#7e8aa3" text-anchor="middle" font-weight="600">Hoàng Sa</text>
+      <rect x="${M.W-66}" y="${M.H*0.52}" width="58" height="46" rx="6" fill="none" stroke="#b3c0d8" stroke-width="0.8" stroke-dasharray="3 2"/>
+      <circle cx="${M.W-46}" cy="${M.H*0.55}" r="1.6" fill="#7da3ff"/><circle cx="${M.W-38}" cy="${M.H*0.57}" r="1.3" fill="#7da3ff"/><circle cx="${M.W-30}" cy="${M.H*0.56}" r="1.1" fill="#9db9ff"/><circle cx="${M.W-42}" cy="${M.H*0.53}" r="1.1" fill="#9db9ff"/>
+      <text x="${M.W-37}" y="${M.H*0.52+40}" font-size="7.5" fill="#7e8aa3" text-anchor="middle" font-weight="600">Trường Sa</text>
+    </g>`;
+  return `<div class="vn-map-wrap" style="position:relative" onmouseover="vnMapHover(event)" onmouseout="vnMapOut(event)" onmousemove="vnMapMove(event)">
+    <svg viewBox="0 0 ${M.W} ${M.H}" style="width:100%;max-width:300px;height:auto;display:block;margin:0 auto">
+      <defs><linearGradient id="vnLand" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#eef2f9"/><stop offset="100%" stop-color="#dfe6f1"/></linearGradient></defs>
+      <path d="${M.path}" fill="url(#vnLand)" stroke="#b3c0d8" stroke-width="1" stroke-linejoin="round"/>
+      ${islands}${dots}</svg>
+    <div id="vnTip" class="vn-tip" style="display:none"></div>
+  </div>`;
 }
+// ===== Tooltip tương tác cho bản đồ =====
+function vnMapHover(e){
+  const c=e.target.closest('.vn-dot');if(!c)return;
+  const tip=document.getElementById('vnTip');if(!tip)return;
+  tip.innerHTML=`<div class="vt-name">${c.getAttribute('data-mn')}</div>
+    <div class="vt-row"><span>Xếp hạng doanh thu</span><b>#${c.getAttribute('data-mr')} / ${c.getAttribute('data-mtot')}</b></div>
+    <div class="vt-row"><span>Doanh thu cửa hàng</span><b>${c.getAttribute('data-mrev')}</b></div>
+    <div class="vt-row"><span>Tỷ trọng / tổng DT</span><b style="color:var(--amber2)">${c.getAttribute('data-mshare')}</b></div>`;
+  tip.style.display='block';
+}
+function vnMapOut(e){const c=e.target.closest('.vn-dot');if(!c)return;const tip=document.getElementById('vnTip');if(tip)tip.style.display='none';}
+function vnMapMove(e){const tip=document.getElementById('vnTip');if(!tip||tip.style.display==='none')return;
+  const wrap=e.currentTarget.getBoundingClientRect();
+  let x=e.clientX-wrap.left+14, y=e.clientY-wrap.top+14;
+  if(x+200>wrap.width)x=e.clientX-wrap.left-200;
+  tip.style.left=x+'px';tip.style.top=y+'px';}
 </script>
+
 
 
 <script>window.addEventListener("DOMContentLoaded",()=>{var p=document.getElementById("pwd");if(p)p.focus();});</script>
