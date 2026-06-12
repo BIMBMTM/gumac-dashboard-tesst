@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>GUMAC · Atelier CRM v4.3</title>
+<title>GUMAC · Atelier CRM v4.4</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -1988,11 +1988,11 @@ td.num, th.num{ text-align: right; font-variant-numeric: tabular-nums;}
       <div class="zns-filter-bar" id="znsFilterBar">
         <div class="zns-filter-item">
           <label>Chiến dịch</label>
-          <div class="zns-multi" id="znsCampFilter"></div>
+          <div class="ms-wrap" id="znsMsCamp"></div>
         </div>
         <div class="zns-filter-item">
           <label>Cửa hàng</label>
-          <div class="zns-multi" id="znsBranchFilter"></div>
+          <div class="ms-wrap" id="znsMsBranch"></div>
         </div>
         <button class="btn-ghost" onclick="resetZNSFilter()">Đặt lại</button>
       </div>
@@ -2021,7 +2021,36 @@ td.num, th.num{ text-align: right; font-variant-numeric: tabular-nums;}
         </div>
       </div>
 
-      <!-- 4 nhóm: thẻ chi tiết -->
+      <!-- TẦNG 2: TỔNG QUAN SỐ LIỆU TỪNG CHIẾN DỊCH -->
+      <div class="section-head" style="margin-top: 28px;">
+        <div class="section-no">Tầng 2 · Campaign Summary</div>
+        <h3 class="chart-title" style="font-size: 17px; margin-top: 6px;">Tổng quan số liệu từng chiến dịch</h3>
+      </div>
+      <div class="card table-card">
+        <div class="table-scroll">
+          <table id="znsCampSummary">
+            <thead><tr>
+              <th>Chiến dịch (ID Temp)</th>
+              <th class="num">ZNS gửi</th>
+              <th class="num">Chi phí</th>
+              <th class="num">Phản hồi</th>
+              <th class="num">Tỷ lệ PH</th>
+              <th class="num">1★</th><th class="num">2★</th><th class="num">3★</th><th class="num">4★</th><th class="num">5★</th>
+              <th class="num">CSAT</th>
+              <th class="num">% Chưa HL</th>
+              <th class="num">Match CN</th>
+            </tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TẦNG 3: CHI TIẾT TỪNG CHIẾN DỊCH -->
+      <div class="section-head" style="margin-top: 28px;">
+        <div class="section-no">Tầng 3 · Campaign Detail</div>
+        <h3 class="chart-title" style="font-size: 17px; margin-top: 6px;">Chi tiết từng chiến dịch</h3>
+        <p class="section-desc">Phân bố sao, tỷ lệ phản hồi và lý do đánh giá riêng của từng chiến dịch.</p>
+      </div>
       <div id="znsGroupCards"></div>
 
       <!-- Biểu đồ tổng -->
@@ -2129,25 +2158,12 @@ td.num, th.num{ text-align: right; font-variant-numeric: tabular-nums;}
 
       <div class="card table-card" style="margin-top: 14px;">
         <div class="table-head">
-          <p class="chart-title">Bảng chi tiết theo chi nhánh</p>
-          <p class="chart-sub">Ô đỏ = cảnh báo · Sắp xếp theo % chưa hài lòng giảm dần</p>
+          <p class="chart-title">Bảng chi tiết theo chi nhánh · So sánh 2 tháng gần nhất</p>
+          <p class="chart-sub" id="znsBranchTableSub">Ô đỏ = cảnh báo (% chưa HL > 2% hoặc % hài lòng < 98%) · Δ so với tháng trước: đỏ = xấu đi, xanh = tốt lên</p>
         </div>
         <div class="table-scroll">
           <table id="znsBranchTable">
-            <thead><tr>
-              <th>Chi nhánh</th>
-              <th class="num">ZNS gửi</th>
-              <th class="num">Phản hồi</th>
-              <th class="num">Tỷ lệ PH</th>
-              <th class="num">1★</th>
-              <th class="num">2★</th>
-              <th class="num">3★</th>
-              <th class="num">4★</th>
-              <th class="num">5★</th>
-              <th class="num">% Chưa HL</th>
-              <th class="num">% Hài lòng</th>
-              <th>Trạng thái</th>
-            </tr></thead>
+            <thead><tr id="znsBranchTableHead"></tr></thead>
             <tbody></tbody>
           </table>
         </div>
@@ -2331,7 +2347,7 @@ td.num, th.num{ text-align: right; font-variant-numeric: tabular-nums;}
     </div>
 
     <div style="margin-top: 60px; padding-top: 24px; border-top: 1px solid var(--line); color: var(--muted); font-size: 11.5px; display:flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
-      <div>© GUMAC · Atelier CRM v4.3 · Digital Marketing Team</div>
+      <div>© GUMAC · Atelier CRM v4.4 · Digital Marketing Team</div>
       <div>Master Artisan · Live data from Google Sheets</div>
     </div>
   </main>
@@ -3322,43 +3338,87 @@ function getFilteredZNS(){
   return { ...raw, groups, sent };
 }
 
-// Render bộ lọc ZNS (chips chiến dịch + cửa hàng)
+// Bộ lọc ZNS dạng hộp chọn (dropdown multi-select, độc lập với filter chung)
+function createZNSMultiSelect(containerId, label, options, filterKey){
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  const id = 'znsms_' + filterKey;
+  container.innerHTML = `
+    <button class="ms-btn" id="${id}_btn"><span id="${id}_lbl">${label}: Tất cả</span></button>
+    <div class="ms-dropdown" id="${id}_dd">
+      <input type="text" class="ms-search" id="${id}_search" placeholder="Tìm…" />
+      <div class="ms-option all selected" data-value="all"><div class="ms-checkbox"></div><span>Tất cả</span></div>
+      ${options.map(o => `
+        <div class="ms-option selected" data-value="${escapeHtml(String(o.value))}">
+          <div class="ms-checkbox"></div><span>${escapeHtml(o.label)}</span>
+        </div>
+      `).join('')}
+    </div>
+  `;
+  const btn = document.getElementById(id+'_btn');
+  const dd = document.getElementById(id+'_dd');
+  const lbl = document.getElementById(id+'_lbl');
+  const search = document.getElementById(id+'_search');
+
+  btn.addEventListener('click', e => {
+    e.stopPropagation();
+    document.querySelectorAll('.ms-dropdown').forEach(d => { if(d!==dd) d.classList.remove('show'); });
+    dd.classList.toggle('show');
+  });
+  search.addEventListener('click', e => e.stopPropagation());
+  search.addEventListener('input', () => {
+    const q = search.value.toLowerCase();
+    dd.querySelectorAll('.ms-option:not(.all)').forEach(o => {
+      o.style.display = o.textContent.toLowerCase().includes(q) ? 'flex' : 'none';
+    });
+  });
+  dd.querySelectorAll('.ms-option').forEach(o => {
+    o.addEventListener('click', e => {
+      e.stopPropagation();
+      if (o.dataset.value === 'all'){
+        const isAll = o.classList.contains('selected');
+        dd.querySelectorAll('.ms-option').forEach(x => x.classList.toggle('selected', !isAll));
+      } else {
+        o.classList.toggle('selected');
+        const rest = dd.querySelectorAll('.ms-option:not(.all)');
+        const allSel = [...rest].every(x => x.classList.contains('selected'));
+        dd.querySelector('.ms-option.all').classList.toggle('selected', allSel);
+      }
+      const selected = [...dd.querySelectorAll('.ms-option:not(.all).selected')].map(x => x.dataset.value);
+      const isAll = dd.querySelector('.ms-option.all').classList.contains('selected');
+      ZNS_STATE.filter[filterKey] = isAll ? null : selected;
+      lbl.textContent = isAll ? `${label}: Tất cả` : selected.length === 0 ? `${label}: 0` :
+        selected.length === 1 ? `${label}: 1 mục` : `${label}: ${selected.length} mục`;
+      btn.classList.toggle('active', !isAll);
+      // Re-render trang ZNS đang mở
+      const sec = getCurrentSection();
+      if (sec.startsWith('zns-')){ RENDERED.delete(sec); renderSection(sec, true); }
+    });
+  });
+}
+
 function setupZNSFilter(){
   const raw = ZNS_STATE.raw;
   if (!raw) return;
-  const campBox = document.getElementById('znsCampFilter');
-  const branchBox = document.getElementById('znsBranchFilter');
+  const campBox = document.getElementById('znsMsCamp');
   if (!campBox || campBox.dataset.ready) return;
-
-  campBox.innerHTML = ZNS_GROUPS.map(g =>
-    `<span class="zns-chip active" data-camp="${g.key}" style="border-color:${g.color}33;">${g.name}</span>`
-  ).join('');
-  campBox.querySelectorAll('.zns-chip').forEach(chip => {
-    chip.addEventListener('click', () => { chip.classList.toggle('active'); applyZNSFilter(); });
-  });
-
-  branchBox.innerHTML = raw.branches.map(b =>
-    `<span class="zns-chip active" data-branch="${b.replace(/"/g,'&quot;')}">${trimBranch(b)}</span>`
-  ).join('');
-  branchBox.querySelectorAll('.zns-chip').forEach(chip => {
-    chip.addEventListener('click', () => { chip.classList.toggle('active'); applyZNSFilter(); });
-  });
+  createZNSMultiSelect('znsMsCamp', 'Chiến dịch', ZNS_GROUPS.map(g => ({ value: g.key, label: g.name })), 'camps');
+  createZNSMultiSelect('znsMsBranch', 'Cửa hàng', raw.branches.map(b => ({ value: b, label: trimBranch(b) })), 'branches');
   campBox.dataset.ready = '1';
 }
 
-function applyZNSFilter(){
-  const camps = [...document.querySelectorAll('#znsCampFilter .zns-chip.active')].map(c => c.dataset.camp);
-  const branches = [...document.querySelectorAll('#znsBranchFilter .zns-chip.active')].map(c => c.dataset.branch);
-  ZNS_STATE.filter.camps = camps.length === ZNS_GROUPS.length ? null : camps;
-  ZNS_STATE.filter.branches = (ZNS_STATE.raw && branches.length === ZNS_STATE.raw.branches.length) ? null : branches;
-  const sec = getCurrentSection();
-  if (sec.startsWith('zns-')){ RENDERED.delete(sec); renderSection(sec, true); }
-}
-
 function resetZNSFilter(){
-  document.querySelectorAll('#znsCampFilter .zns-chip, #znsBranchFilter .zns-chip').forEach(c => c.classList.add('active'));
   ZNS_STATE.filter.camps = null;
   ZNS_STATE.filter.branches = null;
+  // Reset UI: chọn lại tất cả
+  ['znsms_camps','znsms_branches'].forEach(id => {
+    const dd = document.getElementById(id+'_dd');
+    const btn = document.getElementById(id+'_btn');
+    const lbl = document.getElementById(id+'_lbl');
+    if (dd){ dd.querySelectorAll('.ms-option').forEach(o => o.classList.add('selected')); }
+    if (btn) btn.classList.remove('active');
+    if (lbl) lbl.textContent = lbl.textContent.split(':')[0] + ': Tất cả';
+  });
   const sec = getCurrentSection();
   if (sec.startsWith('zns-')){ RENDERED.delete(sec); renderSection(sec, true); }
 }
@@ -3366,10 +3426,10 @@ function resetZNSFilter(){
 // 4 nhóm khảo sát: ID Temp → cấu hình cột
 // (578937 OFFLINE | 228525 ONLINE Đơn bán | 462809 ONLINE Đơn đổi | 585523 ONLINE Trải nghiệm)
 const ZNS_GROUPS = [
-  { key: 'offline',  name: 'OFFLINE',             idTemp: '578937', noCol: 46, phoneCol: 47, dateCol: 48, ratingCol: 52, reasonStart: 54, reasonEnd: 62, color: '#f5b544' },
-  { key: 'sale',     name: 'ONLINE Đơn bán',      idTemp: '228525', noCol: 8,  phoneCol: 9,  dateCol: 10, ratingCol: 14, reasonStart: 16, reasonEnd: 28, color: '#6ba3ff' },
-  { key: 'exchange', name: 'ONLINE Đơn đổi',      idTemp: '462809', noCol: 30, phoneCol: 31, dateCol: 32, ratingCol: 36, reasonStart: 38, reasonEnd: 44, color: '#5fd49a' },
-  { key: 'exp',      name: 'ONLINE Trải nghiệm',  idTemp: '585523', noCol: 64, phoneCol: 65, dateCol: 66, ratingCol: 70, reasonStart: 72, reasonEnd: 79, color: '#b89aff' }
+  { key: 'sale',     name: 'Đơn bán ONLINE · 228525',        idTemp: '228525', idtCol: 7,  noCol: 8,  phoneCol: 9,  dateCol: 10, ratingCol: 14, reasonStart: 16, reasonEnd: 28, color: '#6ba3ff' },
+  { key: 'exchange', name: 'Đơn đổi ONLINE · 462809',        idTemp: '462809', idtCol: 30, noCol: 31, phoneCol: 32, dateCol: 33, ratingCol: 37, reasonStart: 39, reasonEnd: 45, color: '#5fd49a' },
+  { key: 'offline',  name: 'Trải nghiệm OFFLINE · 578937',   idTemp: '578937', idtCol: 47, noCol: 48, phoneCol: 49, dateCol: 50, ratingCol: 54, reasonStart: 56, reasonEnd: 64, color: '#f5b544' },
+  { key: 'exp',      name: 'Trải nghiệm OFFLINE · 585523',   idTemp: '585523', idtCol: 66, noCol: 67, phoneCol: 68, dateCol: 69, ratingCol: 73, reasonStart: 75, reasonEnd: 82, color: '#b89aff' }
 ];
 
 // Map mỗi cột lý do → 9 chủ đề chuẩn + cực (khen/chê)
@@ -3414,62 +3474,78 @@ function splitZNS(rows){
   const header = rows[1] || [];
   const data = rows.slice(2);
 
-  // Bảng 1: ZNS gửi (cột 0-5). Mỗi ID Temp = 1 chiến dịch.
+  // BẢNG 1: DATA ĐẦU VÀO (cột 0-5). Mỗi ID Temp = 1 chiến dịch.
   const sent = [];
-  const phoneToBranch = {};  // SĐT chuẩn hoá → chi nhánh (từ TOÀN BỘ bảng 1)
+  const phoneCampBranch = {};  // (idTemp|np) → chi nhánh (match chuẩn nhất)
+  const phoneBranch = {};      // np → chi nhánh (fallback)
   data.forEach(r => {
     if (r && r[0] && String(r[0]).trim() && r[1] && String(r[1]).trim()){
       const phone = String(r[1]).trim();
       const np = normPhone(phone);
       const branch = String(r[4]||'').trim();
+      const idTemp = String(r[5]||'').trim();
       sent.push({
         type: String(r[0]).trim(), phone, np,
         cost: parseFloat(String(r[2]||'0').replace(/[^\d]/g,'')) || 0,
         mdh: String(r[3]||'').trim(),
-        branch, idTemp: String(r[5]||'').trim()
+        branch, idTemp
       });
-      if (np && branch && !phoneToBranch[np]) phoneToBranch[np] = branch;
+      if (np && branch){
+        const key = idTemp + '|' + np;
+        if (!phoneCampBranch[key]) phoneCampBranch[key] = branch;
+        if (!phoneBranch[np]) phoneBranch[np] = branch;
+      }
     }
   });
 
-  // 2 bảng Data KH (bổ sung, dùng cho trang RFM)
-  // KH OFFLINE: cột 81-93 (phone=84, RFM_Group=85, RFM_Segment=86)
-  // KH ONLINE: cột 95-109 (SDT=104, RFM_Group=98, RFM_Segment=99)
-  const rfmLookup = {};  // SĐT chuẩn hoá → { group, seg, src }
+  // BẢNG 6-7: Data KH (bổ sung, cho trang RFM)
+  // KH OFFLINE: cột 84-96 (phone=87, RFM_Group=88, RFM_Segment=89)
+  // KH ONLINE: cột 98-112 (SDT=107, RFM_Group=101, RFM_Segment=102)
+  const rfmLookup = {};
   data.forEach(r => {
-    if (r && r[81] && String(r[81]).trim() && r[84] && String(r[84]).trim()){
-      const np = normPhone(r[84]);
-      if (np && !rfmLookup[np]) rfmLookup[np] = { group: String(r[85]||'').trim(), seg: String(r[86]||'').trim(), src: 'OFFLINE' };
+    if (r && r[84] && String(r[84]).trim() && r[87] && String(r[87]).trim()){
+      const np = normPhone(r[87]);
+      if (np && !rfmLookup[np]) rfmLookup[np] = { group: String(r[88]||'').trim(), seg: String(r[89]||'').trim(), src: 'OFFLINE' };
     }
-    if (r && r[95] && String(r[95]).trim() && r[104] && String(r[104]).trim()){
-      const np = normPhone(r[104]);
-      if (np && !rfmLookup[np]) rfmLookup[np] = { group: String(r[98]||'').trim(), seg: String(r[99]||'').trim(), src: 'ONLINE' };
+    if (r && r[98] && String(r[98]).trim() && r[107] && String(r[107]).trim()){
+      const np = normPhone(r[107]);
+      if (np && !rfmLookup[np]) rfmLookup[np] = { group: String(r[101]||'').trim(), seg: String(r[102]||'').trim(), src: 'ONLINE' };
     }
   });
 
-  // Mỗi chiến dịch: parse phản hồi + lý do
+  // BẢNG 2-5: kết quả khảo sát từng chiến dịch
+  // Match logic: (1) ID Temp của dòng phải khớp chiến dịch (verify), 
+  //              (2) chi nhánh = match (ID Temp + SĐT) với bảng 1, fallback SĐT toàn bảng 1
   const groups = {};
   ZNS_GROUPS.forEach(g => {
     const groupSent = sent.filter(s => s.idTemp === g.idTemp);
     const responses = [];
     const phoneCount = {};
+    let branchMatched = 0;
     data.forEach(r => {
       if (r && r[g.noCol] && String(r[g.noCol]).trim() && r[g.ratingCol] && String(r[g.ratingCol]).trim()){
         const rating = parseInt(String(r[g.ratingCol]).trim());
         if (rating >= 1 && rating <= 5){
+          // Verify ID Temp (cột riêng của bảng này) khớp chiến dịch
+          const rowIdt = String(r[g.idtCol]||'').trim();
+          if (rowIdt && rowIdt !== g.idTemp) return; // bỏ qua dòng lạc bảng
           const phone = String(r[g.phoneCol]||'').trim();
           const np = normPhone(phone);
           phoneCount[np] = (phoneCount[np]||0) + 1;
+          // Match chi nhánh 2 tầng
+          let branch = phoneCampBranch[g.idTemp + '|' + np] || phoneBranch[np] || null;
+          if (branch) branchMatched++;
           const reasons = [];
           for (let c = g.reasonStart; c <= g.reasonEnd; c++){
             if (r[c] && String(r[c]).trim()){
               reasons.push({ text: header[c]||'', ...classifyReasonTheme(header[c]) });
             }
           }
+          const d = parseZNSDate(r[g.dateCol]);
           responses.push({
-            phone, np, rating,
-            date: parseZNSDate(r[g.dateCol]),
-            branch: phoneToBranch[np] || 'Không xác định',
+            phone, np, rating, date: d,
+            monthKey: d ? `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}` : null,
+            branch: branch || 'Không xác định',
             rfm: rfmLookup[np] || null,
             reasons
           });
@@ -3479,14 +3555,18 @@ function splitZNS(rows){
     const dupRespCount = Object.values(phoneCount).filter(c => c > 1).length;
     groups[g.key] = {
       ...g, sent: groupSent, sentCount: groupSent.length,
-      responses, respCount: responses.length, dupRespCount
+      responses, respCount: responses.length, dupRespCount,
+      branchMatched,
+      cost: groupSent.reduce((s,x)=>s+x.cost, 0)
     };
   });
 
-  // Danh sách chi nhánh (cho bộ lọc)
+  // Danh sách chi nhánh + tháng (cho filter & so sánh)
   const branchSet = new Set(sent.map(s => s.branch).filter(Boolean));
+  const monthSet = new Set();
+  Object.values(groups).forEach(g => g.responses.forEach(r => { if (r.monthKey) monthSet.add(r.monthKey); }));
 
-  return { sent, groups, header, rfmLookup, branches: [...branchSet].sort() };
+  return { sent, groups, header, rfmLookup, branches: [...branchSet].sort(), months: [...monthSet].sort() };
 }
 
 // Fetch ZNS data từ Google Sheets (gid=825625189) — derive từ SHEET_URL
@@ -6021,7 +6101,50 @@ function _renderZNSOverview(){
   unsatEl.style.color = totalStats.unsatPct > 2 ? 'var(--red)' : 'var(--green)';
   document.getElementById('znsUnsatRateSub').textContent = `${fmtN(totalStats.unsat)} lượt 1-3★`;
 
-  // Thẻ chi tiết 4 nhóm
+  // ===== TẦNG 2: BẢNG TỔNG QUAN TỪNG CHIẾN DỊCH =====
+  document.querySelector('#znsCampSummary tbody').innerHTML = glist.map(g => {
+    const st = znsStarStats(g.responses);
+    const respRate = g.sentCount ? g.respCount/g.sentCount*100 : 0;
+    const matchPct = g.respCount ? g.branchMatched/g.respCount*100 : 0;
+    return `
+      <tr>
+        <td><b style="color:${g.color};">${escapeHtml(g.name)}</b></td>
+        <td class="num">${fmtN(g.sentCount)}</td>
+        <td class="num">${fmtVN(g.cost||0)}</td>
+        <td class="num"><b>${fmtN(g.respCount)}</b></td>
+        <td class="num"><b style="color:var(--amber);">${fmtPct(respRate)}</b></td>
+        <td class="num" style="${st.stars[1]>0?'color:var(--red);font-weight:700;':''}">${st.stars[1]}</td>
+        <td class="num">${st.stars[2]}</td>
+        <td class="num">${st.stars[3]}</td>
+        <td class="num">${st.stars[4]}</td>
+        <td class="num" style="color:var(--green);">${st.stars[5]}</td>
+        <td class="num"><b style="color:${st.satPct>=98?'var(--green)':'var(--amber)'};">${fmtPct(st.satPct)}</b></td>
+        <td class="num"><b style="color:${st.unsatPct>2?'var(--red)':'var(--green)'};">${fmtPct(st.unsatPct)}</b></td>
+        <td class="num" style="color:var(--muted);">${g.respCount?fmtPct(matchPct,0):'—'}</td>
+      </tr>
+    `;
+  }).join('') + (() => {
+    // Dòng tổng
+    const tSent = glist.reduce((s,g)=>s+g.sentCount,0);
+    const tResp = glist.reduce((s,g)=>s+g.respCount,0);
+    const tCost = glist.reduce((s,g)=>s+(g.cost||0),0);
+    const tStats = znsStarStats(glist.flatMap(g=>g.responses));
+    return `
+      <tr style="background:var(--bg-2);font-weight:700;">
+        <td style="color:var(--amber);">TỔNG HỆ THỐNG</td>
+        <td class="num">${fmtN(tSent)}</td>
+        <td class="num">${fmtVN(tCost)}</td>
+        <td class="num">${fmtN(tResp)}</td>
+        <td class="num" style="color:var(--amber);">${fmtPct(tSent?tResp/tSent*100:0)}</td>
+        <td class="num">${tStats.stars[1]}</td><td class="num">${tStats.stars[2]}</td><td class="num">${tStats.stars[3]}</td><td class="num">${tStats.stars[4]}</td><td class="num" style="color:var(--green);">${tStats.stars[5]}</td>
+        <td class="num" style="color:${tStats.satPct>=98?'var(--green)':'var(--amber)'};">${fmtPct(tStats.satPct)}</td>
+        <td class="num" style="color:${tStats.unsatPct>2?'var(--red)':'var(--green)'};">${fmtPct(tStats.unsatPct)}</td>
+        <td class="num">—</td>
+      </tr>
+    `;
+  })();
+
+  // ===== TẦNG 3: Thẻ chi tiết từng chiến dịch (kèm lý do riêng) =====
   document.getElementById('znsGroupCards').innerHTML = `
     <div class="grid-2" style="margin-top:14px;">
     ${glist.map(g => {
@@ -6066,6 +6189,29 @@ function _renderZNSOverview(){
             }).join('')}
           </div>
           ${warnDup ? `<div style="font-size:10.5px;color:var(--amber);margin-top:8px;">⚠ ${g.dupRespCount} KH phản hồi nhiều lần (vẫn được tính)</div>` : ''}
+          ${(() => {
+            // TẦNG 4: Lý do riêng của chiến dịch này
+            const tc = {};
+            g.responses.forEach(resp => resp.reasons.forEach(rs => {
+              if (rs.theme === 'Khác') return;
+              if (!tc[rs.theme]) tc[rs.theme] = { pos: 0, neg: 0 };
+              if (rs.isNeg) tc[rs.theme].neg++; else tc[rs.theme].pos++;
+            }));
+            const topPos = Object.entries(tc).filter(([,v])=>v.pos>0).sort((a,b)=>b[1].pos-a[1].pos).slice(0,3);
+            const topNeg = Object.entries(tc).filter(([,v])=>v.neg>0).sort((a,b)=>b[1].neg-a[1].neg).slice(0,3);
+            if (!topPos.length && !topNeg.length) return '';
+            return `
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);">
+              <div>
+                <div style="font-size:10.5px;font-weight:700;color:var(--green);margin-bottom:6px;">▲ KHEN NHIỀU NHẤT</div>
+                ${topPos.map(([t,v])=>`<div style="font-size:11px;display:flex;justify-content:space-between;padding:3px 0;"><span>${t}</span><b style="color:var(--green);">${v.pos}</b></div>`).join('') || '<div style="font-size:11px;color:var(--muted);">—</div>'}
+              </div>
+              <div>
+                <div style="font-size:10.5px;font-weight:700;color:var(--red);margin-bottom:6px;">▼ CHÊ NHIỀU NHẤT</div>
+                ${topNeg.map(([t,v])=>`<div style="font-size:11px;display:flex;justify-content:space-between;padding:3px 0;"><span>${t}</span><b style="color:var(--red);">${v.neg}</b></div>`).join('') || '<div style="font-size:11px;color:var(--muted);">Không có 👍</div>'}
+              </div>
+            </div>`;
+          })()}
         </div>
       `;
     }).join('')}
@@ -6232,27 +6378,75 @@ function _renderZNSBranch(){
     }
   });
 
-  // Bảng chi tiết
+  // ===== BẢNG CHI TIẾT: 2 THÁNG GẦN NHẤT + SO SÁNH =====
+  const months = [...new Set(allResp.filter(r=>r.monthKey).map(r=>r.monthKey))].sort();
+  const curM = months[months.length-1] || null;
+  const prevM = months.length >= 2 ? months[months.length-2] : null;
+  const mLabel = mk => mk ? `T${parseInt(mk.slice(5))}/${mk.slice(0,4)}` : '—';
+
+  // Header động
+  document.getElementById('znsBranchTableHead').innerHTML = `
+    <th>Chi nhánh</th>
+    <th class="num">ZNS gửi</th>
+    ${prevM ? `
+      <th class="num" style="border-left:2px solid var(--line);">PH ${mLabel(prevM)}</th>
+      <th class="num">%Chưa HL ${mLabel(prevM)}</th>` : ''}
+    <th class="num" style="border-left:2px solid var(--line);">PH ${mLabel(curM)}</th>
+    <th class="num">Tỷ lệ PH</th>
+    <th class="num">1★</th><th class="num">2★</th><th class="num">3★</th><th class="num">4★</th><th class="num">5★</th>
+    <th class="num">%Chưa HL ${mLabel(curM)}</th>
+    <th class="num">%Hài lòng</th>
+    ${prevM ? `<th class="num" style="border-left:2px solid var(--line);">Δ %Chưa HL</th>` : ''}
+    <th>Trạng thái</th>
+  `;
+  document.getElementById('znsBranchTableSub').textContent = prevM
+    ? `So sánh ${mLabel(curM)} với ${mLabel(prevM)} · Δ đỏ = xấu đi, xanh = tốt lên · Ô đỏ = vượt ngưỡng cảnh báo`
+    : `Hiện chỉ có dữ liệu ${mLabel(curM)} — cột so sánh sẽ tự xuất hiện khi có tháng thứ 2 · Ô đỏ = vượt ngưỡng cảnh báo`;
+
+  // Stats theo tháng cho mỗi chi nhánh
+  function branchMonthStats(b, mk){
+    const rs = (branchMap[b] ? branchMap[b].responses : []).filter(r => r.monthKey === mk);
+    return znsStarStats(rs);
+  }
+
   document.querySelector('#znsBranchTable tbody').innerHTML = rows.map(r => {
-    const unsatRed = r.total>0 && r.unsatPct > 2;
-    const satRed = r.total>0 && r.satPct < 98;
+    const cur = curM ? branchMonthStats(r.name, curM) : znsStarStats([]);
+    const prev = prevM ? branchMonthStats(r.name, prevM) : null;
+    const unsatRed = cur.total>0 && cur.unsatPct > 2;
+    const satRed = cur.total>0 && cur.satPct < 98;
+    const respRateCur = r.sent ? cur.total/r.sent*100 : 0;
+    let deltaCell = '';
+    if (prevM){
+      if (prev.total > 0 && cur.total > 0){
+        const d = cur.unsatPct - prev.unsatPct;
+        const col = d > 0.05 ? 'var(--red)' : d < -0.05 ? 'var(--green)' : 'var(--muted)';
+        const ar = d > 0.05 ? '▲' : d < -0.05 ? '▼' : '—';
+        deltaCell = `<td class="num" style="border-left:2px solid var(--line);color:${col};font-weight:700;">${ar} ${Math.abs(d).toFixed(1)}%</td>`;
+      } else {
+        deltaCell = `<td class="num" style="border-left:2px solid var(--line);color:var(--muted);">—</td>`;
+      }
+    }
     return `
       <tr>
         <td><b>${trimBranch(r.name)}</b></td>
         <td class="num">${fmtN(r.sent)}</td>
-        <td class="num">${fmtN(r.resp)}</td>
-        <td class="num">${r.sent?fmtPct(r.respRate):'—'}</td>
-        <td class="num" style="${r.stars[1]>0?'color:var(--red);font-weight:700;':''}">${r.stars[1]||0}</td>
-        <td class="num">${r.stars[2]||0}</td>
-        <td class="num">${r.stars[3]||0}</td>
-        <td class="num">${r.stars[4]||0}</td>
-        <td class="num" style="color:var(--green);">${r.stars[5]||0}</td>
-        <td class="num" style="${unsatRed?'color:var(--red);font-weight:700;background:rgba(255,110,122,0.08);':''}">${r.total?fmtPct(r.unsatPct):'—'}</td>
-        <td class="num" style="${satRed?'color:var(--red);font-weight:700;background:rgba(255,110,122,0.08);':'color:var(--green);'}">${r.total?fmtPct(r.satPct):'—'}</td>
-        <td>${r.total===0?'<span class="tag" style="opacity:0.5;">Chưa PH</span>':r.warn?'<span class="tag tag-red">⚠ Cảnh báo</span>':'<span class="tag tag-green">Đạt</span>'}</td>
+        ${prevM ? `
+          <td class="num" style="border-left:2px solid var(--line);">${prev.total||0}</td>
+          <td class="num" style="color:${prev.total>0&&prev.unsatPct>2?'var(--red)':'var(--muted)'};">${prev.total?fmtPct(prev.unsatPct):'—'}</td>` : ''}
+        <td class="num" style="border-left:2px solid var(--line);"><b>${cur.total||0}</b></td>
+        <td class="num">${r.sent&&cur.total?fmtPct(respRateCur):'—'}</td>
+        <td class="num" style="${cur.stars[1]>0?'color:var(--red);font-weight:700;':''}">${cur.stars[1]||0}</td>
+        <td class="num">${cur.stars[2]||0}</td>
+        <td class="num">${cur.stars[3]||0}</td>
+        <td class="num">${cur.stars[4]||0}</td>
+        <td class="num" style="color:var(--green);">${cur.stars[5]||0}</td>
+        <td class="num" style="${unsatRed?'color:var(--red);font-weight:700;background:rgba(255,110,122,0.08);':''}">${cur.total?fmtPct(cur.unsatPct):'—'}</td>
+        <td class="num" style="${satRed?'color:var(--red);font-weight:700;background:rgba(255,110,122,0.08);':'color:var(--green);'}">${cur.total?fmtPct(cur.satPct):'—'}</td>
+        ${deltaCell}
+        <td>${cur.total===0?'<span class="tag" style="opacity:0.5;">Chưa PH</span>':(cur.unsatPct>2||cur.satPct<98)?'<span class="tag tag-red">⚠ Cảnh báo</span>':'<span class="tag tag-green">Đạt</span>'}</td>
       </tr>
     `;
-  }).join('') || '<tr><td colspan="12" style="text-align:center;color:var(--muted);">Không có dữ liệu</td></tr>';
+  }).join('') || `<tr><td colspan="${prevM?16:13}" style="text-align:center;color:var(--muted);">Không có dữ liệu</td></tr>`;
 }
 
 /* ====== ZNS TRANG: TỆP RFM PHẢN HỒI ====== */
