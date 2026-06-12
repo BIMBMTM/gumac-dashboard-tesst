@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>GUMAC · Atelier CRM v4.4</title>
+<title>GUMAC · Atelier CRM v4.5</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -1987,6 +1987,10 @@ td.num, th.num{ text-align: right; font-variant-numeric: tabular-nums;}
       <!-- BỘ LỌC ZNS (riêng, không dính filter chung) -->
       <div class="zns-filter-bar" id="znsFilterBar">
         <div class="zns-filter-item">
+          <label>Tháng</label>
+          <div class="ms-wrap" id="znsMsMonth"></div>
+        </div>
+        <div class="zns-filter-item">
           <label>Chiến dịch</label>
           <div class="ms-wrap" id="znsMsCamp"></div>
         </div>
@@ -2299,55 +2303,42 @@ td.num, th.num{ text-align: right; font-variant-numeric: tabular-nums;}
         <div>
           <div class="section-no">ZNS · Auto Insight</div>
           <h1 class="page-title">Insight & Đề xuất hành động</h1>
-          <p class="page-sub">Tổng hợp tự động: tình hình khảo sát, điểm mạnh/yếu, và đề xuất cho từng team.</p>
+          <p class="page-sub">Kết quả tóm gọn: điểm tốt cần duy trì, điểm chưa tốt kèm đề xuất xử lý ngay.</p>
         </div>
       </div>
 
-      <!-- Executive Summary -->
-      <div class="card" style="padding: 24px; border-left: 3px solid var(--amber);">
-        <div style="display:flex; align-items:center; gap:10px; margin-bottom:14px;">
-          <div style="width:32px;height:32px;border-radius:8px;background:var(--amber-soft);color:var(--amber);display:grid;place-items:center;font-size:15px;font-weight:800;">≡</div>
-          <h3 style="margin:0;font-size:17px;font-weight:700;">Executive Summary</h3>
-        </div>
-        <div id="znsExecSummary" style="font-size:13.5px;line-height:1.7;color:var(--ink-2);"></div>
+      <!-- Tóm tắt 1 dòng -->
+      <div class="card" style="padding: 20px 24px; border-left: 3px solid var(--amber); margin-bottom: 16px;">
+        <div id="znsExecSummary" style="font-size:14px;line-height:1.8;color:var(--ink-2);"></div>
       </div>
 
-      <!-- Insight chính -->
-      <div class="kpi-grid" style="margin-top:14px;" id="znsInsightKpi"></div>
-
-      <!-- Top điểm mạnh / yếu -->
-      <div class="grid-2" style="margin-top:14px;">
-        <div class="card" style="border-left:3px solid var(--green);">
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
-            <div style="width:32px;height:32px;border-radius:8px;background:rgba(95,212,154,0.12);color:var(--green);display:grid;place-items:center;font-size:16px;font-weight:800;">♥</div>
-            <div><p class="card-title" style="margin:0;">Top 5 điểm khách HÀI LÒNG</p></div>
+      <!-- 2 khối: Tốt / Chưa tốt -->
+      <div class="grid-2">
+        <div class="card" style="border-top:3px solid var(--green); padding:0;">
+          <div style="padding:16px 20px; border-bottom:1px solid var(--line); display:flex; align-items:center; gap:10px;">
+            <div style="width:34px;height:34px;border-radius:9px;background:rgba(95,212,154,0.14);color:var(--green);display:grid;place-items:center;font-size:17px;font-weight:800;">✓</div>
+            <div>
+              <p style="margin:0;font-size:15px;font-weight:700;color:var(--green);">KẾT QUẢ TỐT</p>
+              <p style="margin:2px 0 0 0;font-size:11px;color:var(--muted);">Duy trì & nhân rộng</p>
+            </div>
           </div>
-          <div id="znsTop5Sat"></div>
+          <div id="znsGoodList" style="padding:8px 20px 16px 20px;"></div>
         </div>
-        <div class="card" style="border-left:3px solid var(--red);">
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
-            <div style="width:32px;height:32px;border-radius:8px;background:rgba(255,110,122,0.12);color:var(--red);display:grid;place-items:center;font-size:16px;font-weight:800;">!</div>
-            <div><p class="card-title" style="margin:0;">Top 5 điểm khách CHƯA HÀI LÒNG</p></div>
+        <div class="card" style="border-top:3px solid var(--red); padding:0;">
+          <div style="padding:16px 20px; border-bottom:1px solid var(--line); display:flex; align-items:center; gap:10px;">
+            <div style="width:34px;height:34px;border-radius:9px;background:rgba(255,110,122,0.14);color:var(--red);display:grid;place-items:center;font-size:17px;font-weight:800;">!</div>
+            <div>
+              <p style="margin:0;font-size:15px;font-weight:700;color:var(--red);">CHƯA TỐT — CẦN HÀNH ĐỘNG</p>
+              <p style="margin:2px 0 0 0;font-size:11px;color:var(--muted);">Kèm đề xuất xử lý</p>
+            </div>
           </div>
-          <div id="znsTop5Unsat"></div>
+          <div id="znsBadList" style="padding:8px 20px 16px 20px;"></div>
         </div>
-      </div>
-
-      <!-- Đề xuất theo team -->
-      <div class="card" style="margin-top:14px; padding:24px;">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">
-          <div style="width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--amber-deep),var(--amber));display:grid;place-items:center;color:var(--bg);font-weight:800;font-size:16px;">→</div>
-          <div>
-            <h3 style="margin:0;font-size:18px;font-weight:700;">Đề xuất hành động theo team</h3>
-            <p style="margin:4px 0 0 0;font-size:12px;color:var(--muted);">Hành động cụ thể cho 4 team</p>
-          </div>
-        </div>
-        <div id="znsTeamActions"></div>
       </div>
     </div>
 
     <div style="margin-top: 60px; padding-top: 24px; border-top: 1px solid var(--line); color: var(--muted); font-size: 11.5px; display:flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
-      <div>© GUMAC · Atelier CRM v4.4 · Digital Marketing Team</div>
+      <div>© GUMAC · Atelier CRM v4.5 · Digital Marketing Team</div>
       <div>Master Artisan · Live data from Google Sheets</div>
     </div>
   </main>
@@ -3300,40 +3291,46 @@ function showToast(msg, isError){
 }
 
 /* ============== ZNS DATA LAYER ============== */
-const ZNS_STATE = { raw: null, loaded: false, loading: false, filter: { camps: null, branches: null } };
+const ZNS_STATE = { raw: null, loaded: false, loading: false, filter: { camps: null, branches: null, months: null } };
 
-// Lấy data ZNS đã áp filter riêng (chiến dịch + cửa hàng)
-function getFilteredZNS(){
+// Lấy data ZNS đã áp filter (chiến dịch + cửa hàng + tháng)
+// ignoreMonths=true cho trang So sánh tháng (trang đó tự quản lý chiều tháng)
+function getFilteredZNS(ignoreMonths){
   const raw = ZNS_STATE.raw;
   if (!raw) return null;
   const f = ZNS_STATE.filter;
   const campKeys = f.camps && f.camps.length ? new Set(f.camps) : null;
   const branchSet = f.branches && f.branches.length ? new Set(f.branches) : null;
+  const monthSet = (!ignoreMonths && f.months && f.months.length) ? new Set(f.months) : null;
 
   const groups = {};
   ZNS_GROUPS.forEach(g => {
     const grp = raw.groups[g.key];
     if (campKeys && !campKeys.has(g.key)){
-      // Chiến dịch bị loại → rỗng
-      groups[g.key] = { ...g, sent: [], sentCount: 0, responses: [], respCount: 0, dupRespCount: 0 };
+      groups[g.key] = { ...g, sent: [], sentCount: 0, responses: [], respCount: 0, dupRespCount: 0, branchMatched: 0, cost: 0 };
       return;
     }
-    // Lọc theo chi nhánh
     let sent = grp.sent, responses = grp.responses;
     if (branchSet){
       sent = sent.filter(s => branchSet.has(s.branch));
       responses = responses.filter(r => branchSet.has(r.branch));
     }
-    groups[g.key] = { ...g, sent, sentCount: sent.length, responses, respCount: responses.length, dupRespCount: grp.dupRespCount };
+    if (monthSet){
+      sent = sent.filter(s => !s.monthKey || monthSet.has(s.monthKey));
+      responses = responses.filter(r => !r.monthKey || monthSet.has(r.monthKey));
+    }
+    groups[g.key] = { ...g, sent, sentCount: sent.length, responses, respCount: responses.length,
+      dupRespCount: grp.dupRespCount, branchMatched: responses.filter(r=>r.branch!=='Không xác định').length,
+      cost: sent.reduce((s,x)=>s+x.cost,0) };
   });
 
-  // sent tổng đã lọc
   let sent = raw.sent;
   if (campKeys){
     const idSet = new Set(ZNS_GROUPS.filter(g => campKeys.has(g.key)).map(g => g.idTemp));
     sent = sent.filter(s => idSet.has(s.idTemp));
   }
   if (branchSet) sent = sent.filter(s => branchSet.has(s.branch));
+  if (monthSet) sent = sent.filter(s => !s.monthKey || monthSet.has(s.monthKey));
 
   return { ...raw, groups, sent };
 }
@@ -3402,6 +3399,8 @@ function setupZNSFilter(){
   if (!raw) return;
   const campBox = document.getElementById('znsMsCamp');
   if (!campBox || campBox.dataset.ready) return;
+  const mLabel = mk => `T${parseInt(mk.slice(5))}/${mk.slice(0,4)}`;
+  createZNSMultiSelect('znsMsMonth', 'Tháng', raw.months.map(m => ({ value: m, label: mLabel(m) })), 'months');
   createZNSMultiSelect('znsMsCamp', 'Chiến dịch', ZNS_GROUPS.map(g => ({ value: g.key, label: g.name })), 'camps');
   createZNSMultiSelect('znsMsBranch', 'Cửa hàng', raw.branches.map(b => ({ value: b, label: trimBranch(b) })), 'branches');
   campBox.dataset.ready = '1';
@@ -3410,8 +3409,8 @@ function setupZNSFilter(){
 function resetZNSFilter(){
   ZNS_STATE.filter.camps = null;
   ZNS_STATE.filter.branches = null;
-  // Reset UI: chọn lại tất cả
-  ['znsms_camps','znsms_branches'].forEach(id => {
+  ZNS_STATE.filter.months = null;
+  ['znsms_months','znsms_camps','znsms_branches'].forEach(id => {
     const dd = document.getElementById(id+'_dd');
     const btn = document.getElementById(id+'_btn');
     const lbl = document.getElementById(id+'_lbl');
@@ -3426,10 +3425,10 @@ function resetZNSFilter(){
 // 4 nhóm khảo sát: ID Temp → cấu hình cột
 // (578937 OFFLINE | 228525 ONLINE Đơn bán | 462809 ONLINE Đơn đổi | 585523 ONLINE Trải nghiệm)
 const ZNS_GROUPS = [
-  { key: 'sale',     name: 'Đơn bán ONLINE · 228525',        idTemp: '228525', idtCol: 7,  noCol: 8,  phoneCol: 9,  dateCol: 10, ratingCol: 14, reasonStart: 16, reasonEnd: 28, color: '#6ba3ff' },
-  { key: 'exchange', name: 'Đơn đổi ONLINE · 462809',        idTemp: '462809', idtCol: 30, noCol: 31, phoneCol: 32, dateCol: 33, ratingCol: 37, reasonStart: 39, reasonEnd: 45, color: '#5fd49a' },
-  { key: 'offline',  name: 'Trải nghiệm OFFLINE · 578937',   idTemp: '578937', idtCol: 47, noCol: 48, phoneCol: 49, dateCol: 50, ratingCol: 54, reasonStart: 56, reasonEnd: 64, color: '#f5b544' },
-  { key: 'exp',      name: 'Trải nghiệm OFFLINE · 585523',   idTemp: '585523', idtCol: 66, noCol: 67, phoneCol: 68, dateCol: 69, ratingCol: 73, reasonStart: 75, reasonEnd: 82, color: '#b89aff' }
+  { key: 'sale',     name: 'Đơn bán ONLINE · 228525',        idTemp: '228525', idtCol: 8,  noCol: 9,  phoneCol: 10, dateCol: 11, ratingCol: 15, reasonStart: 17, reasonEnd: 29, color: '#6ba3ff' },
+  { key: 'exchange', name: 'Đơn đổi ONLINE · 462809',        idTemp: '462809', idtCol: 31, noCol: 32, phoneCol: 33, dateCol: 34, ratingCol: 38, reasonStart: 40, reasonEnd: 46, color: '#5fd49a' },
+  { key: 'offline',  name: 'Trải nghiệm OFFLINE · 578937',   idTemp: '578937', idtCol: 48, noCol: 49, phoneCol: 50, dateCol: 51, ratingCol: 55, reasonStart: 57, reasonEnd: 65, color: '#f5b544' },
+  { key: 'exp',      name: 'Trải nghiệm OFFLINE · 585523',   idTemp: '585523', idtCol: 67, noCol: 68, phoneCol: 69, dateCol: 70, ratingCol: 74, reasonStart: 76, reasonEnd: 83, color: '#b89aff' }
 ];
 
 // Map mỗi cột lý do → 9 chủ đề chuẩn + cực (khen/chê)
@@ -3474,20 +3473,24 @@ function splitZNS(rows){
   const header = rows[1] || [];
   const data = rows.slice(2);
 
-  // BẢNG 1: DATA ĐẦU VÀO (cột 0-5). Mỗi ID Temp = 1 chiến dịch.
+  // BẢNG 1: DATA ĐẦU VÀO (cột 0-6). Cột 0 = Tháng (d/m/yyyy), mỗi ID Temp = 1 chiến dịch.
   const sent = [];
-  const phoneCampBranch = {};  // (idTemp|np) → chi nhánh (match chuẩn nhất)
-  const phoneBranch = {};      // np → chi nhánh (fallback)
+  const phoneCampBranch = {};
+  const phoneBranch = {};
   data.forEach(r => {
-    if (r && r[0] && String(r[0]).trim() && r[1] && String(r[1]).trim()){
-      const phone = String(r[1]).trim();
+    if (r && r[1] && String(r[1]).trim() && r[2] && String(r[2]).trim()){
+      const phone = String(r[2]).trim();
       const np = normPhone(phone);
-      const branch = String(r[4]||'').trim();
-      const idTemp = String(r[5]||'').trim();
+      const branch = String(r[5]||'').trim();
+      const idTemp = String(r[6]||'').trim();
+      // Parse tháng từ cột 0 (d/m/yyyy)
+      const md = String(r[0]||'').trim().match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+      const monthKey = md ? `${md[3]}-${String(parseInt(md[2])).padStart(2,'0')}` : null;
       sent.push({
-        type: String(r[0]).trim(), phone, np,
-        cost: parseFloat(String(r[2]||'0').replace(/[^\d]/g,'')) || 0,
-        mdh: String(r[3]||'').trim(),
+        monthKey,
+        type: String(r[1]).trim(), phone, np,
+        cost: parseFloat(String(r[3]||'0').replace(/[^\d]/g,'')) || 0,
+        mdh: String(r[4]||'').trim(),
         branch, idTemp
       });
       if (np && branch){
@@ -3498,24 +3501,22 @@ function splitZNS(rows){
     }
   });
 
-  // BẢNG 6-7: Data KH (bổ sung, cho trang RFM)
-  // KH OFFLINE: cột 84-96 (phone=87, RFM_Group=88, RFM_Segment=89)
-  // KH ONLINE: cột 98-112 (SDT=107, RFM_Group=101, RFM_Segment=102)
+  // BẢNG 6-7: Data KH (cho trang RFM)
+  // KH OFFLINE: id=85, phone=88, RFM_Group=89, RFM_Segment=90
+  // KH ONLINE: id=99, RFM_Group=102, RFM_Segment=103, SDT=108
   const rfmLookup = {};
   data.forEach(r => {
-    if (r && r[84] && String(r[84]).trim() && r[87] && String(r[87]).trim()){
-      const np = normPhone(r[87]);
-      if (np && !rfmLookup[np]) rfmLookup[np] = { group: String(r[88]||'').trim(), seg: String(r[89]||'').trim(), src: 'OFFLINE' };
+    if (r && r[85] && String(r[85]).trim() && r[88] && String(r[88]).trim()){
+      const np = normPhone(r[88]);
+      if (np && !rfmLookup[np]) rfmLookup[np] = { group: String(r[89]||'').trim(), seg: String(r[90]||'').trim(), src: 'OFFLINE' };
     }
-    if (r && r[98] && String(r[98]).trim() && r[107] && String(r[107]).trim()){
-      const np = normPhone(r[107]);
-      if (np && !rfmLookup[np]) rfmLookup[np] = { group: String(r[101]||'').trim(), seg: String(r[102]||'').trim(), src: 'ONLINE' };
+    if (r && r[99] && String(r[99]).trim() && r[108] && String(r[108]).trim()){
+      const np = normPhone(r[108]);
+      if (np && !rfmLookup[np]) rfmLookup[np] = { group: String(r[102]||'').trim(), seg: String(r[103]||'').trim(), src: 'ONLINE' };
     }
   });
 
-  // BẢNG 2-5: kết quả khảo sát từng chiến dịch
-  // Match logic: (1) ID Temp của dòng phải khớp chiến dịch (verify), 
-  //              (2) chi nhánh = match (ID Temp + SĐT) với bảng 1, fallback SĐT toàn bảng 1
+  // BẢNG 2-5: kết quả khảo sát từng chiến dịch (match: verify ID Temp + chi nhánh 2 tầng qua SĐT)
   const groups = {};
   ZNS_GROUPS.forEach(g => {
     const groupSent = sent.filter(s => s.idTemp === g.idTemp);
@@ -3526,13 +3527,11 @@ function splitZNS(rows){
       if (r && r[g.noCol] && String(r[g.noCol]).trim() && r[g.ratingCol] && String(r[g.ratingCol]).trim()){
         const rating = parseInt(String(r[g.ratingCol]).trim());
         if (rating >= 1 && rating <= 5){
-          // Verify ID Temp (cột riêng của bảng này) khớp chiến dịch
           const rowIdt = String(r[g.idtCol]||'').trim();
-          if (rowIdt && rowIdt !== g.idTemp) return; // bỏ qua dòng lạc bảng
+          if (rowIdt && rowIdt !== g.idTemp) return;
           const phone = String(r[g.phoneCol]||'').trim();
           const np = normPhone(phone);
           phoneCount[np] = (phoneCount[np]||0) + 1;
-          // Match chi nhánh 2 tầng
           let branch = phoneCampBranch[g.idTemp + '|' + np] || phoneBranch[np] || null;
           if (branch) branchMatched++;
           const reasons = [];
@@ -3561,9 +3560,10 @@ function splitZNS(rows){
     };
   });
 
-  // Danh sách chi nhánh + tháng (cho filter & so sánh)
+  // Chi nhánh + tháng (gộp tháng từ bảng 1 và SubmitDate)
   const branchSet = new Set(sent.map(s => s.branch).filter(Boolean));
   const monthSet = new Set();
+  sent.forEach(s => { if (s.monthKey) monthSet.add(s.monthKey); });
   Object.values(groups).forEach(g => g.responses.forEach(r => { if (r.monthKey) monthSet.add(r.monthKey); }));
 
   return { sent, groups, header, rfmLookup, branches: [...branchSet].sort(), months: [...monthSet].sort() };
@@ -6556,31 +6556,42 @@ function _renderZNSRfm(){
 
 /* ====== ZNS TRANG 3: SO SÁNH THÁNG ====== */
 function _renderZNSCompare(){
-  const { groups } = getFilteredZNS();
-  const allResp = ZNS_GROUPS.flatMap(g => groups[g.key].responses).filter(r => r.date);
+  setupZNSFilter();
+  // Bỏ qua filter tháng (trang này tự quản lý chiều tháng), giữ filter chiến dịch + cửa hàng
+  const { groups } = getFilteredZNS(true);
+  const allResp = ZNS_GROUPS.flatMap(g => groups[g.key].responses).filter(r => r.monthKey);
 
-  // Gom theo tháng
-  const monthsSet = new Set();
-  allResp.forEach(r => monthsSet.add(`${r.date.getFullYear()}-${String(r.date.getMonth()+1).padStart(2,'0')}`));
-  const months = [...monthsSet].sort();
+  const months = [...new Set(allResp.map(r => r.monthKey))].sort();
 
-  if (months.length < 2){
+  // Tháng mục tiêu: nếu filter Tháng chọn đúng 1 tháng → dùng tháng đó; ngược lại dùng tháng mới nhất
+  let curMonth = months[months.length-1] || null;
+  const fM = ZNS_STATE.filter.months;
+  if (fM && fM.length === 1 && months.includes(fM[0])) curMonth = fM[0];
+
+  // Tháng LIỀN TRƯỚC theo lịch (không phải tháng liền kề trong data)
+  let prevMonth = null;
+  if (curMonth){
+    let [y, m] = curMonth.split('-').map(Number);
+    m -= 1;
+    if (m === 0){ m = 12; y -= 1; }
+    const cand = `${y}-${String(m).padStart(2,'0')}`;
+    if (months.includes(cand)) prevMonth = cand;
+  }
+
+  if (!curMonth || !prevMonth){
     document.getElementById('znsCompareEmpty').style.display = 'block';
     document.getElementById('znsCompareContent').style.display = 'none';
+    const mLb = mk => `T${parseInt(mk.slice(5))}/${mk.slice(0,4)}`;
     document.getElementById('znsCompareSingleMonth').textContent =
-      months.length===1 ? `tháng ${months[0].slice(5)}/${months[0].slice(0,4)}` : '0 tháng';
+      curMonth ? `${mLb(curMonth)} (chưa có dữ liệu tháng liền trước ${(()=>{let [y,m]=curMonth.split('-').map(Number);m-=1;if(m===0){m=12;y-=1;}return 'T'+m+'/'+y;})()})` : '0 tháng';
     return;
   }
   document.getElementById('znsCompareEmpty').style.display = 'none';
   document.getElementById('znsCompareContent').style.display = 'block';
 
-  const curMonth = months[months.length-1];
-  const prevMonth = months[months.length-2];
-
   // Theo chi nhánh: tính % sao mỗi tháng
   function branchStatsForMonth(mKey){
-    const [y,m] = mKey.split('-').map(Number);
-    const resp = allResp.filter(r => r.date.getFullYear()===y && r.date.getMonth()+1===m);
+    const resp = allResp.filter(r => r.monthKey === mKey);
     const bm = {};
     resp.forEach(r => {
       const b = r.branch||'Không xác định';
@@ -6656,117 +6667,97 @@ function _renderZNSCompare(){
 
 /* ====== ZNS TRANG 4: INSIGHT & ĐỀ XUẤT ====== */
 function _renderZNSInsight(){
+  setupZNSFilter();
   const { groups } = getFilteredZNS();
   const glist = ZNS_GROUPS.map(g => groups[g.key]);
   const allResp = glist.flatMap(g => g.responses);
   const totalStats = znsStarStats(allResp);
+  const totalSent = glist.reduce((s,g)=>s+g.sentCount,0);
+  const respRate = totalSent ? totalStats.total/totalSent*100 : 0;
 
-  // Kênh tốt/kém nhất
-  const groupStats = glist.map(g => ({ name: g.name, ...znsStarStats(g.responses), respCount: g.respCount }))
+  // Kênh tốt/kém
+  const groupStats = glist.map(g => ({ name: g.name, color: g.color, sentCount: g.sentCount, ...znsStarStats(g.responses) }))
     .filter(g => g.total > 0);
   const bestChannel = [...groupStats].sort((a,b)=>b.satPct-a.satPct)[0];
   const worstChannel = [...groupStats].sort((a,b)=>a.satPct-b.satPct)[0];
 
-  // Chi nhánh tốt/kém
+  // Chi nhánh tốt/kém (>=5 phản hồi)
   const branchMap = {};
   allResp.forEach(r => {
     const b = r.branch||'Không xác định';
+    if (b === 'Không xác định') return;
     if(!branchMap[b]) branchMap[b]=[];
     branchMap[b].push(r);
   });
-  const branchStats = Object.entries(branchMap).map(([b,rs]) => ({ name:b, ...znsStarStats(rs) }))
-    .filter(b => b.total >= 5);
-  const bestBranch = [...branchStats].sort((a,b)=>b.satPct-a.satPct)[0];
-  const worstBranch = [...branchStats].sort((a,b)=>a.satPct-b.satPct)[0];
+  const branchStats = Object.entries(branchMap).map(([b,rs]) => ({ name:b, ...znsStarStats(rs) })).filter(b => b.total >= 5);
+  const bestBranch = [...branchStats].sort((a,b)=>b.satPct-a.satPct||b.total-a.total)[0];
+  const worstBranch = [...branchStats].sort((a,b)=>b.unsatPct-a.unsatPct)[0];
 
-  // Gom lý do
+  // Chủ đề khen/chê
   const themeStats = {};
   allResp.forEach(resp => resp.reasons.forEach(rs => {
     if(rs.theme==='Khác') return;
     if(!themeStats[rs.theme]) themeStats[rs.theme]={pos:0,neg:0};
     if(rs.isNeg) themeStats[rs.theme].neg++; else themeStats[rs.theme].pos++;
   }));
-  const top5Sat = Object.entries(themeStats).map(([t,v])=>({theme:t,...v})).filter(r=>r.pos>0).sort((a,b)=>b.pos-a.pos).slice(0,5);
-  const top5Unsat = Object.entries(themeStats).map(([t,v])=>({theme:t,...v})).filter(r=>r.neg>0).sort((a,b)=>b.neg-a.neg).slice(0,5);
+  const topPos = Object.entries(themeStats).map(([t,v])=>({t,...v})).filter(r=>r.pos>0).sort((a,b)=>b.pos-a.pos).slice(0,3);
+  const topNeg = Object.entries(themeStats).map(([t,v])=>({t,...v})).filter(r=>r.neg>0).sort((a,b)=>b.neg-a.neg).slice(0,3);
 
-  // Executive Summary
-  const totalSent = glist.reduce((s,g)=>s+g.sentCount,0);
-  document.getElementById('znsExecSummary').innerHTML = `
-    Trong kỳ khảo sát, GUMAC đã gửi <b>${fmtN(totalSent)}</b> tin ZNS và thu về <b>${fmtN(totalStats.total)}</b> phản hồi
-    (tỷ lệ phản hồi <b>${fmtPct(totalSent?totalStats.total/totalSent*100:0)}</b>).
-    Tỷ lệ hài lòng toàn hệ thống đạt <b style="color:var(--green);">${fmtPct(totalStats.satPct)}</b>,
-    tỷ lệ chưa hài lòng <b style="color:${totalStats.unsatPct>2?'var(--red)':'var(--green)'};">${fmtPct(totalStats.unsatPct)}</b>
-    ${totalStats.unsatPct>2?'(vượt ngưỡng cảnh báo 2%)':'(trong ngưỡng an toàn)'}.
-    Kênh <b>${bestChannel?bestChannel.name:'—'}</b> có trải nghiệm tốt nhất (${bestChannel?fmtPct(bestChannel.satPct):'—'} hài lòng),
-    trong khi <b>${worstChannel?worstChannel.name:'—'}</b> cần được ưu tiên cải thiện (${worstChannel?fmtPct(worstChannel.satPct):'—'}).
-    ${worstBranch?`Chi nhánh <b>${trimBranch(worstBranch.name)}</b> có tỷ lệ chưa hài lòng cao nhất (${fmtPct(worstBranch.unsatPct)}), cần kiểm tra trực tiếp.`:''}
-  `;
+  // Tóm tắt 1 đoạn
+  document.getElementById('znsExecSummary').innerHTML =
+    `Đã gửi <b>${fmtN(totalSent)}</b> ZNS, thu <b>${fmtN(totalStats.total)}</b> phản hồi (<b>${fmtPct(respRate)}</b>). ` +
+    `CSAT toàn hệ thống <b style="color:${totalStats.satPct>=98?'var(--green)':'var(--amber)'};">${fmtPct(totalStats.satPct)}</b> · ` +
+    `Chưa hài lòng <b style="color:${totalStats.unsatPct>2?'var(--red)':'var(--green)'};">${fmtPct(totalStats.unsatPct)}</b> ` +
+    `(ngưỡng cảnh báo 2%).`;
 
-  // Insight KPI
-  document.getElementById('znsInsightKpi').innerHTML = `
-    <div class="card"><p class="card-title">Hài lòng hệ thống</p><div class="card-value" style="color:var(--green);">${fmtPct(totalStats.satPct)}</div><div class="card-sub">${fmtN(totalStats.sat)} lượt 4-5★</div></div>
-    <div class="card"><p class="card-title">Chưa hài lòng hệ thống</p><div class="card-value" style="color:${totalStats.unsatPct>2?'var(--red)':'var(--green)'};">${fmtPct(totalStats.unsatPct)}</div><div class="card-sub">${fmtN(totalStats.unsat)} lượt 1-3★</div></div>
-    <div class="card"><p class="card-title">Kênh tốt nhất</p><div class="card-value amber" style="font-size:18px;">${bestChannel?bestChannel.name:'—'}</div><div class="card-sub">${bestChannel?fmtPct(bestChannel.satPct)+' hài lòng':''}</div></div>
-    <div class="card"><p class="card-title">Kênh cần cải thiện</p><div class="card-value" style="font-size:18px;color:var(--red);">${worstChannel?worstChannel.name:'—'}</div><div class="card-sub">${worstChannel?fmtPct(worstChannel.satPct)+' hài lòng':''}</div></div>
-    <div class="card"><p class="card-title">Chi nhánh tốt nhất</p><div class="card-value" style="font-size:16px;color:var(--green);">${bestBranch?trimBranch(bestBranch.name):'—'}</div><div class="card-sub">${bestBranch?fmtPct(bestBranch.satPct)+' hài lòng ('+bestBranch.total+' PH)':''}</div></div>
-    <div class="card"><p class="card-title">Chi nhánh cần cải thiện</p><div class="card-value" style="font-size:16px;color:var(--red);">${worstBranch?trimBranch(worstBranch.name):'—'}</div><div class="card-sub">${worstBranch?fmtPct(worstBranch.unsatPct)+' chưa HL ('+worstBranch.total+' PH)':''}</div></div>
-  `;
+  // Helper render 1 item: fact + đề xuất
+  const item = (fact, action, color) => `
+    <div style="padding:13px 0;border-bottom:1px solid var(--line);">
+      <div style="font-size:13px;line-height:1.55;">${fact}</div>
+      ${action ? `<div style="font-size:12px;line-height:1.5;margin-top:6px;color:${color};font-weight:600;">→ ${action}</div>` : ''}
+    </div>`;
 
-  // Top 5 sat/unsat
-  document.getElementById('znsTop5Sat').innerHTML = top5Sat.map((r,i) => `
-    <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);">
-      <div style="width:26px;height:26px;border-radius:7px;background:rgba(95,212,154,0.12);color:var(--green);display:grid;place-items:center;font-weight:700;font-size:13px;">${i+1}</div>
-      <div style="flex:1;font-size:13px;font-weight:600;">${r.theme}</div>
-      <div style="font-size:14px;font-weight:700;color:var(--green);">${fmtN(r.pos)}</div>
-    </div>
-  `).join('') || '<p style="color:var(--muted);font-size:12px;">Chưa có dữ liệu</p>';
+  // ===== KHỐI TỐT =====
+  const good = [];
+  if (totalStats.satPct >= 96)
+    good.push(item(`CSAT hệ thống đạt <b>${fmtPct(totalStats.satPct)}</b> (${fmtN(totalStats.sat)} lượt 4-5★) — mức cao của ngành thời trang.`,
+      `Duy trì chuẩn dịch vụ hiện tại, đưa CSAT vào KPI vận hành hàng tháng.`, 'var(--green)'));
+  if (bestChannel)
+    good.push(item(`Kênh <b style="color:${bestChannel.color};">${bestChannel.name}</b> có trải nghiệm tốt nhất: CSAT <b>${fmtPct(bestChannel.satPct)}</b> (${bestChannel.total} PH).`,
+      `Ghi lại quy trình của kênh này làm chuẩn nhân rộng sang kênh khác.`, 'var(--green)'));
+  if (bestBranch)
+    good.push(item(`Chi nhánh <b>${trimBranch(bestBranch.name)}</b> dẫn đầu: <b>${fmtPct(bestBranch.satPct)}</b> hài lòng / ${bestBranch.total} phản hồi.`,
+      `Khen thưởng & chia sẻ cách làm của CN này trong họp vận hành.`, 'var(--green)'));
+  topPos.forEach(r => good.push(item(`Khách khen nhiều nhất: <b>${r.t}</b> (${fmtN(r.pos)} lượt).`, null, 'var(--green)')));
+  document.getElementById('znsGoodList').innerHTML = good.join('') || '<p style="color:var(--muted);font-size:12.5px;padding:14px 0;">Chưa có dữ liệu nổi bật</p>';
 
-  document.getElementById('znsTop5Unsat').innerHTML = top5Unsat.map((r,i) => `
-    <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);">
-      <div style="width:26px;height:26px;border-radius:7px;background:rgba(255,110,122,0.12);color:var(--red);display:grid;place-items:center;font-weight:700;font-size:13px;">${i+1}</div>
-      <div style="flex:1;font-size:13px;font-weight:600;">${r.theme}</div>
-      <div style="font-size:14px;font-weight:700;color:var(--red);">${fmtN(r.neg)}</div>
-    </div>
-  `).join('') || '<p style="color:var(--muted);font-size:12px;">Không có điểm chê đáng kể 👍</p>';
-
-  // Đề xuất theo team (tự động dựa trên top unsat themes)
-  const unsatThemes = top5Unsat.map(r => r.theme);
-  const has = (t) => unsatThemes.includes(t);
-  const teams = [
-    { team: 'Vận hành cửa hàng', color: '#f5b544', icon: '⌂', actions: [
-      worstBranch ? `Kiểm tra trực tiếp chi nhánh ${trimBranch(worstBranch.name)} (chưa HL ${fmtPct(worstBranch.unsatPct)})` : 'Duy trì chất lượng các chi nhánh',
-      has('Không gian CH') ? 'Cải thiện bày trí, không gian cửa hàng theo phản hồi' : 'Giữ chuẩn không gian trưng bày',
-      has('Nhân viên') ? 'Đào tạo lại thái độ & kỹ năng tư vấn cho nhân viên' : 'Duy trì đào tạo nhân viên định kỳ'
-    ]},
-    { team: 'CSKH', color: '#6ba3ff', icon: '☏', actions: [
-      `Liên hệ ${totalStats.unsat} khách đánh giá 1-3★ để xin lỗi & ghi nhận`,
-      has('Đổi trả') ? 'Rà soát quy trình đổi trả, rút ngắn thời gian xử lý' : 'Duy trì chính sách đổi trả thân thiện',
-      'Xây kịch bản chăm sóc khách không hài lòng trong 24h'
-    ]},
-    { team: 'Online', color: '#5fd49a', icon: '◷', actions: [
-      has('Giao hàng') ? 'Làm việc với đơn vị vận chuyển cải thiện tốc độ giao' : 'Duy trì tốc độ giao hàng tốt',
-      has('Trải nghiệm') ? 'Tối ưu quy trình xử lý đơn online nhanh hơn' : 'Giữ trải nghiệm mua online mượt mà',
-      `Nhân rộng cách làm của kênh ${bestChannel?bestChannel.name:'tốt nhất'} sang kênh khác`
-    ]},
-    { team: 'Marketing', color: '#b89aff', icon: '◆', actions: [
-      has('Khuyến mãi') ? 'Làm rõ thể lệ CTKM, tránh gây nhầm lẫn cho khách' : 'Duy trì CTKM hấp dẫn rõ ràng',
-      has('Giá bán') ? 'Rà soát chính sách giá, truyền thông giá trị sản phẩm' : 'Tiếp tục truyền thông giá trị',
-      `Tăng tỷ lệ phản hồi khảo sát (hiện ${fmtPct(totalSent?totalStats.total/totalSent*100:0)}) bằng incentive nhỏ`
-    ]}
-  ];
-  document.getElementById('znsTeamActions').innerHTML = `
-    <div class="grid-2">
-    ${teams.map(t => `
-      <div class="card" style="border-left:3px solid ${t.color};background:var(--bg-2);">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
-          <div style="width:30px;height:30px;border-radius:8px;background:${t.color}22;color:${t.color};display:grid;place-items:center;font-size:15px;">${t.icon}</div>
-          <p style="margin:0;font-size:14px;font-weight:700;color:${t.color};">Team ${t.team}</p>
-        </div>
-        ${t.actions.map(a => `<div style="display:flex;gap:8px;padding:7px 0;font-size:12.5px;line-height:1.5;"><span style="color:${t.color};">▸</span><span>${a}</span></div>`).join('')}
-      </div>
-    `).join('')}
-    </div>
-  `;
+  // ===== KHỐI CHƯA TỐT =====
+  const bad = [];
+  if (totalStats.unsatPct > 2)
+    bad.push(item(`Tỷ lệ chưa hài lòng <b style="color:var(--red);">${fmtPct(totalStats.unsatPct)}</b> (${fmtN(totalStats.unsat)} lượt 1-3★) — vượt ngưỡng 2%.`,
+      `CSKH liên hệ xin lỗi & ghi nhận từng khách 1-3★ trong 24h, ưu tiên khách 1★.`, 'var(--red)'));
+  if (worstChannel && worstChannel !== bestChannel)
+    bad.push(item(`Kênh <b style="color:${worstChannel.color};">${worstChannel.name}</b> có CSAT thấp nhất: <b>${fmtPct(worstChannel.satPct)}</b> (chưa HL ${fmtPct(worstChannel.unsatPct)}).`,
+      `Rà quy trình kênh này; đối chiếu với kênh tốt nhất để tìm khoảng cách.`, 'var(--red)'));
+  if (worstBranch && worstBranch.unsatPct > 2)
+    bad.push(item(`Chi nhánh <b>${trimBranch(worstBranch.name)}</b> có % chưa hài lòng cao nhất: <b style="color:var(--red);">${fmtPct(worstBranch.unsatPct)}</b> (${worstBranch.unsat}/${worstBranch.total} PH).`,
+      `Vận hành kiểm tra trực tiếp CN này trong tuần; phỏng vấn nhân sự + mystery shopping.`, 'var(--red)'));
+  topNeg.forEach(r => bad.push(item(`Khách chê: <b>${r.t}</b> (${fmtN(r.neg)} lượt).`,
+    r.t==='Khuyến mãi' ? 'Marketing làm rõ thể lệ CTKM, tránh gây nhầm lẫn.' :
+    r.t==='Giá bán' ? 'Rà chính sách giá; truyền thông giá trị sản phẩm rõ hơn.' :
+    r.t==='Chất lượng SP' ? 'QC rà chất lượng & đa dạng mẫu theo phản hồi.' :
+    r.t==='Giao hàng' ? 'Online làm việc với ĐVVC cải thiện tốc độ giao.' :
+    r.t==='Nhân viên' ? 'Đào tạo lại kỹ năng tư vấn, thái độ phục vụ.' :
+    'Team liên quan rà soát & lên phương án trong tuần.', 'var(--red)')));
+  if (respRate < 25)
+    bad.push(item(`Tỷ lệ phản hồi khảo sát mới đạt <b>${fmtPct(respRate)}</b> — mẫu còn mỏng để kết luận chắc chắn.`,
+      `Marketing thêm incentive nhỏ (voucher 10-20K) để tăng tỷ lệ làm khảo sát.`, 'var(--red)'));
+  // Cảnh báo data không match
+  const unknownCN = allResp.filter(r=>r.branch==='Không xác định').length;
+  if (unknownCN > 0)
+    bad.push(item(`<b>${fmtN(unknownCN)}</b> phản hồi không tìm thấy SĐT trong Data đầu vào (không xác định được chi nhánh).`,
+      `Data team kiểm tra lại tính đầy đủ của bảng DATA ĐẦU VÀO trên Sheets.`, 'var(--red)'));
+  document.getElementById('znsBadList').innerHTML = bad.join('') || '<p style="color:var(--muted);font-size:12.5px;padding:14px 0;">Không có vấn đề đáng kể 🎉</p>';
 }
 
 /* ====== ZNS EXPORT XLSX ====== */
