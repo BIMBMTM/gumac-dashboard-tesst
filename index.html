@@ -13,7 +13,7 @@
 :root{
   --bg:#eaeef6; --surface:#eef2fa; --card:#f2f5fc; --ink:#1d2435; --muted:#6c768c;
   --line:#dde3ef; --primary:#3f5bd6; --primary-d:#2c41a8; --primary-soft:#e7ecfb;
-  --up:#e0413a; --down:#2f9e6f; --gold:#b8860b;
+  --up:#e0413a; --down:#2f9e6f; --gold:#b8860b; --teal:#0d9488;
   --sh-out:7px 7px 16px #d2d8e6, -7px -7px 16px #ffffff;
   --sh-out-sm:4px 4px 9px #d4dae8, -4px -4px 9px #ffffff;
   --sh-in:inset 4px 4px 9px #d4dae8, inset -4px -4px 9px #ffffff;
@@ -21,236 +21,163 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
-body{font-family:'Be Vietnam Pro',system-ui,sans-serif;background:var(--bg);color:var(--ink);
-  font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+body{font-family:'Be Vietnam Pro',system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
 .num{font-variant-numeric:tabular-nums}
 button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
-::-webkit-scrollbar{width:9px;height:9px}
-::-webkit-scrollbar-thumb{background:#c4ccdd;border-radius:9px}
-
+::-webkit-scrollbar{width:9px;height:9px}::-webkit-scrollbar-thumb{background:#c4ccdd;border-radius:9px}
 .app{display:flex;min-height:100vh}
-
-/* ===== SIDEBAR ===== */
-.sidebar{width:248px;flex:none;background:var(--surface);padding:26px 18px;
-  display:flex;flex-direction:column;gap:8px;position:sticky;top:0;height:100vh;z-index:40;
-  box-shadow:6px 0 18px rgba(150,160,185,.18)}
-.brand{display:flex;align-items:center;gap:12px;padding:4px 8px 22px}
-.brand .logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--primary),#6b82e6);
-  display:grid;place-items:center;color:#fff;font-weight:800;font-size:20px;box-shadow:var(--sh-out-sm)}
-.brand b{font-size:16px;font-weight:800;letter-spacing:.2px;display:block}
-.brand span{font-size:11px;color:var(--muted);font-weight:500}
-.nav-label{font-size:10.5px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);
-  padding:6px 12px 4px;font-weight:700}
-.nav-item{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:var(--r-sm);
-  color:var(--muted);font-weight:600;font-size:13.5px;transition:.18s;text-align:left;width:100%}
-.nav-item .ic{width:20px;text-align:center;font-size:16px}
+/* SIDEBAR */
+.sidebar{width:248px;flex:none;background:var(--surface);padding:26px 18px;display:flex;flex-direction:column;gap:6px;position:sticky;top:0;height:100vh;z-index:40;box-shadow:6px 0 18px rgba(150,160,185,.18)}
+.brand{display:flex;align-items:center;gap:12px;padding:4px 8px 20px}
+.brand .logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--primary),#6b82e6);display:grid;place-items:center;color:#fff;font-weight:800;font-size:20px;box-shadow:var(--sh-out-sm)}
+.brand b{font-size:16px;font-weight:800;display:block}.brand span{font-size:11px;color:var(--muted);font-weight:500}
+.nav-label{font-size:10.5px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);padding:8px 12px 4px;font-weight:700}
+.nav-item{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:var(--r-sm);color:var(--muted);font-weight:600;font-size:13.5px;transition:.18s;text-align:left;width:100%}
+.nav-item .ic{width:20px;text-align:center;font-size:15px}
 .nav-item:hover{color:var(--ink);background:rgba(63,91,214,.06)}
 .nav-item.active{color:var(--primary);background:var(--card);box-shadow:var(--sh-out-sm)}
-.side-foot{margin-top:auto;font-size:11px;color:var(--muted);padding:12px;line-height:1.6;
-  border-top:1px solid var(--line)}
+.side-foot{margin-top:auto;font-size:11px;color:var(--muted);padding:12px;line-height:1.6;border-top:1px solid var(--line)}
 .side-foot b{color:var(--ink)}
-
-/* ===== MAIN ===== */
+/* MAIN */
 .main{flex:1;min-width:0;padding:24px 30px 60px}
-.topbar{display:flex;align-items:center;gap:16px;margin-bottom:20px}
+.topbar{display:flex;align-items:center;gap:16px;margin-bottom:18px}
 .menu-toggle{display:none}
 .pg-title h1{font-size:21px;font-weight:800;letter-spacing:-.2px}
-.pg-title p{font-size:12.5px;color:var(--muted);margin-top:2px;max-width:560px}
-.topbar-actions{margin-left:auto;display:flex;gap:10px;align-items:center}
-.btn{padding:10px 16px;border-radius:var(--r-sm);background:var(--card);box-shadow:var(--sh-out-sm);
-  font-weight:600;font-size:13px;color:var(--ink);display:inline-flex;align-items:center;gap:8px;transition:.15s}
-.btn:hover{color:var(--primary)}
-.btn:active{box-shadow:var(--sh-in)}
+.pg-title p{font-size:12.5px;color:var(--muted);margin-top:2px;max-width:600px}
+.topbar-actions{margin-left:auto;display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.btn{padding:10px 15px;border-radius:var(--r-sm);background:var(--card);box-shadow:var(--sh-out-sm);font-weight:600;font-size:12.5px;color:var(--ink);display:inline-flex;align-items:center;gap:7px;transition:.15s}
+.btn:hover{color:var(--primary)} .btn:active{box-shadow:var(--sh-in)}
 .btn.primary{background:var(--primary);color:#fff;box-shadow:4px 4px 10px rgba(63,91,214,.35)}
 .btn.primary:hover{background:var(--primary-d);color:#fff}
-
-/* ===== DEMO BANNER ===== */
-.demo-banner{display:none;align-items:center;gap:10px;background:#fff7e6;border:1px solid #ffe8b3;
-  color:#8a6100;padding:10px 16px;border-radius:var(--r-sm);font-size:12.5px;font-weight:500;margin-bottom:18px}
-.demo-banner.show{display:flex}
-.demo-banner b{color:#6b4b00}
-
-/* ===== FILTERS ===== */
-.filters{display:flex;flex-wrap:wrap;gap:12px;background:var(--card);padding:16px;border-radius:var(--r);
-  box-shadow:var(--sh-out);margin-bottom:22px;align-items:flex-end}
+.btn.ghost{background:var(--surface);box-shadow:var(--sh-in)}
+/* banner */
+.banner{display:none;align-items:center;gap:10px;padding:11px 16px;border-radius:var(--r-sm);font-size:12.5px;font-weight:500;margin-bottom:16px}
+.banner.show{display:flex}
+.banner.demo{background:#fff7e6;border:1px solid #ffe8b3;color:#8a6100}
+.banner.info{background:var(--primary-soft);border:1px solid #cdd8fb;color:var(--primary-d)}
+.banner b{color:inherit;font-weight:700}
+/* FILTERS */
+.filters{display:flex;flex-wrap:wrap;gap:12px;background:var(--card);padding:16px;border-radius:var(--r);box-shadow:var(--sh-out);margin-bottom:22px;align-items:flex-end}
 .filt{display:flex;flex-direction:column;gap:6px;position:relative}
 .filt>label{font-size:11px;font-weight:700;color:var(--muted);padding-left:4px;display:flex;gap:6px;align-items:center}
 .filt .pri{font-size:9px;background:var(--primary-soft);color:var(--primary);padding:1px 6px;border-radius:20px;font-weight:700}
-.dd-btn{min-width:150px;padding:10px 14px;border-radius:var(--r-sm);background:var(--surface);
-  box-shadow:var(--sh-in);font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:space-between;gap:10px;color:var(--ink)}
-.dd-btn .cnt{font-size:11px;color:var(--primary);font-weight:700}
-.dd-btn .arr{color:var(--muted);font-size:11px}
-.filt.period .dd-btn{min-width:170px}
-.filt.ten .dd-btn{min-width:180px}
-.dd-panel{position:absolute;top:calc(100% + 8px);left:0;z-index:60;width:280px;max-width:88vw;
-  background:var(--card);border-radius:var(--r);box-shadow:0 18px 40px rgba(70,85,120,.22);
-  border:1px solid var(--line);padding:12px;display:none}
+.dd-btn{min-width:148px;padding:10px 14px;border-radius:var(--r-sm);background:var(--surface);box-shadow:var(--sh-in);font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:space-between;gap:10px;color:var(--ink)}
+.dd-btn .cnt{font-size:11px;color:var(--primary);font-weight:700}.dd-btn .arr{color:var(--muted);font-size:11px}
+.filt.period .dd-btn{min-width:170px}.filt.ten .dd-btn{min-width:175px}
+.dd-panel{position:absolute;top:calc(100% + 8px);left:0;z-index:60;width:300px;max-width:88vw;background:var(--card);border-radius:var(--r);box-shadow:0 18px 40px rgba(70,85,120,.22);border:1px solid var(--line);padding:12px;display:none}
 .dd-panel.open{display:block;animation:pop .14s ease}
 @keyframes pop{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
-.dd-search{width:100%;padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:var(--surface);
-  font-family:inherit;font-size:13px;margin-bottom:8px;outline:none}
+.dd-search{width:100%;padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:var(--surface);font-family:inherit;font-size:13px;margin-bottom:8px;outline:none}
 .dd-search:focus{border-color:var(--primary)}
-.dd-tools{display:flex;justify-content:space-between;margin-bottom:6px;font-size:11px}
-.dd-tools button{color:var(--primary);font-weight:700}
-.dd-list{max-height:240px;overflow:auto;display:flex;flex-direction:column;gap:2px}
+.dd-tools{display:flex;justify-content:space-between;margin-bottom:6px;font-size:11px}.dd-tools button{color:var(--primary);font-weight:700}
+.dd-list{max-height:260px;overflow:auto;display:flex;flex-direction:column;gap:2px}
 .dd-opt{display:flex;align-items:center;gap:9px;padding:8px 9px;border-radius:9px;font-size:13px;cursor:pointer}
-.dd-opt:hover{background:rgba(63,91,214,.07)}
-.dd-opt input{accent-color:var(--primary);width:15px;height:15px}
-.dd-opt.head{font-weight:700;color:var(--muted);font-size:11px;text-transform:uppercase;
-  letter-spacing:.05em;padding:8px 9px 4px;pointer-events:none}
+.dd-opt:hover{background:rgba(63,91,214,.07)}.dd-opt input{accent-color:var(--primary);width:15px;height:15px}
+.dd-opt.head{font-weight:700;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.05em;padding:8px 9px 4px;pointer-events:none}
 .dd-opt .lab{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.dd-opt .v{font-size:11px;color:var(--muted);font-weight:600}
-
-/* ===== CARDS / GRID ===== */
-.page{display:none}
-.page.active{display:block;animation:fade .25s ease}
+/* PAGES & CARDS */
+.page{display:none}.page.active{display:block;animation:fade .25s ease}
 @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .grid{display:grid;gap:20px}
 .kpis{grid-template-columns:repeat(4,1fr);margin-bottom:20px}
 .card{background:var(--card);border-radius:var(--r);box-shadow:var(--sh-out);padding:20px}
-.card.pad-sm{padding:16px 18px}
-.card h3{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:2px;display:flex;
-  align-items:center;justify-content:space-between;gap:10px}
+.card h3{font-size:13.5px;font-weight:700;margin-bottom:2px;display:flex;align-items:center;justify-content:space-between;gap:10px}
 .card .sub{font-size:11.5px;color:var(--muted);margin-bottom:14px}
 .kpi .label{font-size:11.5px;color:var(--muted);font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:8px}
-.kpi .icn{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;font-size:15px;
-  background:var(--primary-soft);color:var(--primary);box-shadow:var(--sh-out-sm)}
-.kpi .val{font-size:25px;font-weight:800;letter-spacing:-.5px;line-height:1.1}
-.kpi .val small{font-size:13px;font-weight:600;color:var(--muted);margin-left:2px}
+.kpi .icn{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;font-size:15px;background:var(--primary-soft);color:var(--primary);box-shadow:var(--sh-out-sm)}
+.kpi .val{font-size:24px;font-weight:800;letter-spacing:-.5px;line-height:1.1}
+.kpi .val small{font-size:13px;font-weight:600;color:var(--muted)}
 .kpi .delta{font-size:12px;font-weight:700;margin-top:7px;display:inline-flex;align-items:center;gap:5px}
-.kpi .delta.up{color:var(--up)} .kpi .delta.down{color:var(--down)} .kpi .delta.flat{color:var(--muted)}
+.kpi .delta.up{color:var(--up)}.kpi .delta.down{color:var(--down)}.kpi .delta.flat{color:var(--muted)}
 .kpi .delta span{color:var(--muted);font-weight:500}
-
-.row-2{grid-template-columns:1.55fr 1fr}
-.row-2b{grid-template-columns:1fr 1fr}
-.chart-wrap{position:relative;height:300px}
-.chart-wrap.sm{height:260px}
-.chart-wrap.lg{height:340px}
-
-/* ===== SEGMENTED ===== */
+.row-2{grid-template-columns:1.55fr 1fr}.row-2b{grid-template-columns:1fr 1fr}
+.chart-wrap{position:relative;height:300px}.chart-wrap.sm{height:240px}.chart-wrap.lg{height:340px}
 .seg{display:inline-flex;background:var(--surface);border-radius:10px;box-shadow:var(--sh-in);padding:4px;gap:3px}
-.seg button{padding:7px 13px;border-radius:8px;font-size:12.5px;font-weight:600;color:var(--muted);transition:.15s}
+.seg button{padding:7px 12px;border-radius:8px;font-size:12px;font-weight:600;color:var(--muted);transition:.15s}
 .seg button.on{background:var(--card);color:var(--primary);box-shadow:var(--sh-out-sm)}
-
-/* ===== TABLE ===== */
+/* TABLE */
 .tbl-wrap{overflow:auto;border-radius:var(--r-sm)}
 table{width:100%;border-collapse:collapse;font-size:13px}
-thead th{text-align:right;padding:11px 14px;font-size:11px;font-weight:700;color:var(--muted);
-  text-transform:uppercase;letter-spacing:.04em;border-bottom:2px solid var(--line);white-space:nowrap;
-  cursor:pointer;user-select:none;position:sticky;top:0;background:var(--card)}
+thead th{text-align:right;padding:11px 13px;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;border-bottom:2px solid var(--line);white-space:nowrap;user-select:none;position:sticky;top:0;background:var(--card)}
 thead th:first-child{text-align:left}
-thead th .ar{font-size:9px;margin-left:3px;opacity:.5}
-thead th.sorted .ar{opacity:1;color:var(--primary)}
-tbody td{padding:11px 14px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+thead th.sortable{cursor:pointer}thead th .ar{font-size:9px;margin-left:3px;opacity:.5}thead th.sorted .ar{opacity:1;color:var(--primary)}
+tbody td{padding:10px 13px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
 tbody td:first-child{text-align:left;font-weight:600}
 tbody tr:hover{background:rgba(63,91,214,.04)}
 .bar-cell{display:flex;align-items:center;gap:9px;justify-content:flex-end}
-.bar-cell .mini{width:74px;height:7px;border-radius:6px;background:var(--line);overflow:hidden;flex:none}
+.bar-cell .mini{width:72px;height:7px;border-radius:6px;background:var(--line);overflow:hidden;flex:none}
 .bar-cell .mini i{display:block;height:100%;background:var(--primary);border-radius:6px}
-.pct-tag{font-size:11px;color:var(--muted);font-weight:600;min-width:42px;display:inline-block}
-.chip{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:20px;
-  font-size:11.5px;font-weight:600;background:var(--primary-soft);color:var(--primary)}
-.dot{width:9px;height:9px;border-radius:50%;flex:none}
-
+.pct-tag{font-size:11px;color:var(--muted);font-weight:600;min-width:40px;display:inline-block}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:20px;font-size:11.5px;font-weight:600;background:var(--primary-soft);color:var(--primary);margin:1px}
+.tag-up{color:var(--up);font-weight:700}.tag-down{color:var(--down);font-weight:700}
 .pager{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px;font-size:12.5px;color:var(--muted)}
-.pager .pg-btns{display:flex;gap:6px}
-.pg-btns button{width:34px;height:34px;border-radius:9px;background:var(--card);box-shadow:var(--sh-out-sm);font-weight:700}
-.pg-btns button:disabled{opacity:.4;cursor:default}
-.empty{text-align:center;padding:40px 20px;color:var(--muted);font-size:13px}
-
-/* ===== LOADING OVERLAY ===== */
-.ov{position:fixed;inset:0;background:rgba(234,238,246,.85);display:none;place-items:center;z-index:99}
-.ov.show{display:grid}
+.pg-btns{display:flex;gap:6px}.pg-btns button{width:34px;height:34px;border-radius:9px;background:var(--card);box-shadow:var(--sh-out-sm);font-weight:700}.pg-btns button:disabled{opacity:.4;cursor:default}
+.empty{text-align:center;padding:38px 20px;color:var(--muted);font-size:13px}
+/* PIVOT */
+.pivot td:first-child{font-weight:600}
+.pivot .lvl0{background:rgba(63,91,214,.05)}
+.pivot .lvl0 td:first-child{font-weight:800;color:var(--ink)}
+.pivot .lvl1 td:first-child{padding-left:34px;font-weight:600}
+.pivot .lvl2 td:first-child{padding-left:58px;font-weight:500;color:var(--muted)}
+.pivot .tw{display:inline-flex;width:18px;height:18px;align-items:center;justify-content:center;font-size:10px;color:var(--primary);margin-right:8px;transition:.15s;cursor:pointer;border-radius:5px}
+.pivot .tw:hover{background:var(--primary-soft)}
+.pivot .tw.open{transform:rotate(90deg)}
+.pivot .tw.leaf{visibility:hidden}
+.pivot-ctrl{display:flex;gap:10px;align-items:center;margin-bottom:14px;flex-wrap:wrap}
+/* OVERLAY */
+.ov{position:fixed;inset:0;background:rgba(234,238,246,.85);display:none;place-items:center;z-index:99}.ov.show{display:grid}
 .spin{width:44px;height:44px;border:4px solid var(--line);border-top-color:var(--primary);border-radius:50%;animation:sp .8s linear infinite}
 @keyframes sp{to{transform:rotate(360deg)}}
-.up-status{font-size:12px;font-weight:600;margin-top:4px}
-.up-status.ok{color:var(--down)} .up-status.err{color:var(--up)}
-
+.up-status{font-size:12px;font-weight:600}.up-status.ok{color:var(--down)}.up-status.err{color:var(--up)}
 .backdrop{display:none}
 @media(max-width:1080px){.kpis{grid-template-columns:repeat(2,1fr)}.row-2,.row-2b{grid-template-columns:1fr}}
 @media(max-width:860px){
-  .sidebar{position:fixed;left:0;top:0;transform:translateX(-100%);transition:.25s}
-  .sidebar.open{transform:none}
-  .backdrop{display:block;position:fixed;inset:0;background:rgba(20,28,48,.4);z-index:35;opacity:0;pointer-events:none;transition:.2s}
-  .backdrop.show{opacity:1;pointer-events:auto}
-  .menu-toggle{display:inline-grid;place-items:center;width:42px;height:42px;border-radius:12px;
-    background:var(--card);box-shadow:var(--sh-out-sm);font-size:18px;flex:none}
-  .main{padding:18px 16px 50px}
-  .kpis{grid-template-columns:1fr 1fr}
-  .pg-title p{display:none}
+  .sidebar{position:fixed;left:0;top:0;transform:translateX(-100%);transition:.25s}.sidebar.open{transform:none}
+  .backdrop{display:block;position:fixed;inset:0;background:rgba(20,28,48,.4);z-index:35;opacity:0;pointer-events:none;transition:.2s}.backdrop.show{opacity:1;pointer-events:auto}
+  .menu-toggle{display:inline-grid;place-items:center;width:42px;height:42px;border-radius:12px;background:var(--card);box-shadow:var(--sh-out-sm);font-size:18px;flex:none}
+  .main{padding:18px 16px 50px}.kpis{grid-template-columns:1fr 1fr}.pg-title p{display:none}
 }
 @media(max-width:520px){.kpis{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <div class="app">
-  <!-- SIDEBAR -->
   <aside class="sidebar" id="sidebar">
-    <div class="brand">
-      <div class="logo">G</div>
-      <div><b>GUMAC</b><span>Chi phí Marketing</span></div>
-    </div>
-    <div class="nav-label">Phân tích</div>
+    <div class="brand"><div class="logo">G</div><div><b>GUMAC</b><span>Chi phí Marketing</span></div></div>
+    <div class="nav-label">Điều hành</div>
     <button class="nav-item active" data-page="overview"><span class="ic">◎</span> Tổng quan</button>
-    <button class="nav-item" data-page="detail"><span class="ic">☰</span> Bảng chi tiết</button>
+    <button class="nav-item" data-page="performance"><span class="ic">◇</span> Hiệu suất CP / DT</button>
+    <div class="nav-label">Phân tích</div>
     <button class="nav-item" data-page="channel"><span class="ic">◢</span> Phân tích Kênh</button>
     <button class="nav-item" data-page="cost"><span class="ic">◔</span> Cơ cấu Chi phí</button>
     <button class="nav-item" data-page="object"><span class="ic">★</span> Đối tượng</button>
-    <div class="side-foot">
-      Nguồn: <b id="sf-src">—</b><br>
-      <span id="sf-rows">0</span> dòng · <span id="sf-combo">0</span> combo<br>
-      Cập nhật <span id="sf-gen">—</span>
-    </div>
+    <button class="nav-item" data-page="detail"><span class="ic">☰</span> Bảng chi tiết</button>
+    <div class="side-foot">Nguồn: <b id="sf-src">—</b><br><span id="sf-rows">0</span> dòng · <span id="sf-combo">0</span> combo<br>DT: <b id="sf-rev">chưa nạp</b><br>Cập nhật <span id="sf-gen">—</span></div>
   </aside>
   <div class="backdrop" id="backdrop"></div>
 
-  <!-- MAIN -->
   <main class="main">
     <div class="topbar">
       <button class="menu-toggle" id="menuToggle">☰</button>
-      <div class="pg-title">
-        <h1 id="pgTitle">Tổng quan chi phí</h1>
-        <p id="pgSub">Bức tranh tổng thể ngân sách marketing GUMAC theo kỳ.</p>
-      </div>
+      <div class="pg-title"><h1 id="pgTitle">Tổng quan chi phí</h1><p id="pgSub">Bức tranh tổng thể ngân sách marketing GUMAC theo kỳ.</p></div>
       <div class="topbar-actions">
-        <button class="btn" id="btnReset">↺ Đặt lại</button>
-        <button class="btn primary" id="btnUpload">⬆ Tải file Excel</button>
-        <input type="file" id="fileInput" accept=".xlsx,.xls" hidden>
+        <button class="btn ghost" id="btnReset">↺ Đặt lại</button>
+        <button class="btn" id="btnUploadCost">⬆ File Chi phí</button>
+        <button class="btn primary" id="btnUploadRev">⬆ File Doanh thu</button>
+        <input type="file" id="fileCost" accept=".xlsx,.xls" hidden>
+        <input type="file" id="fileRev" accept=".xlsx,.xls" hidden>
       </div>
     </div>
 
-    <div class="demo-banner" id="demoBanner">
-      ⚠️ <span>Đang hiển thị <b>dữ liệu demo</b>. Bấm <b>“Tải file Excel”</b> để nạp file chi phí thật của GUMAC (sheet 2024 / 2025 / 2026, cột A→J).</span>
-      <span class="up-status" id="upStatus" style="margin-left:auto"></span>
-    </div>
+    <div class="banner demo" id="demoBanner">⚠️ <span>Đang hiển thị <b>dữ liệu demo</b>. Tải file Chi phí & Doanh thu để xem số thật.</span><span class="up-status" id="upStatus" style="margin-left:auto"></span></div>
+    <div class="banner info" id="revBanner">ℹ️ <span>Chưa nạp <b>file Doanh thu</b> — các chỉ số tỷ lệ chi phí/doanh thu sẽ hiển thị khi có dữ liệu DT.</span></div>
 
-    <!-- FILTERS -->
     <div class="filters">
-      <div class="filt period">
-        <label>Kỳ báo cáo</label>
-        <button class="dd-btn" id="ddb-period"><span id="lbl-period">—</span><span class="arr">▾</span></button>
-        <div class="dd-panel" id="dd-period"></div>
-      </div>
-      <div class="filt">
-        <label>Nhóm chính <span class="pri">N1 · ưu tiên</span></label>
-        <button class="dd-btn" id="ddb-n1">Tất cả <span class="cnt" id="cnt-n1"></span><span class="arr">▾</span></button>
-        <div class="dd-panel" id="dd-n1"></div>
-      </div>
-      <div class="filt">
-        <label>Kênh <span class="pri">2</span></label>
-        <button class="dd-btn" id="ddb-k">Tất cả <span class="cnt" id="cnt-k"></span><span class="arr">▾</span></button>
-        <div class="dd-panel" id="dd-k"></div>
-      </div>
-      <div class="filt">
-        <label>Loại chi phí <span class="pri">N2 · phụ</span></label>
-        <button class="dd-btn" id="ddb-n2">Tất cả <span class="cnt" id="cnt-n2"></span><span class="arr">▾</span></button>
-        <div class="dd-panel" id="dd-n2"></div>
-      </div>
-      <div class="filt ten">
-        <label>Tên đối tượng <span class="pri">cuối</span></label>
-        <button class="dd-btn" id="ddb-ten">Tất cả <span class="cnt" id="cnt-ten"></span><span class="arr">▾</span></button>
-        <div class="dd-panel" id="dd-ten"></div>
-      </div>
+      <div class="filt period"><label>Kỳ báo cáo</label><button class="dd-btn" id="ddb-period"><span id="lbl-period">—</span><span class="arr">▾</span></button><div class="dd-panel" id="dd-period"></div></div>
+      <div class="filt"><label>Nhóm chính <span class="pri">N1 · ưu tiên</span></label><button class="dd-btn" id="ddb-n1">Tất cả <span class="cnt" id="cnt-n1"></span><span class="arr">▾</span></button><div class="dd-panel" id="dd-n1"></div></div>
+      <div class="filt"><label>Kênh <span class="pri">2</span></label><button class="dd-btn" id="ddb-k">Tất cả <span class="cnt" id="cnt-k"></span><span class="arr">▾</span></button><div class="dd-panel" id="dd-k"></div></div>
+      <div class="filt"><label>Hạng mục <span class="pri">N2 · phụ</span></label><button class="dd-btn" id="ddb-n2">Tất cả <span class="cnt" id="cnt-n2"></span><span class="arr">▾</span></button><div class="dd-panel" id="dd-n2"></div></div>
+      <div class="filt ten"><label>Tên đối tượng <span class="pri">cuối</span></label><button class="dd-btn" id="ddb-ten">Tất cả <span class="cnt" id="cnt-ten"></span><span class="arr">▾</span></button><div class="dd-panel" id="dd-ten"></div></div>
     </div>
 
     <div class="pages">
@@ -259,115 +186,87 @@ tbody tr:hover{background:rgba(63,91,214,.04)}
         <div class="grid kpis" id="kpiRow"></div>
         <div class="grid row-2" style="margin-bottom:20px">
           <div class="card">
-            <h3>Diễn biến chi phí theo tháng
-              <div class="seg" id="segTrend"><button class="on" data-v="all">12 tháng</button><button data-v="ytd">Cùng năm</button></div>
-            </h3>
-            <div class="sub">Tổng chi phí mỗi tháng (đã áp bộ lọc). Cột sáng là kỳ đang chọn.</div>
+            <h3>Chi phí marketing & tỷ lệ trên doanh thu</h3>
+            <div class="sub">Cột: chi phí mỗi tháng · Đường: tỷ lệ chi phí/doanh thu (%). Cột sáng là kỳ đang chọn.</div>
             <div class="chart-wrap lg"><canvas id="cTrend"></canvas></div>
           </div>
-          <div class="card">
-            <h3>Cơ cấu theo kênh</h3>
-            <div class="sub">Tỷ trọng chi phí từng kênh trong kỳ.</div>
-            <div class="chart-wrap"><canvas id="cDonut"></canvas></div>
-          </div>
+          <div class="card"><h3>Cơ cấu theo kênh</h3><div class="sub">Tỷ trọng chi phí từng kênh trong kỳ.</div><div class="chart-wrap"><canvas id="cDonut"></canvas></div></div>
         </div>
         <div class="grid row-2b">
-          <div class="card">
-            <h3>Top loại chi phí (N2)</h3>
-            <div class="sub">Xếp hạng theo ngân sách trong kỳ.</div>
-            <div class="chart-wrap sm"><canvas id="cN2"></canvas></div>
-          </div>
-          <div class="card">
-            <h3>Top đối tượng chi tiêu</h3>
-            <div class="sub">5 đối tượng tốn ngân sách nhất trong kỳ.</div>
-            <div class="tbl-wrap" id="ovTop"></div>
-          </div>
+          <div class="card"><h3>So cùng kỳ năm trước (theo tháng)</h3><div class="sub">So sánh chi phí năm nay với năm trước.</div><div class="chart-wrap sm"><canvas id="cYoY"></canvas></div></div>
+          <div class="card"><h3>Biến động lớn nhất theo kênh (so kỳ trước)</h3><div class="sub">Kênh tăng/giảm ngân sách mạnh nhất.</div><div class="tbl-wrap" id="ovMovers"></div></div>
         </div>
       </div>
 
-      <!-- DETAIL -->
-      <div class="page" id="page-detail">
-        <div class="card">
-          <h3 style="margin-bottom:14px">Bảng chi tiết
-            <div class="seg" id="segGroup">
-              <button data-v="m">Tháng</button><button class="on" data-v="k">Kênh</button>
-              <button data-v="n1">N1</button><button data-v="n2">N2</button><button data-v="ten">Đối tượng</button>
-            </div>
-          </h3>
-          <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap">
-            <input class="dd-search" id="detailSearch" placeholder="Tìm trong bảng…" style="max-width:260px;margin:0">
-            <button class="btn" id="btnExport" style="margin-left:auto">⤓ Xuất CSV</button>
-          </div>
-          <div class="tbl-wrap" id="detailTbl"></div>
-          <div class="pager" id="detailPager"></div>
+      <!-- PERFORMANCE -->
+      <div class="page" id="page-performance">
+        <div class="grid kpis" id="perfKpi"></div>
+        <div class="grid row-2" style="margin-bottom:20px">
+          <div class="card"><h3>Tỷ lệ chi phí / doanh thu theo tháng</h3><div class="sub">Tổng marketing expense ratio (%). Càng thấp càng hiệu quả.</div><div class="chart-wrap lg"><canvas id="cRatio"></canvas></div></div>
+          <div class="card"><h3>Tỷ lệ CP/DT theo kênh</h3><div class="sub">Kỳ đang chọn — kênh nào "đắt" nhất so với doanh thu.</div><div class="chart-wrap"><canvas id="cRatioCh"></canvas></div></div>
         </div>
+        <div class="card"><h3 style="margin-bottom:14px">Hiệu suất theo kênh</h3><div class="tbl-wrap" id="perfTbl"></div></div>
       </div>
 
       <!-- CHANNEL -->
       <div class="page" id="page-channel">
         <div class="grid row-2" style="margin-bottom:20px">
-          <div class="card">
-            <h3>Chi phí theo kênh
-              <div class="seg" id="segChan"><button class="on" data-v="bar">Tỷ trọng</button><button data-v="trend">Xu hướng</button></div>
-            </h3>
-            <div class="sub" id="chanSub">So sánh ngân sách giữa các kênh trong kỳ.</div>
-            <div class="chart-wrap lg"><canvas id="cChan"></canvas></div>
-          </div>
-          <div class="card">
-            <h3>Đóng góp của kênh</h3>
-            <div class="sub">Tỷ trọng & thay đổi so với kỳ trước.</div>
-            <div class="tbl-wrap" id="chanTbl"></div>
-          </div>
+          <div class="card"><h3>Chi phí theo kênh<div class="seg" id="segChan"><button class="on" data-v="bar">Tỷ trọng</button><button data-v="trend">Xu hướng</button></div></h3><div class="sub" id="chanSub">So sánh ngân sách giữa các kênh trong kỳ.</div><div class="chart-wrap lg"><canvas id="cChan"></canvas></div></div>
+          <div class="card"><h3>Đóng góp của kênh</h3><div class="sub">Tỷ trọng & thay đổi so với kỳ trước.</div><div class="tbl-wrap" id="chanTbl"></div></div>
         </div>
       </div>
 
-      <!-- COST -->
+      <!-- COST (PIVOT) -->
       <div class="page" id="page-cost">
         <div class="grid row-2b" style="margin-bottom:20px">
-          <div class="card">
-            <h3>Theo nhóm chính (N1)</h3>
-            <div class="sub">Phân rã ngân sách theo nhóm N1.</div>
-            <div class="chart-wrap"><canvas id="cN1"></canvas></div>
-          </div>
-          <div class="card">
-            <h3>Theo loại chi phí (N2)</h3>
-            <div class="sub">Phân rã ngân sách theo loại chi phí N2.</div>
-            <div class="chart-wrap"><canvas id="cN2b"></canvas></div>
-          </div>
+          <div class="card"><h3>Theo nhóm chính (N1)</h3><div class="sub">Phân rã ngân sách theo nhóm N1.</div><div class="chart-wrap"><canvas id="cN1"></canvas></div></div>
+          <div class="card"><h3>Top hạng mục (N2)</h3><div class="sub">10 hạng mục chi phí lớn nhất trong kỳ.</div><div class="chart-wrap"><canvas id="cN2b"></canvas></div></div>
         </div>
         <div class="card">
-          <h3 style="margin-bottom:14px">Ma trận N1 × Kênh</h3>
-          <div class="tbl-wrap" id="costMatrix"></div>
+          <h3 style="margin-bottom:6px">Bảng Pivot chi phí</h3>
+          <div class="sub" style="margin-bottom:0">Mở rộng / thu gọn theo cấp: Nhóm N1 › Hạng mục N2 › Kênh.</div>
+          <div class="pivot-ctrl">
+            <div class="seg" id="segPivot"><button class="on" data-v="n1,n2,k">N1 › N2 › Kênh</button><button data-v="n1,k,n2">N1 › Kênh › N2</button><button data-v="k,n2,ten">Kênh › N2 › Đối tượng</button></div>
+            <button class="btn ghost" id="btnExpandAll">⊞ Mở tất cả</button>
+            <button class="btn ghost" id="btnCollapseAll">⊟ Thu gọn</button>
+            <button class="btn" id="btnExportPivot" style="margin-left:auto">⤓ Xuất CSV</button>
+          </div>
+          <div class="tbl-wrap pivot" id="pivotTbl"></div>
         </div>
       </div>
 
       <!-- OBJECT -->
       <div class="page" id="page-object">
-        <div class="card">
-          <h3 style="margin-bottom:6px">Xếp hạng đối tượng chi tiêu</h3>
-          <div class="sub" style="margin-bottom:16px">Toàn bộ đối tượng chi tiết theo ngân sách trong kỳ (đã áp bộ lọc).</div>
-          <div class="tbl-wrap" id="objTbl"></div>
-        </div>
+        <div class="card"><h3 style="margin-bottom:6px">Xếp hạng đối tượng chi tiêu</h3><div class="sub" style="margin-bottom:14px">Đối tượng chi tiết theo ngân sách trong kỳ.</div>
+          <input class="dd-search" id="objSearch" placeholder="Tìm đối tượng…" style="max-width:300px;margin-bottom:14px">
+          <div class="tbl-wrap" id="objTbl"></div><div class="pager" id="objPager"></div></div>
+      </div>
+
+      <!-- DETAIL -->
+      <div class="page" id="page-detail">
+        <div class="card"><h3 style="margin-bottom:14px">Bảng chi tiết<div class="seg" id="segGroup"><button data-v="m">Tháng</button><button class="on" data-v="k">Kênh</button><button data-v="n1">N1</button><button data-v="n2">N2</button><button data-v="ten">Đối tượng</button></div></h3>
+          <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap"><input class="dd-search" id="detailSearch" placeholder="Tìm trong bảng…" style="max-width:260px;margin:0"><button class="btn" id="btnExport" style="margin-left:auto">⤓ Xuất CSV</button></div>
+          <div class="tbl-wrap" id="detailTbl"></div><div class="pager" id="detailPager"></div></div>
       </div>
     </div>
   </main>
 </div>
+<div class="ov" id="ov"><div class="spin"></div></div>
 
-<div class="ov" id="ov"><div style="text-align:center"><div class="spin"></div></div></div>
-
-<script id="DATA" type="application/json">{"meta":{"generated":"15/06/2026","totalRows":478,"totalCombos":478,"months":["2024-01","2024-02","2024-03","2024-04","2024-05","2024-06","2024-07","2024-08","2024-09","2024-10","2024-11","2024-12","2025-01","2025-02","2025-03","2025-04","2025-05","2025-06","2025-07","2025-08","2025-09","2025-10","2025-11","2025-12","2026-01","2026-02","2026-03","2026-04","2026-05"],"channels":["FB","TIKTOK","KOL","OFFLINE","TIKTOKSHOP","GG","SMS","ZALO","WEB"],"n1":["BH","BRAND","MKT"],"n2":["Công cụ / Phần mềm","KOL/KOC","Khuyến mãi","Nội dung","Quảng cáo","Sự kiện","Thiết kế"],"ten":["Beauty Trang","CH Cần Thơ","CH Phú Yên","CH Quận 1","CH Trà Vinh","Email Automation","GDN Remarketing","GUMAC Kids","GUMAC Live","GUMAC Official","GUMAC Reels","GUMAC Sale","GUMAC TikTok","GUMAC Đầm","Influencer Mai","KOC Hằng","KOC Linh","SEO Website","SMS chăm sóc","SMS khuyến mãi","Search Brand","Shop Mall","Shop chính","Shopping","Zalo OA Broadcast"],"channelLabels":{"FB":"Facebook Ads","TIKTOK":"TikTok Ads","TIKTOKSHOP":"TikTok Shop","GG":"Google Ads","ZALO":"Zalo OA","SMS":"SMS Brandname","KOL":"KOL / KOC","OFFLINE":"Cửa hàng (Offline)","WEB":"Website / SEO"},"n1Labels":{"MKT":"Chi phí Marketing","BH":"Chi phí Bán hàng","BRAND":"Chi phí Thương hiệu"},"missing":[],"source":"DỮ LIỆU DEMO (GUMAC) — hãy upload file Excel thật để thay thế","sheets":["2024","2025","2026 (01-05)"],"demo":true},"data":[{"m":"2024-01","n1":"MKT","n2":"Quảng cáo","k":"FB","ten":"GUMAC Kids","cp":128666000,"c":1},{"m":"2024-01","n1":"MKT","n2":"Quảng cáo","k":"TIKTOK","ten":"GUMAC Reels","cp":17193000,"c":1},{"m":"2024-01","n1":"MKT","n2":"Quảng cáo","k":"TIKTOK","ten":"GUMAC TikTok","cp":18224000,"c":1},{"m":"2024-01","n1":"MKT","n2":"Nội dung","k":"TIKTOK","ten":"GUMAC Live","cp":20540000,"c":1},{"m":"2024-01","n1":"BH","n2":"Khuyến mãi","k":"TIKTOKSHOP","ten":"Shop Mall","cp":13112000,"c":1},{"m":"2024-01","n1":"BH","n2":"Khuyến mãi","k":"TIKTOKSHOP","ten":"Shop chính","cp":8646000,"c":1},{"m":"2024-01","n1":"MKT","n2":"Công cụ / Phần mềm","k":"GG","ten":"Shopping","cp":19507000,"c":1},{"m":"2024-01","n1":"BH","n2":"Khuyến mãi","k":"ZALO","ten":"Zalo OA Broadcast","cp":5010000,"c":1},{"m":"2024-01","n1":"BH","n2":"Khuyến mãi","k":"SMS","ten":"SMS chăm sóc","cp":4076000,"c":1},{"m":"2024-01","n1":"BH","n2":"Khuyến mãi","k":"SMS","ten":"SMS khuyến mãi","cp":3606000,"c":1},{"m":"2024-01","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"KOC Linh","cp":40332000,"c":1},{"m":"2024-01","n1":"BH","n2":"Thiết kế","k":"OFFLINE","ten":"CH Cần Thơ","cp":31538000,"c":1},{"m":"2024-01","n1":"MKT","n2":"Công cụ / Phần mềm","k":"WEB","ten":"SEO Website","cp":2146000,"c":1},{"m":"2024-01","n1":"MKT","n2":"Công cụ / Phần mềm","k":"WEB","ten":"Email Automation","cp":2123000,"c":1},{"m":"2024-02","n1":"MKT","n2":"Nội dung","k":"FB","ten":"GUMAC Sale","cp":85365000,"c":1},{"m":"2024-02","n1":"MKT","n2":"Quảng cáo","k":"TIKTOK","ten":"GUMAC Reels","cp":15586000,"c":1},{"m":"2024-02","n1":"MKT","n2":"Nội dung","k":"TIKTOK","ten":"GUMAC TikTok","cp":15020000,"c":1},{"m":"2024-02","n1":"MKT","n2":"Nội dung","k":"TIKTOK","ten":"GUMAC Live","cp":10394000,"c":1},{"m":"2024-02","n1":"BH","n2":"Khuyến mãi","k":"TIKTOKSHOP","ten":"Shop Mall","cp":15118000,"c":1},{"m":"2024-02","n1":"MKT","n2":"Công cụ / Phần mềm","k":"GG","ten":"Shopping","cp":3569000,"c":1},{"m":"2024-02","n1":"MKT","n2":"Công cụ / Phần mềm","k":"GG","ten":"Search Brand","cp":5464000,"c":1},{"m":"2024-02","n1":"MKT","n2":"Công cụ / Phần mềm","k":"GG","ten":"GDN Remarketing","cp":4819000,"c":1},{"m":"2024-02","n1":"BH","n2":"Nội dung","k":"ZALO","ten":"Zalo OA Broadcast","cp":3572000,"c":1},{"m":"2024-02","n1":"BH","n2":"Khuyến mãi","k":"SMS","ten":"SMS chăm sóc","cp":5763000,"c":1},{"m":"2024-02","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"Beauty Trang","cp":15148000,"c":1},{"m":"2024-02","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"Influencer Mai","cp":11604000,"c":1},{"m":"2024-02","n1":"BH","n2":"Thiết kế","k":"OFFLINE","ten":"CH Phú Yên","cp":5714000,"c":1},{"m":"2024-02","n1":"BH","n2":"Sự kiện","k":"OFFLINE","ten":"CH Cần Thơ","cp":7376000,"c":1},{"m":"2024-02","n1":"BH","n2":"Sự kiện","k":"OFFLINE","ten":"CH Trà Vinh","cp":7473000,"c":1},{"m":"2024-02","n1":"MKT","n2":"Công cụ / Phần mềm","k":"WEB","ten":"SEO Website","cp":1957000,"c":1},{"m":"2024-02","n1":"MKT","n2":"Nội dung","k":"WEB","ten":"Email Automation","cp":1654000,"c":1},{"m":"2024-03","n1":"MKT","n2":"Nội dung","k":"FB","ten":"GUMAC Kids","cp":116600000,"c":1},{"m":"2024-03","n1":"MKT","n2":"Quảng cáo","k":"TIKTOK","ten":"GUMAC Reels","cp":45631000,"c":1},{"m":"2024-03","n1":"BH","n2":"Khuyến mãi","k":"TIKTOKSHOP","ten":"Shop chính","cp":24065000,"c":1},{"m":"2024-03","n1":"MKT","n2":"Công cụ / Phần mềm","k":"GG","ten":"Shopping","cp":22454000,"c":1},{"m":"2024-03","n1":"BH","n2":"Khuyến mãi","k":"ZALO","ten":"Zalo OA Broadcast","cp":6152000,"c":1},{"m":"2024-03","n1":"BH","n2":"Khuyến mãi","k":"SMS","ten":"SMS khuyến mãi","cp":4688000,"c":1},{"m":"2024-03","n1":"BH","n2":"Khuyến mãi","k":"SMS","ten":"SMS chăm sóc","cp":3582000,"c":1},{"m":"2024-03","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"KOC Linh","cp":31291000,"c":1},{"m":"2024-03","n1":"BH","n2":"Sự kiện","k":"OFFLINE","ten":"CH Quận 1","cp":9269000,"c":1},{"m":"2024-03","n1":"BH","n2":"Thiết kế","k":"OFFLINE","ten":"CH Cần Thơ","cp":9046000,"c":1},{"m":"2024-03","n1":"BH","n2":"Thiết kế","k":"OFFLINE","ten":"CH Phú Yên","cp":5209000,"c":1},{"m":"2024-03","n1":"MKT","n2":"Nội dung","k":"WEB","ten":"Email Automation","cp":4114000,"c":1},{"m":"2024-04","n1":"MKT","n2":"Nội dung","k":"FB","ten":"GUMAC Official","cp":141992000,"c":1},{"m":"2024-04","n1":"MKT","n2":"Quảng cáo","k":"TIKTOK","ten":"GUMAC Live","cp":24063000,"c":1},{"m":"2024-04","n1":"MKT","n2":"Quảng cáo","k":"TIKTOK","ten":"GUMAC TikTok","cp":28533000,"c":1},{"m":"2024-04","n1":"BH","n2":"Quảng cáo","k":"TIKTOKSHOP","ten":"Shop chính","cp":10601000,"c":1},{"m":"2024-04","n1":"BH","n2":"Khuyến mãi","k":"TIKTOKSHOP","ten":"Shop Mall","cp":13668000,"c":1},{"m":"2024-04","n1":"MKT","n2":"Quảng cáo","k":"GG","ten":"Search Brand","cp":8696000,"c":1},{"m":"2024-04","n1":"MKT","n2":"Quảng cáo","k":"GG","ten":"GDN Remarketing","cp":11215000,"c":1},{"m":"2024-04","n1":"BH","n2":"Nội dung","k":"ZALO","ten":"Zalo OA Broadcast","cp":6274000,"c":1},{"m":"2024-04","n1":"BH","n2":"Khuyến mãi","k":"SMS","ten":"SMS khuyến mãi","cp":3563000,"c":1},{"m":"2024-04","n1":"BH","n2":"Khuyến mãi","k":"SMS","ten":"SMS chăm sóc","cp":3636000,"c":1},{"m":"2024-04","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"Influencer Mai","cp":14666000,"c":1},{"m":"2024-04","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"KOC Linh","cp":19360000,"c":1},{"m":"2024-04","n1":"BH","n2":"Sự kiện","k":"OFFLINE","ten":"CH Quận 1","cp":27209000,"c":1},{"m":"2024-04","n1":"MKT","n2":"Công cụ / Phần mềm","k":"WEB","ten":"SEO Website","cp":5372000,"c":1},{"m":"2024-05","n1":"MKT","n2":"Quảng cáo","k":"FB","ten":"GUMAC Official","cp":41900000,"c":1},{"m":"2024-05","n1":"MKT","n2":"Thiết kế","k":"FB","ten":"GUMAC Đầm","cp":44006000,"c":1},{"m":"2024-05","n1":"MKT","n2":"Quảng cáo","k":"FB","ten":"GUMAC Kids","cp":32448000,"c":1},{"m":"2024-05","n1":"MKT","n2":"Nội dung","k":"TIKTOK","ten":"GUMAC Reels","cp":59117000,"c":1},{"m":"2024-05","n1":"BH","n2":"Khuyến mãi","k":"TIKTOKSHOP","ten":"Shop Mall","cp":29673000,"c":1},{"m":"2024-05","n1":"MKT","n2":"Quảng cáo","k":"GG","ten":"Shopping","cp":8130000,"c":1},{"m":"2024-05","n1":"MKT","n2":"Quảng cáo","k":"GG","ten":"GDN Remarketing","cp":8158000,"c":1},{"m":"2024-05","n1":"MKT","n2":"Quảng cáo","k":"GG","ten":"Search Brand","cp":4254000,"c":1},{"m":"2024-05","n1":"BH","n2":"Nội dung","k":"ZALO","ten":"Zalo OA Broadcast","cp":6311000,"c":1},{"m":"2024-05","n1":"BH","n2":"Khuyến mãi","k":"SMS","ten":"SMS khuyến mãi","cp":8071000,"c":1},{"m":"2024-05","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"KOC Hằng","cp":17066000,"c":1},{"m":"2024-05","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"Influencer Mai","cp":9749000,"c":1},{"m":"2024-05","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"KOC Linh","cp":16592000,"c":1},{"m":"2024-05","n1":"BH","n2":"Sự kiện","k":"OFFLINE","ten":"CH Phú Yên","cp":33791000,"c":1},{"m":"2024-05","n1":"MKT","n2":"Nội dung","k":"WEB","ten":"Email Automation","cp":5593000,"c":1},{"m":"2024-06","n1":"MKT","n2":"Nội dung","k":"FB","ten":"GUMAC Official","cp":196841000,"c":1},{"m":"2024-06","n1":"MKT","n2":"Nội dung","k":"TIKTOK","ten":"GUMAC TikTok","cp":28597000,"c":1},{"m":"2024-06","n1":"MKT","n2":"Quảng cáo","k":"TIKTOK","ten":"GUMAC Live","cp":35497000,"c":1},{"m":"2024-06","n1":"BH","n2":"Quảng cáo","k":"TIKTOKSHOP","ten":"Shop chính","cp":16010000,"c":1},{"m":"2024-06","n1":"BH","n2":"Khuyến mãi","k":"TIKTOKSHOP","ten":"Shop Mall","cp":13810000,"c":1},{"m":"2024-06","n1":"MKT","n2":"Quảng cáo","k":"GG","ten":"Shopping","cp":16113000,"c":1},{"m":"2024-06","n1":"MKT","n2":"Quảng cáo","k":"GG","ten":"Search Brand","cp":10268000,"c":1},{"m":"2024-06","n1":"BH","n2":"Nội dung","k":"ZALO","ten":"Zalo OA Broadcast","cp":7744000,"c":1},{"m":"2024-06","n1":"BH","n2":"Khuyến mãi","k":"SMS","ten":"SMS chăm sóc","cp":12179000,"c":1},{"m":"2024-06","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"KOC Linh","cp":60179000,"c":1},{"m":"2024-06","n1":"BH","n2":"Thiết kế","k":"OFFLINE","ten":"CH Trà Vinh","cp":17803000,"c":1},{"m":"2024-06","n1":"BH","n2":"Sự kiện","k":"OFFLINE","ten":"CH Cần Thơ","cp":26128000,"c":1},{"m":"2024-06","n1":"MKT","n2":"Nội dung","k":"WEB","ten":"SEO Website","cp":7476000,"c":1},{"m":"2024-07","n1":"MKT","n2":"Quảng cáo","k":"FB","ten":"GUMAC Sale","cp":124137000,"c":1},{"m":"2024-07","n1":"MKT","n2":"Nội dung","k":"TIKTOK","ten":"GUMAC TikTok","cp":25187000,"c":1},{"m":"2024-07","n1":"MKT","n2":"Quảng cáo","k":"TIKTOK","ten":"GUMAC Live","cp":28137000,"c":1},{"m":"2024-07","n1":"BH","n2":"Khuyến mãi","k":"TIKTOKSHOP","ten":"Shop chính","cp":8714000,"c":1},{"m":"2024-07","n1":"BH","n2":"Khuyến mãi","k":"TIKTOKSHOP","ten":"Shop Mall","cp":13401000,"c":1},{"m":"2024-07","n1":"MKT","n2":"Quảng cáo","k":"GG","ten":"Search Brand","cp":6829000,"c":1},{"m":"2024-07","n1":"MKT","n2":"Công cụ / Phần mềm","k":"GG","ten":"Shopping","cp":9300000,"c":1},{"m":"2024-07","n1":"MKT","n2":"Công cụ / Phần mềm","k":"GG","ten":"GDN Remarketing","cp":5452000,"c":1},{"m":"2024-07","n1":"BH","n2":"Nội dung","k":"ZALO","ten":"Zalo OA Broadcast","cp":5226000,"c":1},{"m":"2024-07","n1":"BH","n2":"Khuyến mãi","k":"SMS","ten":"SMS khuyến mãi","cp":3740000,"c":1},{"m":"2024-07","n1":"BH","n2":"Khuyến mãi","k":"SMS","ten":"SMS chăm sóc","cp":4787000,"c":1},{"m":"2024-07","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"KOC Linh","cp":20592000,"c":1},{"m":"2024-07","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"Influencer Mai","cp":18453000,"c":1},{"m":"2024-07","n1":"BH","n2":"Thiết kế","k":"OFFLINE","ten":"CH Phú Yên","cp":12988000,"c":1},{"m":"2024-07","n1":"BH","n2":"Sự kiện","k":"OFFLINE","ten":"CH Trà Vinh","cp":15094000,"c":1},{"m":"2024-07","n1":"MKT","n2":"Nội dung","k":"WEB","ten":"Email Automation","cp":2669000,"c":1},{"m":"2024-07","n1":"MKT","n2":"Công cụ / Phần mềm","k":"WEB","ten":"SEO Website","cp":2570000,"c":1},{"m":"2024-08","n1":"MKT","n2":"Nội dung","k":"FB","ten":"GUMAC Official","cp":134858000,"c":1},{"m":"2024-08","n1":"MKT","n2":"Quảng cáo","k":"TIKTOK","ten":"GUMAC Live","cp":53994000,"c":1},{"m":"2024-08","n1":"BH","n2":"Quảng cáo","k":"TIKTOKSHOP","ten":"Shop Mall","cp":10855000,"c":1},{"m":"2024-08","n1":"BH","n2":"Quảng cáo","k":"TIKTOKSHOP","ten":"Shop chính","cp":14451000,"c":1},{"m":"2024-08","n1":"MKT","n2":"Công cụ / Phần mềm","k":"GG","ten":"Search Brand","cp":22646000,"c":1},{"m":"2024-08","n1":"BH","n2":"Khuyến mãi","k":"ZALO","ten":"Zalo OA Broadcast","cp":4931000,"c":1},{"m":"2024-08","n1":"BH","n2":"Khuyến mãi","k":"SMS","ten":"SMS khuyến mãi","cp":3863000,"c":1},{"m":"2024-08","n1":"BH","n2":"Khuyến mãi","k":"SMS","ten":"SMS chăm sóc","cp":4119000,"c":1},{"m":"2024-08","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"Beauty Trang","cp":15301000,"c":1},{"m":"2024-08","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"KOC Linh","cp":16070000,"c":1},{"m":"2024-08","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"Influencer Mai","cp":11157000,"c":1},{"m":"2024-08","n1":"BH","n2":"Sự kiện","k":"OFFLINE","ten":"CH Phú Yên","cp":8675000,"c":1},{"m":"2024-08","n1":"BH","n2":"Sự kiện","k":"OFFLINE","ten":"CH Quận 1","cp":12293000,"c":1},{"m":"2024-08","n1":"BH","n2":"Thiết kế","k":"OFFLINE","ten":"CH Trà Vinh","cp":7017000,"c":1},{"m":"2024-08","n1":"MKT","n2":"Nội dung","k":"WEB","ten":"SEO Website","cp":2590000,"c":1},{"m":"2024-08","n1":"MKT","n2":"Nội dung","k":"WEB","ten":"Email Automation","cp":2436000,"c":1},{"m":"2024-09","n1":"MKT","n2":"Thiết kế","k":"FB","ten":"GUMAC Đầm","cp":74105000,"c":1},{"m":"2024-09","n1":"MKT","n2":"Nội dung","k":"FB","ten":"GUMAC Kids","cp":38823000,"c":1},{"m":"2024-09","n1":"MKT","n2":"Nội dung","k":"TIKTOK","ten":"GUMAC Live","cp":26593000,"c":1},{"m":"2024-09","n1":"MKT","n2":"Quảng cáo","k":"TIKTOK","ten":"GUMAC Reels","cp":28027000,"c":1},{"m":"2024-09","n1":"BH","n2":"Khuyến mãi","k":"TIKTOKSHOP","ten":"Shop Mall","cp":10839000,"c":1},{"m":"2024-09","n1":"BH","n2":"Quảng cáo","k":"TIKTOKSHOP","ten":"Shop chính","cp":14073000,"c":1},{"m":"2024-09","n1":"MKT","n2":"Công cụ / Phần mềm","k":"GG","ten":"GDN Remarketing","cp":24247000,"c":1},{"m":"2024-09","n1":"BH","n2":"Khuyến mãi","k":"ZALO","ten":"Zalo OA Broadcast","cp":6165000,"c":1},{"m":"2024-09","n1":"BH","n2":"Khuyến mãi","k":"SMS","ten":"SMS chăm sóc","cp":3470000,"c":1},{"m":"2024-09","n1":"BH","n2":"Khuyến mãi","k":"SMS","ten":"SMS khuyến mãi","cp":3655000,"c":1},{"m":"2024-09","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"Influencer Mai","cp":20414000,"c":1},{"m":"2024-09","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"KOC Linh","cp":17636000,"c":1},{"m":"2024-09","n1":"BH","n2":"Sự kiện","k":"OFFLINE","ten":"CH Trà Vinh","cp":12184000,"c":1},{"m":"2024-09","n1":"BH","n2":"Sự kiện","k":"OFFLINE","ten":"CH Phú Yên","cp":22316000,"c":1},{"m":"2024-09","n1":"MKT","n2":"Công cụ / Phần mềm","k":"WEB","ten":"SEO Website","cp":5674000,"c":1},{"m":"2024-10","n1":"MKT","n2":"Thiết kế","k":"FB","ten":"GUMAC Official","cp":45477000,"c":1},{"m":"2024-10","n1":"MKT","n2":"Thiết kế","k":"FB","ten":"GUMAC Kids","cp":38996000,"c":1},{"m":"2024-10","n1":"MKT","n2":"Thiết kế","k":"FB","ten":"GUMAC Đầm","cp":42492000,"c":1},{"m":"2024-10","n1":"MKT","n2":"Quảng cáo","k":"TIKTOK","ten":"GUMAC Live","cp":64463000,"c":1},{"m":"2024-10","n1":"BH","n2":"Quảng cáo","k":"TIKTOKSHOP","ten":"Shop Mall","cp":19192000,"c":1},{"m":"2024-10","n1":"BH","n2":"Quảng cáo","k":"TIKTOKSHOP","ten":"Shop chính","cp":11846000,"c":1},{"m":"2024-10","n1":"MKT","n2":"Quảng cáo","k":"GG","ten":"GDN Remarketing","cp":13694000,"c":1},{"m":"2024-10","n1":"MKT","n2":"Công cụ / Phần mềm","k":"GG","ten":"Search Brand","cp":11938000,"c":1},{"m":"2024-10","n1":"BH","n2":"Khuyến mãi","k":"ZALO","ten":"Zalo OA Broadcast","cp":6665000,"c":1},{"m":"2024-10","n1":"BH","n2":"Khuyến mãi","k":"SMS","ten":"SMS khuyến mãi","cp":3853000,"c":1},{"m":"2024-10","n1":"BH","n2":"Khuyến mãi","k":"SMS","ten":"SMS chăm sóc","cp":3661000,"c":1},{"m":"2024-10","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"Influencer Mai","cp":12944000,"c":1},{"m":"2024-10","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"Beauty Trang","cp":16133000,"c":1},{"m":"2024-10","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"KOC Linh","cp":14072000,"c":1},{"m":"2024-10","n1":"BH","n2":"Thiết kế","k":"OFFLINE","ten":"CH Trà Vinh","cp":14938000,"c":1},{"m":"2024-10","n1":"BH","n2":"Sự kiện","k":"OFFLINE","ten":"CH Cần Thơ","cp":15874000,"c":1},{"m":"2024-10","n1":"MKT","n2":"Nội dung","k":"WEB","ten":"SEO Website","cp":2211000,"c":1},{"m":"2024-10","n1":"MKT","n2":"Nội dung","k":"WEB","ten":"Email Automation","cp":3280000,"c":1},{"m":"2024-11","n1":"MKT","n2":"Nội dung","k":"FB","ten":"GUMAC Kids","cp":80653000,"c":1},{"m":"2024-11","n1":"MKT","n2":"Nội dung","k":"FB","ten":"GUMAC Đầm","cp":63340000,"c":1},{"m":"2024-11","n1":"MKT","n2":"Thiết kế","k":"FB","ten":"GUMAC Official","cp":66014000,"c":1},{"m":"2024-11","n1":"MKT","n2":"Quảng cáo","k":"TIKTOK","ten":"GUMAC Live","cp":37506000,"c":1},{"m":"2024-11","n1":"MKT","n2":"Nội dung","k":"TIKTOK","ten":"GUMAC Reels","cp":22866000,"c":1},{"m":"2024-11","n1":"MKT","n2":"Nội dung","k":"TIKTOK","ten":"GUMAC TikTok","cp":25555000,"c":1},{"m":"2024-11","n1":"BH","n2":"Khuyến mãi","k":"TIKTOKSHOP","ten":"Shop Mall","cp":20242000,"c":1},{"m":"2024-11","n1":"BH","n2":"Khuyến mãi","k":"TIKTOKSHOP","ten":"Shop chính","cp":15718000,"c":1},{"m":"2024-11","n1":"MKT","n2":"Quảng cáo","k":"GG","ten":"Search Brand","cp":16838000,"c":1},{"m":"2024-11","n1":"MKT","n2":"Quảng cáo","k":"GG","ten":"GDN Remarketing","cp":12869000,"c":1},{"m":"2024-11","n1":"BH","n2":"Khuyến mãi","k":"ZALO","ten":"Zalo OA Broadcast","cp":7960000,"c":1},{"m":"2024-11","n1":"BH","n2":"Khuyến mãi","k":"SMS","ten":"SMS khuyến mãi","cp":13272000,"c":1},{"m":"2024-11","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"KOC Linh","cp":20615000,"c":1},{"m":"2024-11","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"Beauty Trang","cp":16220000,"c":1},{"m":"2024-11","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"KOC Hằng","cp":17724000,"c":1},{"m":"2024-11","n1":"BH","n2":"Thiết kế","k":"OFFLINE","ten":"CH Phú Yên","cp":18951000,"c":1},{"m":"2024-11","n1":"BH","n2":"Sự kiện","k":"OFFLINE","ten":"CH Trà Vinh","cp":15581000,"c":1},{"m":"2024-11","n1":"BH","n2":"Sự kiện","k":"OFFLINE","ten":"CH Cần Thơ","cp":13832000,"c":1},{"m":"2024-11","n1":"MKT","n2":"Nội dung","k":"WEB","ten":"SEO Website","cp":7034000,"c":1},{"m":"2024-12","n1":"MKT","n2":"Nội dung","k":"FB","ten":"GUMAC Official","cp":170733000,"c":1},{"m":"2024-12","n1":"MKT","n2":"Nội dung","k":"TIKTOK","ten":"GUMAC TikTok","cp":33888000,"c":1},{"m":"2024-12","n1":"MKT","n2":"Nội dung","k":"TIKTOK","ten":"GUMAC Live","cp":23036000,"c":1},{"m":"2024-12","n1":"MKT","n2":"Quảng cáo","k":"TIKTOK","ten":"GUMAC Reels","cp":28207000,"c":1},{"m":"2024-12","n1":"BH","n2":"Quảng cáo","k":"TIKTOKSHOP","ten":"Shop chính","cp":21785000,"c":1},{"m":"2024-12","n1":"BH","n2":"Quảng cáo","k":"TIKTOKSHOP","ten":"Shop Mall","cp":16949000,"c":1},{"m":"2024-12","n1":"MKT","n2":"Quảng cáo","k":"GG","ten":"Search Brand","cp":9382000,"c":1},{"m":"2024-12","n1":"MKT","n2":"Quảng cáo","k":"GG","ten":"GDN Remarketing","cp":11252000,"c":1},{"m":"2024-12","n1":"MKT","n2":"Công cụ / Phần mềm","k":"GG","ten":"Shopping","cp":9791000,"c":1},{"m":"2024-12","n1":"BH","n2":"Nội dung","k":"ZALO","ten":"Zalo OA Broadcast","cp":9559000,"c":1},{"m":"2024-12","n1":"BH","n2":"Khuyến mãi","k":"SMS","ten":"SMS chăm sóc","cp":6445000,"c":1},{"m":"2024-12","n1":"BH","n2":"Khuyến mãi","k":"SMS","ten":"SMS khuyến mãi","cp":7081000,"c":1},{"m":"2024-12","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"KOC Hằng","cp":65879000,"c":1},{"m":"2024-12","n1":"BH","n2":"Thiết kế","k":"OFFLINE","ten":"CH Phú Yên","cp":16280000,"c":1},{"m":"2024-12","n1":"BH","n2":"Thiết kế","k":"OFFLINE","ten":"CH Trà Vinh","cp":14456000,"c":1},{"m":"2024-12","n1":"BH","n2":"Thiết kế","k":"OFFLINE","ten":"CH Quận 1","cp":15547000,"c":1},{"m":"2024-12","n1":"MKT","n2":"Nội dung","k":"WEB","ten":"Email Automation","cp":6556000,"c":1},{"m":"2025-01","n1":"MKT","n2":"Thiết kế","k":"FB","ten":"GUMAC Official","cp":125001000,"c":1},{"m":"2025-01","n1":"MKT","n2":"Nội dung","k":"TIKTOK","ten":"GUMAC TikTok","cp":24221000,"c":1},{"m":"2025-01","n1":"MKT","n2":"Nội dung","k":"TIKTOK","ten":"GUMAC Reels","cp":22998000,"c":1},{"m":"2025-01","n1":"MKT","n2":"Quảng cáo","k":"TIKTOK","ten":"GUMAC Live","cp":20381000,"c":1},{"m":"2025-01","n1":"BH","n2":"Khuyến mãi","k":"TIKTOKSHOP","ten":"Shop Mall","cp":13148000,"c":1},{"m":"2025-01","n1":"BH","n2":"Khuyến mãi","k":"TIKTOKSHOP","ten":"Shop chính","cp":14625000,"c":1},{"m":"2025-01","n1":"MKT","n2":"Công cụ / Phần mềm","k":"GG","ten":"GDN Remarketing","cp":14069000,"c":1},{"m":"2025-01","n1":"MKT","n2":"Quảng cáo","k":"GG","ten":"Shopping","cp":12025000,"c":1},{"m":"2025-01","n1":"BH","n2":"Khuyến mãi","k":"ZALO","ten":"Zalo OA Broadcast","cp":6352000,"c":1},{"m":"2025-01","n1":"BH","n2":"Khuyến mãi","k":"SMS","ten":"SMS khuyến mãi","cp":9950000,"c":1},{"m":"2025-01","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"Beauty Trang","cp":17584000,"c":1},{"m":"2025-01","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"Influencer Mai","cp":12025000,"c":1},{"m":"2025-01","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"KOC Linh","cp":15479000,"c":1},{"m":"2025-01","n1":"BH","n2":"Sự kiện","k":"OFFLINE","ten":"CH Trà Vinh","cp":10469000,"c":1},{"m":"2025-01","n1":"BH","n2":"Sự kiện","k":"OFFLINE","ten":"CH Phú Yên","cp":8096000,"c":1},{"m":"2025-01","n1":"BH","n2":"Thiết kế","k":"OFFLINE","ten":"CH Quận 1","cp":11246000,"c":1},{"m":"2025-01","n1":"MKT","n2":"Nội dung","k":"WEB","ten":"SEO Website","cp":3810000,"c":1},{"m":"2025-01","n1":"MKT","n2":"Nội dung","k":"WEB","ten":"Email Automation","cp":2547000,"c":1},{"m":"2025-02","n1":"MKT","n2":"Thiết kế","k":"FB","ten":"GUMAC Sale","cp":57996000,"c":1},{"m":"2025-02","n1":"MKT","n2":"Thiết kế","k":"FB","ten":"GUMAC Đầm","cp":51727000,"c":1},{"m":"2025-02","n1":"MKT","n2":"Nội dung","k":"TIKTOK","ten":"GUMAC TikTok","cp":45302000,"c":1},{"m":"2025-02","n1":"BH","n2":"Khuyến mãi","k":"TIKTOKSHOP","ten":"Shop Mall","cp":9071000,"c":1},{"m":"2025-02","n1":"BH","n2":"Quảng cáo","k":"TIKTOKSHOP","ten":"Shop chính","cp":9183000,"c":1},{"m":"2025-02","n1":"MKT","n2":"Công cụ / Phần mềm","k":"GG","ten":"Shopping","cp":8324000,"c":1},{"m":"2025-02","n1":"MKT","n2":"Công cụ / Phần mềm","k":"GG","ten":"GDN Remarketing","cp":8279000,"c":1},{"m":"2025-02","n1":"BH","n2":"Nội dung","k":"ZALO","ten":"Zalo OA Broadcast","cp":5112000,"c":1},{"m":"2025-02","n1":"BH","n2":"Khuyến mãi","k":"SMS","ten":"SMS chăm sóc","cp":3435000,"c":1},{"m":"2025-02","n1":"BH","n2":"Khuyến mãi","k":"SMS","ten":"SMS khuyến mãi","cp":3357000,"c":1},{"m":"2025-02","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"KOC Linh","cp":8956000,"c":1},{"m":"2025-02","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"Beauty Trang","cp":15628000,"c":1},{"m":"2025-02","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"KOC Hằng","cp":10592000,"c":1},{"m":"2025-02","n1":"BH","n2":"Sự kiện","k":"OFFLINE","ten":"CH Quận 1","cp":8800000,"c":1},{"m":"2025-02","n1":"BH","n2":"Sự kiện","k":"OFFLINE","ten":"CH Phú Yên","cp":14389000,"c":1},{"m":"2025-02","n1":"MKT","n2":"Nội dung","k":"WEB","ten":"Email Automation","cp":1790000,"c":1},{"m":"2025-02","n1":"MKT","n2":"Nội dung","k":"WEB","ten":"SEO Website","cp":2010000,"c":1},{"m":"2025-03","n1":"MKT","n2":"Nội dung","k":"FB","ten":"GUMAC Official","cp":56719000,"c":1},{"m":"2025-03","n1":"MKT","n2":"Quảng cáo","k":"FB","ten":"GUMAC Kids","cp":86593000,"c":1},{"m":"2025-03","n1":"MKT","n2":"Quảng cáo","k":"TIKTOK","ten":"GUMAC TikTok","cp":28865000,"c":1},{"m":"2025-03","n1":"MKT","n2":"Quảng cáo","k":"TIKTOK","ten":"GUMAC Reels","cp":33869000,"c":1},{"m":"2025-03","n1":"BH","n2":"Khuyến mãi","k":"TIKTOKSHOP","ten":"Shop Mall","cp":25151000,"c":1},{"m":"2025-03","n1":"MKT","n2":"Quảng cáo","k":"GG","ten":"Shopping","cp":5888000,"c":1},{"m":"2025-03","n1":"MKT","n2":"Công cụ / Phần mềm","k":"GG","ten":"Search Brand","cp":8065000,"c":1},{"m":"2025-03","n1":"MKT","n2":"Quảng cáo","k":"GG","ten":"GDN Remarketing","cp":6927000,"c":1},{"m":"2025-03","n1":"BH","n2":"Nội dung","k":"ZALO","ten":"Zalo OA Broadcast","cp":5860000,"c":1},{"m":"2025-03","n1":"BH","n2":"Khuyến mãi","k":"SMS","ten":"SMS khuyến mãi","cp":3384000,"c":1},{"m":"2025-03","n1":"BH","n2":"Khuyến mãi","k":"SMS","ten":"SMS chăm sóc","cp":6129000,"c":1},{"m":"2025-03","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"Influencer Mai","cp":23304000,"c":1},{"m":"2025-03","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"KOC Hằng","cp":21602000,"c":1},{"m":"2025-03","n1":"BH","n2":"Thiết kế","k":"OFFLINE","ten":"CH Phú Yên","cp":12159000,"c":1},{"m":"2025-03","n1":"BH","n2":"Thiết kế","k":"OFFLINE","ten":"CH Cần Thơ","cp":18567000,"c":1},{"m":"2025-03","n1":"MKT","n2":"Công cụ / Phần mềm","k":"WEB","ten":"SEO Website","cp":2221000,"c":1},{"m":"2025-03","n1":"MKT","n2":"Nội dung","k":"WEB","ten":"Email Automation","cp":2306000,"c":1},{"m":"2025-04","n1":"MKT","n2":"Thiết kế","k":"FB","ten":"GUMAC Kids","cp":140469000,"c":1},{"m":"2025-04","n1":"MKT","n2":"Quảng cáo","k":"TIKTOK","ten":"GUMAC TikTok","cp":21196000,"c":1},{"m":"2025-04","n1":"MKT","n2":"Quảng cáo","k":"TIKTOK","ten":"GUMAC Reels","cp":23332000,"c":1},{"m":"2025-04","n1":"MKT","n2":"Nội dung","k":"TIKTOK","ten":"GUMAC Live","cp":25579000,"c":1},{"m":"2025-04","n1":"BH","n2":"Khuyến mãi","k":"TIKTOKSHOP","ten":"Shop chính","cp":11852000,"c":1},{"m":"2025-04","n1":"BH","n2":"Khuyến mãi","k":"TIKTOKSHOP","ten":"Shop Mall","cp":16115000,"c":1},{"m":"2025-04","n1":"MKT","n2":"Quảng cáo","k":"GG","ten":"Shopping","cp":16153000,"c":1},{"m":"2025-04","n1":"MKT","n2":"Công cụ / Phần mềm","k":"GG","ten":"GDN Remarketing","cp":12381000,"c":1},{"m":"2025-04","n1":"BH","n2":"Khuyến mãi","k":"ZALO","ten":"Zalo OA Broadcast","cp":8063000,"c":1},{"m":"2025-04","n1":"BH","n2":"Khuyến mãi","k":"SMS","ten":"SMS khuyến mãi","cp":6872000,"c":1},{"m":"2025-04","n1":"BH","n2":"Khuyến mãi","k":"SMS","ten":"SMS chăm sóc","cp":3891000,"c":1},{"m":"2025-04","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"Influencer Mai","cp":16963000,"c":1},{"m":"2025-04","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"Beauty Trang","cp":18060000,"c":1},{"m":"2025-04","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"KOC Linh","cp":10316000,"c":1},{"m":"2025-04","n1":"BH","n2":"Thiết kế","k":"OFFLINE","ten":"CH Phú Yên","cp":12727000,"c":1},{"m":"2025-04","n1":"BH","n2":"Thiết kế","k":"OFFLINE","ten":"CH Cần Thơ","cp":12632000,"c":1},{"m":"2025-04","n1":"BH","n2":"Sự kiện","k":"OFFLINE","ten":"CH Quận 1","cp":11310000,"c":1},{"m":"2025-04","n1":"MKT","n2":"Công cụ / Phần mềm","k":"WEB","ten":"Email Automation","cp":5262000,"c":1},{"m":"2025-05","n1":"MKT","n2":"Thiết kế","k":"FB","ten":"GUMAC Sale","cp":38698000,"c":1},{"m":"2025-05","n1":"MKT","n2":"Nội dung","k":"FB","ten":"GUMAC Đầm","cp":55023000,"c":1},{"m":"2025-05","n1":"MKT","n2":"Thiết kế","k":"FB","ten":"GUMAC Kids","cp":47885000,"c":1},{"m":"2025-05","n1":"MKT","n2":"Nội dung","k":"TIKTOK","ten":"GUMAC Live","cp":73098000,"c":1},{"m":"2025-05","n1":"BH","n2":"Quảng cáo","k":"TIKTOKSHOP","ten":"Shop chính","cp":14656000,"c":1},{"m":"2025-05","n1":"BH","n2":"Khuyến mãi","k":"TIKTOKSHOP","ten":"Shop Mall","cp":17394000,"c":1},{"m":"2025-05","n1":"MKT","n2":"Công cụ / Phần mềm","k":"GG","ten":"Shopping","cp":9037000,"c":1},{"m":"2025-05","n1":"MKT","n2":"Quảng cáo","k":"GG","ten":"GDN Remarketing","cp":7691000,"c":1},{"m":"2025-05","n1":"MKT","n2":"Quảng cáo","k":"GG","ten":"Search Brand","cp":7254000,"c":1},{"m":"2025-05","n1":"BH","n2":"Khuyến mãi","k":"ZALO","ten":"Zalo OA Broadcast","cp":7750000,"c":1},{"m":"2025-05","n1":"BH","n2":"Khuyến mãi","k":"SMS","ten":"SMS chăm sóc","cp":9149000,"c":1},{"m":"2025-05","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"Influencer Mai","cp":50844000,"c":1},{"m":"2025-05","n1":"BH","n2":"Sự kiện","k":"OFFLINE","ten":"CH Trà Vinh","cp":34686000,"c":1},{"m":"2025-05","n1":"MKT","n2":"Công cụ / Phần mềm","k":"WEB","ten":"SEO Website","cp":5470000,"c":1},{"m":"2025-06","n1":"MKT","n2":"Quảng cáo","k":"FB","ten":"GUMAC Sale","cp":212610000,"c":1},{"m":"2025-06","n1":"MKT","n2":"Nội dung","k":"TIKTOK","ten":"GUMAC TikTok","cp":30902000,"c":1},{"m":"2025-06","n1":"MKT","n2":"Quảng cáo","k":"TIKTOK","ten":"GUMAC Reels","cp":29062000,"c":1},{"m":"2025-06","n1":"MKT","n2":"Quảng cáo","k":"TIKTOK","ten":"GUMAC Live","cp":34004000,"c":1},{"m":"2025-06","n1":"BH","n2":"Khuyến mãi","k":"TIKTOKSHOP","ten":"Shop Mall","cp":26139000,"c":1},{"m":"2025-06","n1":"BH","n2":"Khuyến mãi","k":"TIKTOKSHOP","ten":"Shop chính","cp":16401000,"c":1},{"m":"2025-06","n1":"MKT","n2":"Công cụ / Phần mềm","k":"GG","ten":"Shopping","cp":34271000,"c":1},{"m":"2025-06","n1":"BH","n2":"Nội dung","k":"ZALO","ten":"Zalo OA Broadcast","cp":8335000,"c":1},{"m":"2025-06","n1":"BH","n2":"Khuyến mãi","k":"SMS","ten":"SMS khuyến mãi","cp":6402000,"c":1},{"m":"2025-06","n1":"BH","n2":"Khuyến mãi","k":"SMS","ten":"SMS chăm sóc","cp":4913000,"c":1},{"m":"2025-06","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"KOC Hằng","cp":16941000,"c":1},{"m":"2025-06","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"Influencer Mai","cp":22367000,"c":1},{"m":"2025-06","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"Beauty Trang","cp":16749000,"c":1},{"m":"2025-06","n1":"BH","n2":"Sự kiện","k":"OFFLINE","ten":"CH Cần Thơ","cp":27985000,"c":1},{"m":"2025-06","n1":"BH","n2":"Thiết kế","k":"OFFLINE","ten":"CH Trà Vinh","cp":23097000,"c":1},{"m":"2025-06","n1":"MKT","n2":"Nội dung","k":"WEB","ten":"SEO Website","cp":6931000,"c":1},{"m":"2025-07","n1":"MKT","n2":"Nội dung","k":"FB","ten":"GUMAC Official","cp":56543000,"c":1},{"m":"2025-07","n1":"MKT","n2":"Thiết kế","k":"FB","ten":"GUMAC Kids","cp":47767000,"c":1},{"m":"2025-07","n1":"MKT","n2":"Quảng cáo","k":"FB","ten":"GUMAC Sale","cp":63437000,"c":1},{"m":"2025-07","n1":"MKT","n2":"Quảng cáo","k":"TIKTOK","ten":"GUMAC Live","cp":26262000,"c":1},{"m":"2025-07","n1":"MKT","n2":"Quảng cáo","k":"TIKTOK","ten":"GUMAC Reels","cp":20184000,"c":1},{"m":"2025-07","n1":"MKT","n2":"Nội dung","k":"TIKTOK","ten":"GUMAC TikTok","cp":27574000,"c":1},{"m":"2025-07","n1":"BH","n2":"Quảng cáo","k":"TIKTOKSHOP","ten":"Shop chính","cp":15156000,"c":1},{"m":"2025-07","n1":"BH","n2":"Khuyến mãi","k":"TIKTOKSHOP","ten":"Shop Mall","cp":17401000,"c":1},{"m":"2025-07","n1":"MKT","n2":"Quảng cáo","k":"GG","ten":"GDN Remarketing","cp":13089000,"c":1},{"m":"2025-07","n1":"MKT","n2":"Quảng cáo","k":"GG","ten":"Shopping","cp":9203000,"c":1},{"m":"2025-07","n1":"BH","n2":"Nội dung","k":"ZALO","ten":"Zalo OA Broadcast","cp":7221000,"c":1},{"m":"2025-07","n1":"BH","n2":"Khuyến mãi","k":"SMS","ten":"SMS chăm sóc","cp":4260000,"c":1},{"m":"2025-07","n1":"BH","n2":"Khuyến mãi","k":"SMS","ten":"SMS khuyến mãi","cp":4024000,"c":1},{"m":"2025-07","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"KOC Hằng","cp":13095000,"c":1},{"m":"2025-07","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"Beauty Trang","cp":18304000,"c":1},{"m":"2025-07","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"Influencer Mai","cp":18939000,"c":1},{"m":"2025-07","n1":"BH","n2":"Thiết kế","k":"OFFLINE","ten":"CH Cần Thơ","cp":15707000,"c":1},{"m":"2025-07","n1":"BH","n2":"Thiết kế","k":"OFFLINE","ten":"CH Trà Vinh","cp":19541000,"c":1},{"m":"2025-07","n1":"MKT","n2":"Công cụ / Phần mềm","k":"WEB","ten":"Email Automation","cp":2232000,"c":1},{"m":"2025-07","n1":"MKT","n2":"Công cụ / Phần mềm","k":"WEB","ten":"SEO Website","cp":2979000,"c":1},{"m":"2025-08","n1":"MKT","n2":"Nội dung","k":"FB","ten":"GUMAC Sale","cp":132808000,"c":1},{"m":"2025-08","n1":"MKT","n2":"Quảng cáo","k":"TIKTOK","ten":"GUMAC Live","cp":58476000,"c":1},{"m":"2025-08","n1":"BH","n2":"Quảng cáo","k":"TIKTOKSHOP","ten":"Shop chính","cp":9102000,"c":1},{"m":"2025-08","n1":"BH","n2":"Khuyến mãi","k":"TIKTOKSHOP","ten":"Shop Mall","cp":15806000,"c":1},{"m":"2025-08","n1":"MKT","n2":"Công cụ / Phần mềm","k":"GG","ten":"Shopping","cp":21101000,"c":1},{"m":"2025-08","n1":"BH","n2":"Nội dung","k":"ZALO","ten":"Zalo OA Broadcast","cp":7149000,"c":1},{"m":"2025-08","n1":"BH","n2":"Khuyến mãi","k":"SMS","ten":"SMS khuyến mãi","cp":10222000,"c":1},{"m":"2025-08","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"KOC Linh","cp":39300000,"c":1},{"m":"2025-08","n1":"BH","n2":"Sự kiện","k":"OFFLINE","ten":"CH Phú Yên","cp":16977000,"c":1},{"m":"2025-08","n1":"BH","n2":"Sự kiện","k":"OFFLINE","ten":"CH Cần Thơ","cp":16895000,"c":1},{"m":"2025-08","n1":"MKT","n2":"Nội dung","k":"WEB","ten":"SEO Website","cp":5623000,"c":1},{"m":"2025-09","n1":"MKT","n2":"Thiết kế","k":"FB","ten":"GUMAC Sale","cp":42576000,"c":1},{"m":"2025-09","n1":"MKT","n2":"Quảng cáo","k":"FB","ten":"GUMAC Official","cp":44463000,"c":1},{"m":"2025-09","n1":"MKT","n2":"Quảng cáo","k":"FB","ten":"GUMAC Kids","cp":59509000,"c":1},{"m":"2025-09","n1":"MKT","n2":"Nội dung","k":"TIKTOK","ten":"GUMAC Live","cp":23794000,"c":1},{"m":"2025-09","n1":"MKT","n2":"Nội dung","k":"TIKTOK","ten":"GUMAC Reels","cp":26638000,"c":1},{"m":"2025-09","n1":"MKT","n2":"Quảng cáo","k":"TIKTOK","ten":"GUMAC TikTok","cp":23254000,"c":1},{"m":"2025-09","n1":"BH","n2":"Khuyến mãi","k":"TIKTOKSHOP","ten":"Shop Mall","cp":15359000,"c":1},{"m":"2025-09","n1":"BH","n2":"Quảng cáo","k":"TIKTOKSHOP","ten":"Shop chính","cp":13607000,"c":1},{"m":"2025-09","n1":"MKT","n2":"Quảng cáo","k":"GG","ten":"Search Brand","cp":12618000,"c":1},{"m":"2025-09","n1":"MKT","n2":"Công cụ / Phần mềm","k":"GG","ten":"GDN Remarketing","cp":11865000,"c":1},{"m":"2025-09","n1":"BH","n2":"Nội dung","k":"ZALO","ten":"Zalo OA Broadcast","cp":7001000,"c":1},{"m":"2025-09","n1":"BH","n2":"Khuyến mãi","k":"SMS","ten":"SMS chăm sóc","cp":3974000,"c":1},{"m":"2025-09","n1":"BH","n2":"Khuyến mãi","k":"SMS","ten":"SMS khuyến mãi","cp":4961000,"c":1},{"m":"2025-09","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"KOC Hằng","cp":47264000,"c":1},{"m":"2025-09","n1":"BH","n2":"Sự kiện","k":"OFFLINE","ten":"CH Trà Vinh","cp":15334000,"c":1},{"m":"2025-09","n1":"BH","n2":"Thiết kế","k":"OFFLINE","ten":"CH Cần Thơ","cp":11093000,"c":1},{"m":"2025-09","n1":"BH","n2":"Sự kiện","k":"OFFLINE","ten":"CH Phú Yên","cp":14187000,"c":1},{"m":"2025-09","n1":"MKT","n2":"Công cụ / Phần mềm","k":"WEB","ten":"Email Automation","cp":2258000,"c":1},{"m":"2025-09","n1":"MKT","n2":"Nội dung","k":"WEB","ten":"SEO Website","cp":3340000,"c":1},{"m":"2025-10","n1":"MKT","n2":"Thiết kế","k":"FB","ten":"GUMAC Sale","cp":57401000,"c":1},{"m":"2025-10","n1":"MKT","n2":"Thiết kế","k":"FB","ten":"GUMAC Đầm","cp":49548000,"c":1},{"m":"2025-10","n1":"MKT","n2":"Quảng cáo","k":"FB","ten":"GUMAC Kids","cp":40606000,"c":1},{"m":"2025-10","n1":"MKT","n2":"Quảng cáo","k":"TIKTOK","ten":"GUMAC Reels","cp":35038000,"c":1},{"m":"2025-10","n1":"MKT","n2":"Nội dung","k":"TIKTOK","ten":"GUMAC Live","cp":32274000,"c":1},{"m":"2025-10","n1":"BH","n2":"Quảng cáo","k":"TIKTOKSHOP","ten":"Shop Mall","cp":32533000,"c":1},{"m":"2025-10","n1":"MKT","n2":"Công cụ / Phần mềm","k":"GG","ten":"Search Brand","cp":17243000,"c":1},{"m":"2025-10","n1":"MKT","n2":"Quảng cáo","k":"GG","ten":"GDN Remarketing","cp":9957000,"c":1},{"m":"2025-10","n1":"BH","n2":"Nội dung","k":"ZALO","ten":"Zalo OA Broadcast","cp":7806000,"c":1},{"m":"2025-10","n1":"BH","n2":"Khuyến mãi","k":"SMS","ten":"SMS chăm sóc","cp":10687000,"c":1},{"m":"2025-10","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"Beauty Trang","cp":55365000,"c":1},{"m":"2025-10","n1":"BH","n2":"Thiết kế","k":"OFFLINE","ten":"CH Phú Yên","cp":12351000,"c":1},{"m":"2025-10","n1":"BH","n2":"Sự kiện","k":"OFFLINE","ten":"CH Cần Thơ","cp":12402000,"c":1},{"m":"2025-10","n1":"BH","n2":"Thiết kế","k":"OFFLINE","ten":"CH Trà Vinh","cp":19673000,"c":1},{"m":"2025-10","n1":"MKT","n2":"Nội dung","k":"WEB","ten":"Email Automation","cp":3410000,"c":1},{"m":"2025-10","n1":"MKT","n2":"Công cụ / Phần mềm","k":"WEB","ten":"SEO Website","cp":3427000,"c":1},{"m":"2025-11","n1":"MKT","n2":"Quảng cáo","k":"FB","ten":"GUMAC Sale","cp":78849000,"c":1},{"m":"2025-11","n1":"MKT","n2":"Thiết kế","k":"FB","ten":"GUMAC Đầm","cp":90040000,"c":1},{"m":"2025-11","n1":"MKT","n2":"Thiết kế","k":"FB","ten":"GUMAC Official","cp":74687000,"c":1},{"m":"2025-11","n1":"MKT","n2":"Quảng cáo","k":"TIKTOK","ten":"GUMAC TikTok","cp":41658000,"c":1},{"m":"2025-11","n1":"MKT","n2":"Nội dung","k":"TIKTOK","ten":"GUMAC Reels","cp":62361000,"c":1},{"m":"2025-11","n1":"BH","n2":"Quảng cáo","k":"TIKTOKSHOP","ten":"Shop Mall","cp":37536000,"c":1},{"m":"2025-11","n1":"MKT","n2":"Công cụ / Phần mềm","k":"GG","ten":"GDN Remarketing","cp":14033000,"c":1},{"m":"2025-11","n1":"MKT","n2":"Quảng cáo","k":"GG","ten":"Shopping","cp":22648000,"c":1},{"m":"2025-11","n1":"BH","n2":"Nội dung","k":"ZALO","ten":"Zalo OA Broadcast","cp":8813000,"c":1},{"m":"2025-11","n1":"BH","n2":"Khuyến mãi","k":"SMS","ten":"SMS chăm sóc","cp":6961000,"c":1},{"m":"2025-11","n1":"BH","n2":"Khuyến mãi","k":"SMS","ten":"SMS khuyến mãi","cp":4831000,"c":1},{"m":"2025-11","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"Beauty Trang","cp":63429000,"c":1},{"m":"2025-11","n1":"BH","n2":"Thiết kế","k":"OFFLINE","ten":"CH Quận 1","cp":47290000,"c":1},{"m":"2025-11","n1":"MKT","n2":"Công cụ / Phần mềm","k":"WEB","ten":"SEO Website","cp":4244000,"c":1},{"m":"2025-11","n1":"MKT","n2":"Nội dung","k":"WEB","ten":"Email Automation","cp":3189000,"c":1},{"m":"2025-12","n1":"MKT","n2":"Nội dung","k":"FB","ten":"GUMAC Sale","cp":110907000,"c":1},{"m":"2025-12","n1":"MKT","n2":"Quảng cáo","k":"FB","ten":"GUMAC Kids","cp":101285000,"c":1},{"m":"2025-12","n1":"MKT","n2":"Nội dung","k":"TIKTOK","ten":"GUMAC Reels","cp":48138000,"c":1},{"m":"2025-12","n1":"MKT","n2":"Nội dung","k":"TIKTOK","ten":"GUMAC TikTok","cp":26815000,"c":1},{"m":"2025-12","n1":"MKT","n2":"Quảng cáo","k":"TIKTOK","ten":"GUMAC Live","cp":35638000,"c":1},{"m":"2025-12","n1":"BH","n2":"Quảng cáo","k":"TIKTOKSHOP","ten":"Shop Mall","cp":42353000,"c":1},{"m":"2025-12","n1":"MKT","n2":"Công cụ / Phần mềm","k":"GG","ten":"Shopping","cp":13141000,"c":1},{"m":"2025-12","n1":"MKT","n2":"Công cụ / Phần mềm","k":"GG","ten":"Search Brand","cp":13007000,"c":1},{"m":"2025-12","n1":"MKT","n2":"Quảng cáo","k":"GG","ten":"GDN Remarketing","cp":15964000,"c":1},{"m":"2025-12","n1":"BH","n2":"Nội dung","k":"ZALO","ten":"Zalo OA Broadcast","cp":11612000,"c":1},{"m":"2025-12","n1":"BH","n2":"Khuyến mãi","k":"SMS","ten":"SMS chăm sóc","cp":12222000,"c":1},{"m":"2025-12","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"Beauty Trang","cp":28992000,"c":1},{"m":"2025-12","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"KOC Linh","cp":19696000,"c":1},{"m":"2025-12","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"KOC Hằng","cp":22439000,"c":1},{"m":"2025-12","n1":"BH","n2":"Thiết kế","k":"OFFLINE","ten":"CH Cần Thơ","cp":22579000,"c":1},{"m":"2025-12","n1":"BH","n2":"Thiết kế","k":"OFFLINE","ten":"CH Trà Vinh","cp":24539000,"c":1},{"m":"2025-12","n1":"MKT","n2":"Công cụ / Phần mềm","k":"WEB","ten":"Email Automation","cp":5648000,"c":1},{"m":"2025-12","n1":"MKT","n2":"Nội dung","k":"WEB","ten":"SEO Website","cp":4459000,"c":1},{"m":"2026-01","n1":"MKT","n2":"Nội dung","k":"FB","ten":"GUMAC Sale","cp":46324000,"c":1},{"m":"2026-01","n1":"MKT","n2":"Nội dung","k":"FB","ten":"GUMAC Kids","cp":37869000,"c":1},{"m":"2026-01","n1":"MKT","n2":"Thiết kế","k":"FB","ten":"GUMAC Đầm","cp":58234000,"c":1},{"m":"2026-01","n1":"MKT","n2":"Nội dung","k":"TIKTOK","ten":"GUMAC Reels","cp":73474000,"c":1},{"m":"2026-01","n1":"BH","n2":"Quảng cáo","k":"TIKTOKSHOP","ten":"Shop Mall","cp":12924000,"c":1},{"m":"2026-01","n1":"BH","n2":"Quảng cáo","k":"TIKTOKSHOP","ten":"Shop chính","cp":14122000,"c":1},{"m":"2026-01","n1":"MKT","n2":"Công cụ / Phần mềm","k":"GG","ten":"Shopping","cp":18297000,"c":1},{"m":"2026-01","n1":"MKT","n2":"Quảng cáo","k":"GG","ten":"Search Brand","cp":10708000,"c":1},{"m":"2026-01","n1":"BH","n2":"Nội dung","k":"ZALO","ten":"Zalo OA Broadcast","cp":6680000,"c":1},{"m":"2026-01","n1":"BH","n2":"Khuyến mãi","k":"SMS","ten":"SMS khuyến mãi","cp":4529000,"c":1},{"m":"2026-01","n1":"BH","n2":"Khuyến mãi","k":"SMS","ten":"SMS chăm sóc","cp":5820000,"c":1},{"m":"2026-01","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"Influencer Mai","cp":13375000,"c":1},{"m":"2026-01","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"KOC Hằng","cp":15463000,"c":1},{"m":"2026-01","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"Beauty Trang","cp":19787000,"c":1},{"m":"2026-01","n1":"BH","n2":"Thiết kế","k":"OFFLINE","ten":"CH Phú Yên","cp":39923000,"c":1},{"m":"2026-01","n1":"MKT","n2":"Nội dung","k":"WEB","ten":"SEO Website","cp":5706000,"c":1},{"m":"2026-02","n1":"MKT","n2":"Nội dung","k":"FB","ten":"GUMAC Kids","cp":48161000,"c":1},{"m":"2026-02","n1":"MKT","n2":"Quảng cáo","k":"FB","ten":"GUMAC Đầm","cp":43666000,"c":1},{"m":"2026-02","n1":"MKT","n2":"Thiết kế","k":"FB","ten":"GUMAC Sale","cp":36352000,"c":1},{"m":"2026-02","n1":"MKT","n2":"Quảng cáo","k":"TIKTOK","ten":"GUMAC Reels","cp":19753000,"c":1},{"m":"2026-02","n1":"MKT","n2":"Quảng cáo","k":"TIKTOK","ten":"GUMAC TikTok","cp":14681000,"c":1},{"m":"2026-02","n1":"MKT","n2":"Nội dung","k":"TIKTOK","ten":"GUMAC Live","cp":15723000,"c":1},{"m":"2026-02","n1":"BH","n2":"Quảng cáo","k":"TIKTOKSHOP","ten":"Shop Mall","cp":9892000,"c":1},{"m":"2026-02","n1":"BH","n2":"Quảng cáo","k":"TIKTOKSHOP","ten":"Shop chính","cp":8510000,"c":1},{"m":"2026-02","n1":"MKT","n2":"Công cụ / Phần mềm","k":"GG","ten":"GDN Remarketing","cp":6747000,"c":1},{"m":"2026-02","n1":"MKT","n2":"Quảng cáo","k":"GG","ten":"Shopping","cp":6954000,"c":1},{"m":"2026-02","n1":"MKT","n2":"Công cụ / Phần mềm","k":"GG","ten":"Search Brand","cp":4095000,"c":1},{"m":"2026-02","n1":"BH","n2":"Nội dung","k":"ZALO","ten":"Zalo OA Broadcast","cp":5095000,"c":1},{"m":"2026-02","n1":"BH","n2":"Khuyến mãi","k":"SMS","ten":"SMS khuyến mãi","cp":7415000,"c":1},{"m":"2026-02","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"KOC Linh","cp":10144000,"c":1},{"m":"2026-02","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"Beauty Trang","cp":16890000,"c":1},{"m":"2026-02","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"KOC Hằng","cp":10698000,"c":1},{"m":"2026-02","n1":"BH","n2":"Sự kiện","k":"OFFLINE","ten":"CH Phú Yên","cp":8685000,"c":1},{"m":"2026-02","n1":"BH","n2":"Sự kiện","k":"OFFLINE","ten":"CH Quận 1","cp":5882000,"c":1},{"m":"2026-02","n1":"BH","n2":"Thiết kế","k":"OFFLINE","ten":"CH Trà Vinh","cp":8828000,"c":1},{"m":"2026-02","n1":"MKT","n2":"Nội dung","k":"WEB","ten":"SEO Website","cp":1688000,"c":1},{"m":"2026-02","n1":"MKT","n2":"Công cụ / Phần mềm","k":"WEB","ten":"Email Automation","cp":3043000,"c":1},{"m":"2026-03","n1":"MKT","n2":"Thiết kế","k":"FB","ten":"GUMAC Official","cp":91744000,"c":1},{"m":"2026-03","n1":"MKT","n2":"Nội dung","k":"FB","ten":"GUMAC Sale","cp":75065000,"c":1},{"m":"2026-03","n1":"MKT","n2":"Nội dung","k":"TIKTOK","ten":"GUMAC Live","cp":19524000,"c":1},{"m":"2026-03","n1":"MKT","n2":"Nội dung","k":"TIKTOK","ten":"GUMAC Reels","cp":19286000,"c":1},{"m":"2026-03","n1":"MKT","n2":"Quảng cáo","k":"TIKTOK","ten":"GUMAC TikTok","cp":26195000,"c":1},{"m":"2026-03","n1":"BH","n2":"Khuyến mãi","k":"TIKTOKSHOP","ten":"Shop Mall","cp":28276000,"c":1},{"m":"2026-03","n1":"MKT","n2":"Quảng cáo","k":"GG","ten":"Shopping","cp":15035000,"c":1},{"m":"2026-03","n1":"MKT","n2":"Công cụ / Phần mềm","k":"GG","ten":"Search Brand","cp":12937000,"c":1},{"m":"2026-03","n1":"BH","n2":"Nội dung","k":"ZALO","ten":"Zalo OA Broadcast","cp":6576000,"c":1},{"m":"2026-03","n1":"BH","n2":"Khuyến mãi","k":"SMS","ten":"SMS khuyến mãi","cp":3349000,"c":1},{"m":"2026-03","n1":"BH","n2":"Khuyến mãi","k":"SMS","ten":"SMS chăm sóc","cp":5005000,"c":1},{"m":"2026-03","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"Influencer Mai","cp":17834000,"c":1},{"m":"2026-03","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"KOC Hằng","cp":18030000,"c":1},{"m":"2026-03","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"Beauty Trang","cp":17840000,"c":1},{"m":"2026-03","n1":"BH","n2":"Sự kiện","k":"OFFLINE","ten":"CH Cần Thơ","cp":14790000,"c":1},{"m":"2026-03","n1":"BH","n2":"Thiết kế","k":"OFFLINE","ten":"CH Quận 1","cp":16467000,"c":1},{"m":"2026-03","n1":"MKT","n2":"Nội dung","k":"WEB","ten":"Email Automation","cp":2693000,"c":1},{"m":"2026-03","n1":"MKT","n2":"Công cụ / Phần mềm","k":"WEB","ten":"SEO Website","cp":3238000,"c":1},{"m":"2026-04","n1":"MKT","n2":"Nội dung","k":"FB","ten":"GUMAC Kids","cp":54656000,"c":1},{"m":"2026-04","n1":"MKT","n2":"Thiết kế","k":"FB","ten":"GUMAC Sale","cp":54965000,"c":1},{"m":"2026-04","n1":"MKT","n2":"Nội dung","k":"FB","ten":"GUMAC Đầm","cp":81668000,"c":1},{"m":"2026-04","n1":"MKT","n2":"Nội dung","k":"TIKTOK","ten":"GUMAC Live","cp":19857000,"c":1},{"m":"2026-04","n1":"MKT","n2":"Nội dung","k":"TIKTOK","ten":"GUMAC Reels","cp":19295000,"c":1},{"m":"2026-04","n1":"MKT","n2":"Quảng cáo","k":"TIKTOK","ten":"GUMAC TikTok","cp":24160000,"c":1},{"m":"2026-04","n1":"BH","n2":"Khuyến mãi","k":"TIKTOKSHOP","ten":"Shop Mall","cp":14379000,"c":1},{"m":"2026-04","n1":"BH","n2":"Khuyến mãi","k":"TIKTOKSHOP","ten":"Shop chính","cp":15641000,"c":1},{"m":"2026-04","n1":"MKT","n2":"Quảng cáo","k":"GG","ten":"GDN Remarketing","cp":29208000,"c":1},{"m":"2026-04","n1":"BH","n2":"Khuyến mãi","k":"ZALO","ten":"Zalo OA Broadcast","cp":7511000,"c":1},{"m":"2026-04","n1":"BH","n2":"Khuyến mãi","k":"SMS","ten":"SMS khuyến mãi","cp":6427000,"c":1},{"m":"2026-04","n1":"BH","n2":"Khuyến mãi","k":"SMS","ten":"SMS chăm sóc","cp":4430000,"c":1},{"m":"2026-04","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"Influencer Mai","cp":21349000,"c":1},{"m":"2026-04","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"Beauty Trang","cp":16919000,"c":1},{"m":"2026-04","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"KOC Hằng","cp":22134000,"c":1},{"m":"2026-04","n1":"BH","n2":"Sự kiện","k":"OFFLINE","ten":"CH Cần Thơ","cp":9001000,"c":1},{"m":"2026-04","n1":"BH","n2":"Thiết kế","k":"OFFLINE","ten":"CH Quận 1","cp":17000000,"c":1},{"m":"2026-04","n1":"BH","n2":"Thiết kế","k":"OFFLINE","ten":"CH Phú Yên","cp":9685000,"c":1},{"m":"2026-04","n1":"MKT","n2":"Nội dung","k":"WEB","ten":"SEO Website","cp":3106000,"c":1},{"m":"2026-04","n1":"MKT","n2":"Công cụ / Phần mềm","k":"WEB","ten":"Email Automation","cp":3333000,"c":1},{"m":"2026-05","n1":"MKT","n2":"Quảng cáo","k":"FB","ten":"GUMAC Sale","cp":78760000,"c":1},{"m":"2026-05","n1":"MKT","n2":"Nội dung","k":"FB","ten":"GUMAC Kids","cp":58273000,"c":1},{"m":"2026-05","n1":"MKT","n2":"Thiết kế","k":"FB","ten":"GUMAC Đầm","cp":54270000,"c":1},{"m":"2026-05","n1":"MKT","n2":"Quảng cáo","k":"TIKTOK","ten":"GUMAC Reels","cp":41726000,"c":1},{"m":"2026-05","n1":"MKT","n2":"Nội dung","k":"TIKTOK","ten":"GUMAC Live","cp":30898000,"c":1},{"m":"2026-05","n1":"BH","n2":"Quảng cáo","k":"TIKTOKSHOP","ten":"Shop Mall","cp":35254000,"c":1},{"m":"2026-05","n1":"MKT","n2":"Công cụ / Phần mềm","k":"GG","ten":"Shopping","cp":13244000,"c":1},{"m":"2026-05","n1":"MKT","n2":"Công cụ / Phần mềm","k":"GG","ten":"GDN Remarketing","cp":18988000,"c":1},{"m":"2026-05","n1":"BH","n2":"Khuyến mãi","k":"ZALO","ten":"Zalo OA Broadcast","cp":7373000,"c":1},{"m":"2026-05","n1":"BH","n2":"Khuyến mãi","k":"SMS","ten":"SMS khuyến mãi","cp":12147000,"c":1},{"m":"2026-05","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"Influencer Mai","cp":29174000,"c":1},{"m":"2026-05","n1":"BRAND","n2":"KOL/KOC","k":"KOL","ten":"Beauty Trang","cp":23710000,"c":1},{"m":"2026-05","n1":"BH","n2":"Sự kiện","k":"OFFLINE","ten":"CH Trà Vinh","cp":12787000,"c":1},{"m":"2026-05","n1":"BH","n2":"Sự kiện","k":"OFFLINE","ten":"CH Quận 1","cp":11725000,"c":1},{"m":"2026-05","n1":"BH","n2":"Thiết kế","k":"OFFLINE","ten":"CH Phú Yên","cp":12543000,"c":1},{"m":"2026-05","n1":"MKT","n2":"Công cụ / Phần mềm","k":"WEB","ten":"SEO Website","cp":2587000,"c":1},{"m":"2026-05","n1":"MKT","n2":"Nội dung","k":"WEB","ten":"Email Automation","cp":3990000,"c":1}]}</script>
+<script id="DATA" type="application/json">__DATA_JSON__</script>
 <script>
-/* =================== STATE =================== */
-let RAW = JSON.parse(document.getElementById('DATA').textContent);
-let DATA = RAW.data, META = RAW.meta;
-let MONTHS = META.months, CHLAB = META.channelLabels||{}, N1LAB = META.n1Labels||{};
-const charts = {};
-const F = { period:{type:'month', m:MONTHS[MONTHS.length-1]}, n1:new Set(), k:new Set(), n2:new Set(), ten:new Set() };
-let curPage='overview', trendMode='all', dGroup='k', dSort={col:'cp',dir:-1}, dPage=1, dSearch='', chanMode='bar';
-const PER=12;
-const PAL=['#3f5bd6','#f76707','#2f9e6f','#ae3ec9','#1098ad','#f59f00','#e03131','#7048e8','#0ca678','#d6336c','#4c6ef5','#868e96'];
+/* =============== STATE =============== */
+let RAW=JSON.parse(document.getElementById('DATA').textContent);
+let DATA=RAW.data, META=RAW.meta, REV=RAW.rev||{};
+let MONTHS=META.months, CHANNELS=META.channels, REVCH=META.revChannels||['OFFLINE','SOCIAL','ECOM','TIK TOK','OUTLET','GMORNING'];
+const charts={};
+const F={period:{type:'month',m:MONTHS[MONTHS.length-1]},n1:new Set(),k:new Set(),n2:new Set(),ten:new Set()};
+let curPage='overview',chanMode='bar',dGroup='k',dSort={col:'cp',dir:-1},dPage=1,dSearch='';
+let pivotDims=['n1','n2','k'],pivotOpen=new Set(),objSearch='',objPage=1;
+const PER=14;
+const PAL=['#3f5bd6','#f76707','#2f9e6f','#ae3ec9','#1098ad','#f59f00','#e03131','#7048e8','#0ca678','#d6336c','#4c6ef5','#e8590c','#868e96','#12b886'];
 
-/* =================== FORMAT =================== */
+/* =============== FORMAT =============== */
 const fInt=n=>(Math.round(n||0)).toLocaleString('vi-VN');
 function fVND(n){n=n||0;const a=Math.abs(n);
   if(a>=1e9)return (n/1e9).toLocaleString('vi-VN',{maximumFractionDigits:2})+' tỷ';
@@ -375,371 +274,384 @@ function fVND(n){n=n||0;const a=Math.abs(n);
   if(a>=1e3)return Math.round(n/1e3).toLocaleString('vi-VN')+'K';
   return fInt(n);}
 const fFull=n=>fInt(n)+' đ';
+const fPct=n=>(n==null||!isFinite(n))?'—':(n).toLocaleString('vi-VN',{maximumFractionDigits:2})+'%';
 const mLabel=m=>{const[y,mo]=m.split('-');return 'T'+(+mo)+'/'+y;};
-const chShort=k=>CHLAB[k]||k;
-const chLabel=k=>CHLAB[k]?k+' · '+CHLAB[k]:k;
-const n1Label=v=>N1LAB[v]||v;
+const chShort=k=>k;
 
-/* =================== PERIOD =================== */
+/* =============== PERIOD =============== */
 function monthsIn(p){if(p.type==='month')return[p.m];if(p.type==='year')return MONTHS.filter(m=>m.startsWith(p.y+'-'));return MONTHS.slice();}
 function prevP(p){if(p.type==='month'){const i=MONTHS.indexOf(p.m);return i>0?{type:'month',m:MONTHS[i-1]}:null;}
   if(p.type==='year'){const py=String(+p.y-1);return MONTHS.some(m=>m.startsWith(py+'-'))?{type:'year',y:py}:null;}return null;}
-function yoyP(p){if(p.type==='month'){const[y,mo]=p.m.split('-');const pm=(+y-1)+'-'+mo;return MONTHS.includes(pm)?{type:'month',m:pm}:null;}return null;}
+function yoyP(p){if(p.type==='month'){const[y,mo]=p.m.split('-');const pm=(+y-1)+'-'+mo;return MONTHS.includes(pm)?{type:'month',m:pm}:null;}
+  if(p.type==='year'){const py=String(+p.y-1);return MONTHS.some(m=>m.startsWith(py+'-'))?{type:'year',y:py}:null;}return null;}
 function perLabel(p){if(p.type==='month')return mLabel(p.m);if(p.type==='year')return 'Năm '+p.y;return 'Toàn bộ kỳ';}
 
-/* =================== FILTER / AGG =================== */
+/* =============== FILTER / AGG =============== */
 function match(d){return (!F.n1.size||F.n1.has(d.n1))&&(!F.k.size||F.k.has(d.k))&&(!F.n2.size||F.n2.has(d.n2))&&(!F.ten.size||F.ten.has(d.ten));}
 function rowsFor(p){const ms=new Set(monthsIn(p));return DATA.filter(d=>ms.has(d.m)&&match(d));}
 function sumCP(r){return r.reduce((s,x)=>s+x.cp,0);}
 function gsum(rows,key){const m={};rows.forEach(r=>{m[r[key]]=(m[r[key]]||0)+r.cp;});return m;}
-function topEntries(obj,n){return Object.entries(obj).sort((a,b)=>b[1]-a[1]).slice(0,n);}
+function topEntries(o,n){return Object.entries(o).sort((a,b)=>b[1]-a[1]).slice(0,n);}
+/* doanh thu */
+const hasRev=()=>Object.keys(REV).length>0;
+function revTotal(p){return monthsIn(p).reduce((s,m)=>s+((REV[m]&&REV[m].TOTAL)||0),0);}
+function revCh(p,ch){return monthsIn(p).reduce((s,m)=>s+((REV[m]&&REV[m][ch])||0),0);}
 
-/* =================== CHART HELPERS =================== */
-Chart.defaults.font.family="'Be Vietnam Pro',sans-serif";
-Chart.defaults.color='#6c768c';Chart.defaults.font.size=12;
+/* =============== CHART HELPERS =============== */
+Chart.defaults.font.family="'Be Vietnam Pro',sans-serif";Chart.defaults.color='#6c768c';Chart.defaults.font.size=12;
 function mk(id,cfg){if(charts[id])charts[id].destroy();const el=document.getElementById(id);if(!el)return;charts[id]=new Chart(el,cfg);}
 const moneyTick={callback:v=>fVND(v)};
 
-/* =================== OVERVIEW =================== */
+/* =============== OVERVIEW =============== */
+function delta(cur,prev){if(prev==null||prev===0)return null;return (cur-prev)/prev*100;}
+function deltaHtml(d,ref){if(d==null)return `<div class="delta flat">— <span>không có ${ref}</span></div>`;
+  const up=d>=0,cls=Math.abs(d)<0.05?'flat':(up?'up':'down'),ar=Math.abs(d)<0.05?'—':(up?'▲':'▼');
+  return `<div class="delta ${cls}">${ar} ${Math.abs(d).toLocaleString('vi-VN',{maximumFractionDigits:1})}% <span>so với ${ref}</span></div>`;}
 function renderOverview(){
-  const cur=rowsFor(F.period), curT=sumCP(cur);
-  const pp=prevP(F.period), yy=yoyP(F.period);
-  const ppT=pp?sumCP(rowsFor(pp)):null, yyT=yy?sumCP(rowsFor(yy)):null;
-  const nCh=new Set(cur.map(r=>r.k)).size;
-  const delta=(cur,prev)=>{if(prev==null||prev===0)return null;return (cur-prev)/prev*100;};
-  function dHtml(d,refLabel){if(d==null)return `<div class="delta flat">— <span>không có ${refLabel}</span></div>`;
-    const up=d>=0,cls=Math.abs(d)<0.05?'flat':(up?'up':'down');const ar=Math.abs(d)<0.05?'—':(up?'▲':'▼');
-    return `<div class="delta ${cls}">${ar} ${Math.abs(d).toLocaleString('vi-VN',{maximumFractionDigits:1})}% <span>so với ${refLabel}</span></div>`;}
+  const cur=rowsFor(F.period),curT=sumCP(cur);
+  const pp=prevP(F.period),yy=yoyP(F.period);
+  const ppT=pp?sumCP(rowsFor(pp)):null,yyT=yy?sumCP(rowsFor(yy)):null;
+  const rT=hasRev()?revTotal(F.period):0, ratio=rT?curT/rT*100:null;
+  const ppr=pp&&hasRev()?revTotal(pp):0, ratioPrev=ppr?sumCP(rowsFor(pp))/ppr*100:null;
   const kpis=[
-    {icn:'₫',label:'Tổng chi kỳ này',val:fVND(curT),delta:''},
-    {icn:'◷',label:'So với kỳ trước',val:ppT!=null?fVND(ppT):'—',delta:dHtml(delta(curT,ppT),pp?perLabel(pp):'kỳ trước')},
-    {icn:'⟳',label:'So cùng kỳ năm trước',val:yyT!=null?fVND(yyT):'—',delta:dHtml(delta(curT,yyT),yy?perLabel(yy):'cùng kỳ')},
-    {icn:'☰',label:'Số dòng / kênh',val:fInt(cur.length),delta:`<div class="delta flat">${nCh} kênh có chi · ${perLabel(F.period)}</div>`},
+    {icn:'₫',label:'Tổng chi marketing',val:fVND(curT),delta:`<div class="delta flat">${perLabel(F.period)} · ${cur.length} dòng</div>`},
+    {icn:'◷',label:'So với kỳ trước',val:ppT!=null?fVND(ppT):'—',delta:deltaHtml(delta(curT,ppT),pp?perLabel(pp):'kỳ trước')},
+    {icn:'⟳',label:'So cùng kỳ năm trước',val:yyT!=null?fVND(yyT):'—',delta:deltaHtml(delta(curT,yyT),yy?perLabel(yy):'cùng kỳ')},
+    hasRev()
+      ? {icn:'%',label:'Tỷ lệ CP / Doanh thu',val:fPct(ratio),delta: ratioPrev!=null?deltaHtml(ratio-ratioPrev?((ratio-ratioPrev)):null, pp?perLabel(pp):'kỳ trước').replace('%','đ%'):'<div class="delta flat">DT: '+fVND(rT)+'</div>'}
+      : {icn:'%',label:'Tỷ lệ CP / Doanh thu',val:'—',delta:'<div class="delta flat">Cần nạp file Doanh thu</div>'},
   ];
-  document.getElementById('kpiRow').innerHTML=kpis.map(k=>`
-    <div class="card kpi"><div class="label"><span class="icn">${k.icn}</span>${k.label}</div>
-    <div class="val">${k.val}</div>${k.delta||''}</div>`).join('');
+  // sửa lại KPI tỷ lệ: hiển thị điểm % thay đổi
+  if(hasRev()&&ratioPrev!=null){const dd=ratio-ratioPrev;const up=dd>=0,cls=Math.abs(dd)<0.01?'flat':(up?'up':'down'),ar=Math.abs(dd)<0.01?'—':(up?'▲':'▼');
+    kpis[3].delta=`<div class="delta ${cls}">${ar} ${Math.abs(dd).toFixed(2)} điểm% <span>so với ${pp?perLabel(pp):'kỳ trước'}</span></div>`;}
+  document.getElementById('kpiRow').innerHTML=kpis.map(k=>`<div class="card kpi"><div class="label"><span class="icn">${k.icn}</span>${k.label}</div><div class="val">${k.val}</div>${k.delta||''}</div>`).join('');
 
-  // trend
-  let tms=MONTHS;
-  if(trendMode==='ytd'&&F.period.type!=='all'){const yr=F.period.type==='year'?F.period.y:F.period.m.slice(0,4);tms=MONTHS.filter(m=>m.startsWith(yr+'-'));}
-  else if(trendMode==='all'&&F.period.type==='month'){const i=MONTHS.indexOf(F.period.m);tms=MONTHS.slice(Math.max(0,i-11),i+1);}
-  const selMs=new Set(monthsIn(F.period));
-  const tVals=tms.map(m=>sumCP(DATA.filter(d=>d.m===m&&match(d))));
-  mk('cTrend',{type:'bar',data:{labels:tms.map(mLabel),datasets:[{data:tVals,
-    backgroundColor:tms.map(m=>selMs.has(m)?'#3f5bd6':'rgba(63,91,214,.22)'),borderRadius:7,maxBarThickness:46}]},
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},
-      tooltip:{callbacks:{label:c=>fFull(c.raw)}}},
-      scales:{y:{ticks:moneyTick,grid:{color:'#e2e7f2'}},x:{grid:{display:false}}}}});
+  // combo: spend bars + ratio line
+  const i=F.period.type==='month'?MONTHS.indexOf(F.period.m):MONTHS.length-1;
+  const tms=MONTHS.slice(Math.max(0,i-13),i+1);const selMs=new Set(monthsIn(F.period));
+  const spend=tms.map(m=>sumCP(DATA.filter(d=>d.m===m&&match(d))));
+  const ratioLine=tms.map(m=>{const r=REV[m]&&REV[m].TOTAL;if(!r)return null;return sumCP(DATA.filter(d=>d.m===m&&match(d)))/r*100;});
+  const ds=[{type:'bar',label:'Chi phí',data:spend,backgroundColor:tms.map(m=>selMs.has(m)?'#3f5bd6':'rgba(63,91,214,.22)'),borderRadius:7,maxBarThickness:42,yAxisID:'y',order:2}];
+  if(hasRev())ds.push({type:'line',label:'Tỷ lệ CP/DT (%)',data:ratioLine,borderColor:'#f76707',backgroundColor:'#f76707',tension:.32,borderWidth:2.6,pointRadius:3,yAxisID:'y1',order:1,spanGaps:true});
+  mk('cTrend',{data:{labels:tms.map(mLabel),datasets:ds},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+    plugins:{legend:{display:hasRev(),position:'top',labels:{boxWidth:12,font:{size:11}}},tooltip:{callbacks:{label:c=>c.dataset.yAxisID==='y1'?'Tỷ lệ: '+fPct(c.raw):'Chi phí: '+fFull(c.raw)}}},
+    scales:{y:{position:'left',ticks:moneyTick,grid:{color:'#e2e7f2'}},y1:{position:'right',display:hasRev(),ticks:{callback:v=>v+'%'},grid:{display:false},suggestedMin:0}, x:{grid:{display:false}}}}});
 
-  // donut by channel
-  const ck=topEntries(gsum(cur,'k'),11);
-  mk('cDonut',{type:'doughnut',data:{labels:ck.map(e=>chShort(e[0])),datasets:[{data:ck.map(e=>e[1]),
-    backgroundColor:PAL,borderWidth:3,borderColor:'#f2f5fc'}]},
-    options:{responsive:true,maintainAspectRatio:false,cutout:'62%',
-      plugins:{legend:{position:'right',labels:{boxWidth:12,padding:9,font:{size:11}}},
-      tooltip:{callbacks:{label:c=>c.label+': '+fVND(c.raw)+' ('+(c.raw/curT*100).toFixed(1)+'%)'}}}}});
+  // donut channel
+  const ck=topEntries(gsum(cur,'k'),12);
+  mk('cDonut',{type:'doughnut',data:{labels:ck.map(e=>e[0]),datasets:[{data:ck.map(e=>e[1]),backgroundColor:PAL,borderWidth:3,borderColor:'#f2f5fc'}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'right',labels:{boxWidth:11,padding:8,font:{size:11}}},tooltip:{callbacks:{label:c=>c.label+': '+fVND(c.raw)+' ('+(c.raw/(curT||1)*100).toFixed(1)+'%)'}}}}});
 
-  // top N2 bar
-  const n2=topEntries(gsum(cur,'n2'),7);
-  mk('cN2',{type:'bar',data:{labels:n2.map(e=>e[0]),datasets:[{data:n2.map(e=>e[1]),
-    backgroundColor:'#4c6ef5',borderRadius:6,maxBarThickness:26}]},
-    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},
-      tooltip:{callbacks:{label:c=>fFull(c.raw)}}},scales:{x:{ticks:moneyTick,grid:{color:'#e2e7f2'}},y:{grid:{display:false}}}}});
+  // YoY by month
+  let yrNow,yrPrev;
+  if(F.period.type==='year'){yrNow=F.period.y;yrPrev=String(+yrNow-1);}
+  else {yrNow=(F.period.type==='month'?F.period.m.slice(0,4):MONTHS[MONTHS.length-1].slice(0,4));yrPrev=String(+yrNow-1);}
+  const labels=Array.from({length:12},(_,k)=>'T'+(k+1));
+  const curY=labels.map((_,k)=>{const m=yrNow+'-'+String(k+1).padStart(2,'0');return MONTHS.includes(m)?sumCP(DATA.filter(d=>d.m===m&&match(d))):null;});
+  const prvY=labels.map((_,k)=>{const m=yrPrev+'-'+String(k+1).padStart(2,'0');return MONTHS.includes(m)?sumCP(DATA.filter(d=>d.m===m&&match(d))):null;});
+  mk('cYoY',{type:'bar',data:{labels,datasets:[
+    {label:yrPrev,data:prvY,backgroundColor:'rgba(134,142,150,.55)',borderRadius:5,maxBarThickness:18},
+    {label:yrNow,data:curY,backgroundColor:'#3f5bd6',borderRadius:5,maxBarThickness:18}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top',labels:{boxWidth:11,font:{size:11}}},tooltip:{callbacks:{label:c=>c.dataset.label+': '+fVND(c.raw)}}},scales:{y:{ticks:moneyTick,grid:{color:'#e2e7f2'}},x:{grid:{display:false}}}}});
 
-  // top objects table
-  const tp=topEntries(gsum(cur,'ten'),5),max=tp.length?tp[0][1]:1;
-  document.getElementById('ovTop').innerHTML=tp.length?`<table><tbody>${tp.map((e,i)=>`
-    <tr><td>${i+1}. ${e[0]}</td><td><div class="bar-cell"><span class="pct-tag">${(e[1]/curT*100).toFixed(1)}%</span>
-    <div class="mini"><i style="width:${e[1]/max*100}%"></i></div><b class="num">${fVND(e[1])}</b></div></td></tr>`).join('')}</tbody></table>`
-    :`<div class="empty">Không có dữ liệu trong kỳ này.</div>`;
+  // movers vs prev period
+  const pmap=pp?gsum(rowsFor(pp),'k'):{};const cmap=gsum(cur,'k');
+  const keys=[...new Set([...Object.keys(cmap),...Object.keys(pmap)])];
+  const movers=keys.map(k=>({k,cur:cmap[k]||0,prev:pmap[k]||0,diff:(cmap[k]||0)-(pmap[k]||0)})).filter(x=>x.diff!==0).sort((a,b)=>Math.abs(b.diff)-Math.abs(a.diff)).slice(0,7);
+  document.getElementById('ovMovers').innerHTML=(pp&&movers.length)?`<table><thead><tr><th>Kênh</th><th>Kỳ này</th><th>Thay đổi</th></tr></thead><tbody>${movers.map(x=>{const pct=x.prev?(x.diff/x.prev*100):null;return `<tr><td>${x.k}</td><td class="num">${fVND(x.cur)}</td><td class="num"><span class="${x.diff>=0?'tag-up':'tag-down'}">${x.diff>=0?'▲':'▼'} ${fVND(Math.abs(x.diff))}${pct!=null?' ('+(x.diff>=0?'+':'')+pct.toFixed(0)+'%)':''}</span></td></tr>`;}).join('')}</tbody></table>`:`<div class="empty">Không có kỳ trước để so sánh.</div>`;
 }
 
-/* =================== DETAIL =================== */
-const GLAB={m:'Tháng',k:'Kênh',n1:'Nhóm N1',n2:'Loại N2',ten:'Đối tượng'};
-function detailRows(){
-  const rows=rowsFor(F.period);const g={};
-  rows.forEach(r=>{const key=r[dGroup];if(!g[key])g[key]={k:key,cp:0,c:0};g[key].cp+=r.cp;g[key].c+=(r.c||1);});
-  let arr=Object.values(g);const tot=arr.reduce((s,x)=>s+x.cp,0)||1;
-  arr.forEach(x=>x.pct=x.cp/tot*100);
-  if(dSearch){const q=dSearch.toLowerCase();arr=arr.filter(x=>{const lab=dGroup==='m'?mLabel(x.k):dGroup==='k'?chLabel(x.k):x.k;return String(lab).toLowerCase().includes(q);});}
-  arr.sort((a,b)=>{const v=dSort.col==='k'?String(a.k).localeCompare(b.k):a[dSort.col]-b[dSort.col];return v*dSort.dir;});
-  return {arr,tot};
-}
-function renderDetail(){
-  const {arr,tot}=detailRows();
-  const pages=Math.max(1,Math.ceil(arr.length/PER));if(dPage>pages)dPage=pages;
-  const slice=arr.slice((dPage-1)*PER,dPage*PER);const max=arr.length?Math.max(...arr.map(x=>x.cp)):1;
-  const lab=x=>dGroup==='m'?mLabel(x.k):dGroup==='k'?chLabel(x.k):(dGroup==='n1'?n1Label(x.k):x.k);
-  const th=(c,t)=>`<th data-c="${c}" class="${dSort.col===c?'sorted':''}">${t}<span class="ar">${dSort.col===c?(dSort.dir<0?'▼':'▲'):'↕'}</span></th>`;
-  document.getElementById('detailTbl').innerHTML=arr.length?`<table>
-    <thead><tr>${th('k',GLAB[dGroup])}${th('cp','Chi phí')}${th('pct','Tỷ trọng')}${th('c','Số dòng')}</tr></thead>
-    <tbody>${slice.map(x=>`<tr><td>${lab(x)}</td>
-      <td class="num"><b>${fFull(x.cp)}</b></td>
-      <td><div class="bar-cell"><span class="pct-tag">${x.pct.toFixed(1)}%</span><div class="mini"><i style="width:${x.cp/max*100}%"></i></div></div></td>
-      <td class="num">${fInt(x.c)}</td></tr>`).join('')}
-      <tr style="background:var(--primary-soft)"><td><b>Tổng cộng</b></td><td class="num"><b>${fFull(tot)}</b></td><td><b>100%</b></td><td class="num"><b>${fInt(arr.reduce((s,x)=>s+x.c,0))}</b></td></tr>
-    </tbody></table>`:`<div class="empty">Không có dữ liệu khớp bộ lọc.</div>`;
-  document.getElementById('detailPager').innerHTML=`<span>${arr.length} mục · trang ${dPage}/${pages}</span>
-    <div class="pg-btns"><button ${dPage<=1?'disabled':''} data-d="-1">‹</button><button ${dPage>=pages?'disabled':''} data-d="1">›</button></div>`;
-  document.querySelectorAll('#detailTbl thead th').forEach(t=>t.onclick=()=>{const c=t.dataset.c;if(dSort.col===c)dSort.dir*=-1;else dSort={col:c,dir:-1};dPage=1;renderDetail();});
-  document.querySelectorAll('#detailPager .pg-btns button').forEach(b=>b.onclick=()=>{dPage+=+b.dataset.d;renderDetail();});
+/* =============== PERFORMANCE =============== */
+function renderPerformance(){
+  if(!hasRev()){['perfKpi','perfTbl'].forEach(id=>document.getElementById(id).innerHTML='');
+    document.getElementById('perfKpi').innerHTML=`<div class="card" style="grid-column:1/-1"><div class="empty">Chưa có dữ liệu doanh thu. Bấm <b>“⬆ File Doanh thu”</b> ở góc phải để nạp file DT (các cột kênh + TOTAL theo tháng).</div></div>`;
+    ['cRatio','cRatioCh'].forEach(id=>{if(charts[id]){charts[id].destroy();delete charts[id];}});return;}
+  const cur=rowsFor(F.period),curT=sumCP(cur),rT=revTotal(F.period),ratio=rT?curT/rT*100:null;
+  const pp=prevP(F.period);const ppT=pp?sumCP(rowsFor(pp)):0,ppr=pp?revTotal(pp):0,ratioPrev=ppr?ppT/ppr*100:null;
+  const kpis=[
+    {icn:'₫',label:'Tổng chi marketing',val:fVND(curT),sub:perLabel(F.period)},
+    {icn:'＄',label:'Tổng doanh thu',val:fVND(rT),sub:'Toàn kênh'},
+    {icn:'%',label:'Tỷ lệ CP / DT',val:fPct(ratio),sub:ratioPrev!=null?`kỳ trước ${fPct(ratioPrev)}`:''},
+    {icn:'⟳',label:'Thay đổi tỷ lệ',val:ratioPrev!=null?((ratio-ratioPrev>=0?'+':'')+(ratio-ratioPrev).toFixed(2)+' đ%'):'—',sub:pp?'so với '+perLabel(pp):''},
+  ];
+  document.getElementById('perfKpi').innerHTML=kpis.map(k=>`<div class="card kpi"><div class="label"><span class="icn">${k.icn}</span>${k.label}</div><div class="val">${k.val}</div><div class="delta flat">${k.sub||''}</div></div>`).join('');
+
+  // ratio trend (all months with revenue)
+  const rms=MONTHS.filter(m=>REV[m]&&REV[m].TOTAL);
+  const rdata=rms.map(m=>{const c=sumCP(DATA.filter(d=>d.m===m&&match(d)));return REV[m].TOTAL?c/REV[m].TOTAL*100:null;});
+  mk('cRatio',{type:'line',data:{labels:rms.map(mLabel),datasets:[{label:'Tỷ lệ CP/DT',data:rdata,borderColor:'#f76707',backgroundColor:'rgba(247,103,7,.12)',fill:true,tension:.32,borderWidth:2.6,pointRadius:2.6}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>fPct(c.raw)}}},scales:{y:{ticks:{callback:v=>v+'%'},grid:{color:'#e2e7f2'}},x:{grid:{display:false}}}}});
+
+  // ratio by channel (current period)
+  const cmap=gsum(cur,'k');
+  const chRows=REVCH.map(ch=>{const c=cmap[ch]||0,r=revCh(F.period,ch);return {ch,c,r,ratio:r?c/r*100:null};}).filter(x=>x.r||x.c);
+  chRows.sort((a,b)=>(b.ratio||0)-(a.ratio||0));
+  mk('cRatioCh',{type:'bar',data:{labels:chRows.map(x=>x.ch),datasets:[{data:chRows.map(x=>x.ratio),backgroundColor:chRows.map((_,i)=>PAL[i%PAL.length]),borderRadius:6,maxBarThickness:30}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'Tỷ lệ: '+fPct(c.raw)}}},scales:{x:{ticks:{callback:v=>v+'%'},grid:{color:'#e2e7f2'}},y:{grid:{display:false}}}}});
+
+  // table per channel
+  const ppmap=pp?gsum(rowsFor(pp),'k'):{};
+  const rows=REVCH.map(ch=>{const c=cmap[ch]||0,r=revCh(F.period,ch),rt=r?c/r*100:null;
+    const pc=ppmap[ch]||0,pr=pp?revCh(pp,ch):0,prt=pr?pc/pr*100:null;
+    return {ch,c,r,rt,d:prt!=null&&rt!=null?rt-prt:null};});
+  // dòng tổng (gồm cả kênh không có DT)
+  rows.sort((a,b)=>b.c-a.c);
+  const allCost=curT,allRev=rT;
+  document.getElementById('perfTbl').innerHTML=`<table><thead><tr><th>Kênh</th><th>Chi phí</th><th>Doanh thu</th><th>Tỷ lệ CP/DT</th><th>So kỳ trước</th></tr></thead><tbody>
+    ${rows.map(x=>`<tr><td>${x.ch}</td><td class="num">${fVND(x.c)}</td><td class="num">${fVND(x.r)}</td><td class="num"><b>${fPct(x.rt)}</b></td><td class="num">${x.d==null?'—':`<span class="${x.d>=0?'tag-up':'tag-down'}">${x.d>=0?'▲':'▼'} ${Math.abs(x.d).toFixed(2)} đ%</span>`}</td></tr>`).join('')}
+    <tr style="background:var(--primary-soft)"><td><b>TỔNG (toàn kênh)</b></td><td class="num"><b>${fVND(allCost)}</b></td><td class="num"><b>${fVND(allRev)}</b></td><td class="num"><b>${fPct(allRev?allCost/allRev*100:null)}</b></td><td></td></tr>
+    </tbody></table><div class="sub" style="margin-top:10px">* Dòng TỔNG gồm cả các kênh chỉ có chi phí (BRANDING, PB, POP-UP…) nên cao hơn tổng các dòng kênh có doanh thu.</div>`;
 }
 
-/* =================== CHANNEL =================== */
+/* =============== CHANNEL =============== */
 function renderChannel(){
   const cur=rowsFor(F.period),curT=sumCP(cur)||1;
   const pp=prevP(F.period),prevRows=pp?rowsFor(pp):[];
   const curMap=gsum(cur,'k'),prevMap=gsum(prevRows,'k');
   const chans=Object.keys(curMap).sort((a,b)=>curMap[b]-curMap[a]);
-  document.getElementById('chanSub').textContent=chanMode==='bar'?'So sánh ngân sách giữa các kênh trong kỳ.':'Diễn biến chi phí từng kênh theo 12 tháng gần nhất.';
+  document.getElementById('chanSub').textContent=chanMode==='bar'?'So sánh ngân sách giữa các kênh trong kỳ.':'Diễn biến chi phí từng kênh theo 14 tháng gần nhất.';
   if(chanMode==='bar'){
-    mk('cChan',{type:'bar',data:{labels:chans.map(chShort),datasets:[{data:chans.map(k=>curMap[k]),
-      backgroundColor:chans.map((_,i)=>PAL[i%PAL.length]),borderRadius:7,maxBarThickness:40}]},
-      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},
-        tooltip:{callbacks:{label:c=>fFull(c.raw)+' ('+(c.raw/curT*100).toFixed(1)+'%)'}}},
-        scales:{y:{ticks:moneyTick,grid:{color:'#e2e7f2'}},x:{grid:{display:false}}}}});
+    mk('cChan',{type:'bar',data:{labels:chans,datasets:[{data:chans.map(k=>curMap[k]),backgroundColor:chans.map((_,i)=>PAL[i%PAL.length]),borderRadius:7,maxBarThickness:40}]},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>fFull(c.raw)+' ('+(c.raw/curT*100).toFixed(1)+'%)'}}},scales:{y:{ticks:moneyTick,grid:{color:'#e2e7f2'}},x:{grid:{display:false}}}}});
   }else{
-    const i=F.period.type==='month'?MONTHS.indexOf(F.period.m):MONTHS.length-1;
-    const tms=MONTHS.slice(Math.max(0,i-11),i+1);
-    const top=chans.slice(0,6);
-    mk('cChan',{type:'line',data:{labels:tms.map(mLabel),datasets:top.map((k,idx)=>({label:chShort(k),
-      data:tms.map(m=>sumCP(DATA.filter(d=>d.m===m&&d.k===k&&match(d)))),
-      borderColor:PAL[idx%PAL.length],backgroundColor:PAL[idx%PAL.length],tension:.32,borderWidth:2.4,pointRadius:2.4}))},
-      options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
-        plugins:{legend:{position:'bottom',labels:{boxWidth:11,padding:9,font:{size:11}}},
-        tooltip:{callbacks:{label:c=>c.dataset.label+': '+fVND(c.raw)}}},
-        scales:{y:{ticks:moneyTick,grid:{color:'#e2e7f2'}},x:{grid:{display:false}}}}});
+    const i=F.period.type==='month'?MONTHS.indexOf(F.period.m):MONTHS.length-1;const tms=MONTHS.slice(Math.max(0,i-13),i+1);const top=chans.slice(0,6);
+    mk('cChan',{type:'line',data:{labels:tms.map(mLabel),datasets:top.map((k,idx)=>({label:k,data:tms.map(m=>sumCP(DATA.filter(d=>d.m===m&&d.k===k&&match(d)))),borderColor:PAL[idx%PAL.length],backgroundColor:PAL[idx%PAL.length],tension:.32,borderWidth:2.2,pointRadius:2}))},
+      options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{position:'bottom',labels:{boxWidth:11,padding:8,font:{size:11}}},tooltip:{callbacks:{label:c=>c.dataset.label+': '+fVND(c.raw)}}},scales:{y:{ticks:moneyTick,grid:{color:'#e2e7f2'}},x:{grid:{display:false}}}}});
   }
-  // table
   const max=chans.length?curMap[chans[0]]:1;
-  document.getElementById('chanTbl').innerHTML=chans.length?`<table>
-    <thead><tr><th>Kênh</th><th>Chi phí</th><th>Tỷ trọng</th><th>So kỳ trước</th></tr></thead>
-    <tbody>${chans.map((k,i)=>{const cp=curMap[k],pv=prevMap[k]||0;const d=pv?((cp-pv)/pv*100):null;
-      const dh=d==null?'<span class="pct-tag">—</span>':`<span style="color:${d>=0?'var(--up)':'var(--down)'};font-weight:700">${d>=0?'▲':'▼'} ${Math.abs(d).toFixed(0)}%</span>`;
-      return `<tr><td><span class="dot" style="background:${PAL[i%PAL.length]};display:inline-block;margin-right:7px"></span>${chShort(k)}</td>
-      <td class="num"><b>${fVND(cp)}</b></td>
-      <td><div class="bar-cell"><span class="pct-tag">${(cp/curT*100).toFixed(1)}%</span><div class="mini"><i style="width:${cp/max*100}%;background:${PAL[i%PAL.length]}"></i></div></div></td>
-      <td>${dh}</td></tr>`;}).join('')}</tbody></table>`:`<div class="empty">Không có dữ liệu.</div>`;
+  document.getElementById('chanTbl').innerHTML=chans.length?`<table><thead><tr><th>Kênh</th><th>Chi phí</th><th>Tỷ trọng</th><th>So kỳ trước</th></tr></thead><tbody>${chans.map((k,i)=>{const cp=curMap[k],pv=prevMap[k]||0,d=pv?((cp-pv)/pv*100):null;const dh=d==null?'<span class="pct-tag">—</span>':`<span class="${d>=0?'tag-up':'tag-down'}">${d>=0?'▲':'▼'} ${Math.abs(d).toFixed(0)}%</span>`;return `<tr><td><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${PAL[i%PAL.length]};margin-right:7px"></span>${k}</td><td class="num"><b>${fVND(cp)}</b></td><td><div class="bar-cell"><span class="pct-tag">${(cp/curT*100).toFixed(1)}%</span><div class="mini"><i style="width:${cp/max*100}%;background:${PAL[i%PAL.length]}"></i></div></div></td><td>${dh}</td></tr>`;}).join('')}</tbody></table>`:`<div class="empty">Không có dữ liệu.</div>`;
 }
 
-/* =================== COST =================== */
+/* =============== COST + PIVOT =============== */
 function renderCost(){
   const cur=rowsFor(F.period),curT=sumCP(cur)||1;
   const n1=topEntries(gsum(cur,'n1'),12);
-  mk('cN1',{type:'doughnut',data:{labels:n1.map(e=>n1Label(e[0])),datasets:[{data:n1.map(e=>e[1]),
-    backgroundColor:PAL,borderWidth:3,borderColor:'#f2f5fc'}]},
-    options:{responsive:true,maintainAspectRatio:false,cutout:'58%',
-      plugins:{legend:{position:'bottom',labels:{boxWidth:12,padding:8,font:{size:11}}},
-      tooltip:{callbacks:{label:c=>c.label+': '+fVND(c.raw)+' ('+(c.raw/curT*100).toFixed(1)+'%)'}}}}});
+  mk('cN1',{type:'doughnut',data:{labels:n1.map(e=>e[0]),datasets:[{data:n1.map(e=>e[1]),backgroundColor:PAL,borderWidth:3,borderColor:'#f2f5fc'}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'58%',plugins:{legend:{position:'bottom',labels:{boxWidth:12,padding:7,font:{size:10.5}}},tooltip:{callbacks:{label:c=>c.label+': '+fVND(c.raw)+' ('+(c.raw/curT*100).toFixed(1)+'%)'}}}}});
   const n2=topEntries(gsum(cur,'n2'),10);
-  mk('cN2b',{type:'bar',data:{labels:n2.map(e=>e[0]),datasets:[{data:n2.map(e=>e[1]),
-    backgroundColor:'#2f9e6f',borderRadius:6,maxBarThickness:30}]},
-    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},
-      tooltip:{callbacks:{label:c=>fFull(c.raw)}}},scales:{x:{ticks:moneyTick,grid:{color:'#e2e7f2'}},y:{grid:{display:false}}}}});
-  // matrix N1 x channel
-  const n1keys=[...new Set(cur.map(r=>r.n1))];
-  const chans=Object.keys(gsum(cur,'k')).sort((a,b)=>gsum(cur,'k')[b]-gsum(cur,'k')[a]);
-  const cell={};cur.forEach(r=>{const k=r.n1+'|'+r.k;cell[k]=(cell[k]||0)+r.cp;});
-  document.getElementById('costMatrix').innerHTML=n1keys.length?`<table>
-    <thead><tr><th>N1 \\ Kênh</th>${chans.map(c=>`<th>${chShort(c)}</th>`).join('')}<th>Tổng</th></tr></thead>
-    <tbody>${n1keys.map(n=>{const rt=chans.reduce((s,c)=>s+(cell[n+'|'+c]||0),0);
-      return `<tr><td>${n1Label(n)}</td>${chans.map(c=>{const v=cell[n+'|'+c]||0;return `<td class="num" style="${v?'':'color:#c2c8d6'}">${v?fVND(v):'·'}</td>`;}).join('')}<td class="num"><b>${fVND(rt)}</b></td></tr>`;}).join('')}
-      <tr style="background:var(--primary-soft)"><td><b>Tổng</b></td>${chans.map(c=>`<td class="num"><b>${fVND(gsum(cur,'k')[c]||0)}</b></td>`).join('')}<td class="num"><b>${fVND(curT)}</b></td></tr>
-    </tbody></table>`:`<div class="empty">Không có dữ liệu.</div>`;
+  mk('cN2b',{type:'bar',data:{labels:n2.map(e=>e[0]),datasets:[{data:n2.map(e=>e[1]),backgroundColor:'#2f9e6f',borderRadius:6,maxBarThickness:26}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>fFull(c.raw)}}},scales:{x:{ticks:moneyTick,grid:{color:'#e2e7f2'}},y:{grid:{display:false}}}}});
+  renderPivot();
 }
+function buildPivotTree(rows){
+  const [d0,d1,d2]=pivotDims;const root={};
+  rows.forEach(r=>{const k0=r[d0]||'(trống)',k1=r[d1]||'(trống)',k2=r[d2]||'(trống)';
+    (root[k0]=root[k0]||{cp:0,ch:{}});root[k0].cp+=r.cp;
+    const n1=(root[k0].ch[k1]=root[k0].ch[k1]||{cp:0,ch:{}});n1.cp+=r.cp;
+    const n2=(n1.ch[k2]=n1.ch[k2]||{cp:0});n2.cp+=r.cp;});
+  return root;
+}
+function renderPivot(){
+  const cur=rowsFor(F.period),tot=sumCP(cur)||1;const tree=buildPivotTree(cur);
+  const lvl0=Object.entries(tree).sort((a,b)=>b[1].cp-a[1].cp);
+  let html='<table><thead><tr><th>Hạng mục</th><th>Chi phí</th><th>Tỷ trọng</th></tr></thead><tbody>';
+  const row=(label,cp,lvl,key,hasChild)=>{const open=pivotOpen.has(key);
+    return `<tr class="lvl${lvl}"><td><span class="tw ${hasChild?'':'leaf'} ${open?'open':''}" data-key="${encodeURIComponent(key)}">▶</span>${label}</td><td class="num">${fFull(cp)}</td><td><div class="bar-cell"><span class="pct-tag">${(cp/tot*100).toFixed(1)}%</span><div class="mini"><i style="width:${cp/tot*100}%"></i></div></div></td></tr>`;};
+  lvl0.forEach(([k0,v0])=>{const key0=k0;html+=row(k0,v0.cp,0,key0,Object.keys(v0.ch).length>0);
+    if(pivotOpen.has(key0)){const l1=Object.entries(v0.ch).sort((a,b)=>b[1].cp-a[1].cp);
+      l1.forEach(([k1,v1])=>{const key1=key0+'§'+k1;html+=row(k1,v1.cp,1,key1,Object.keys(v1.ch).length>0);
+        if(pivotOpen.has(key1)){const l2=Object.entries(v1.ch).sort((a,b)=>b[1].cp-a[1].cp);
+          l2.forEach(([k2,v2])=>{html+=row(k2,v2.cp,2,key1+'§'+k2,false);});}});}});
+  html+=`<tr style="background:var(--primary-soft)"><td><b style="padding-left:26px">TỔNG</b></td><td class="num"><b>${fFull(tot)}</b></td><td><b>100%</b></td></tr></tbody></table>`;
+  const el=document.getElementById('pivotTbl');el.innerHTML=cur.length?html:'<div class="empty">Không có dữ liệu.</div>';
+  el.querySelectorAll('.tw:not(.leaf)').forEach(tw=>tw.onclick=()=>{const key=decodeURIComponent(tw.dataset.key);pivotOpen.has(key)?pivotOpen.delete(key):pivotOpen.add(key);renderPivot();});
+}
+function pivotAllKeys(){const cur=rowsFor(F.period);const tree=buildPivotTree(cur);const keys=new Set();
+  Object.entries(tree).forEach(([k0,v0])=>{keys.add(k0);Object.keys(v0.ch).forEach(k1=>keys.add(k0+'§'+k1));});return keys;}
 
-/* =================== OBJECT =================== */
+/* =============== OBJECT =============== */
 function renderObject(){
-  const cur=rowsFor(F.period),curT=sumCP(cur)||1;
-  const g={};cur.forEach(r=>{if(!g[r.ten])g[r.ten]={ten:r.ten,cp:0,ks:new Set()};g[r.ten].cp+=r.cp;g[r.ten].ks.add(r.k);});
-  const arr=Object.values(g).sort((a,b)=>b.cp-a.cp);const max=arr.length?arr[0].cp:1;
-  document.getElementById('objTbl').innerHTML=arr.length?`<table>
-    <thead><tr><th>#</th><th>Đối tượng</th><th>Kênh</th><th>Chi phí</th><th>Tỷ trọng</th></tr></thead>
-    <tbody>${arr.map((x,i)=>`<tr><td>${i+1}</td><td>${x.ten}</td>
-      <td style="text-align:left">${[...x.ks].map(k=>`<span class="chip" style="margin:1px">${chShort(k)}</span>`).join('')}</td>
-      <td class="num"><b>${fFull(x.cp)}</b></td>
-      <td><div class="bar-cell"><span class="pct-tag">${(x.cp/curT*100).toFixed(1)}%</span><div class="mini"><i style="width:${x.cp/max*100}%"></i></div></div></td></tr>`).join('')}</tbody></table>`
-    :`<div class="empty">Không có dữ liệu.</div>`;
+  const cur=rowsFor(F.period),curT=sumCP(cur)||1;const g={};
+  cur.forEach(r=>{if(!r.ten)return;if(!g[r.ten])g[r.ten]={ten:r.ten,cp:0,ks:new Set()};g[r.ten].cp+=r.cp;g[r.ten].ks.add(r.k);});
+  let arr=Object.values(g).sort((a,b)=>b.cp-a.cp);
+  if(objSearch){const q=objSearch.toLowerCase();arr=arr.filter(x=>x.ten.toLowerCase().includes(q));}
+  const max=arr.length?arr[0].cp:1;const pages=Math.max(1,Math.ceil(arr.length/PER));if(objPage>pages)objPage=pages;
+  const slice=arr.slice((objPage-1)*PER,objPage*PER);
+  document.getElementById('objTbl').innerHTML=arr.length?`<table><thead><tr><th>#</th><th>Đối tượng</th><th>Kênh</th><th>Chi phí</th><th>Tỷ trọng</th></tr></thead><tbody>${slice.map((x,i)=>`<tr><td>${(objPage-1)*PER+i+1}</td><td>${x.ten}</td><td style="text-align:left">${[...x.ks].slice(0,3).map(k=>`<span class="chip">${k}</span>`).join('')}</td><td class="num"><b>${fVND(x.cp)}</b></td><td><div class="bar-cell"><span class="pct-tag">${(x.cp/curT*100).toFixed(2)}%</span><div class="mini"><i style="width:${x.cp/max*100}%"></i></div></div></td></tr>`).join('')}</tbody></table>`:`<div class="empty">Không có đối tượng khớp.</div>`;
+  document.getElementById('objPager').innerHTML=`<span>${arr.length} đối tượng · trang ${objPage}/${pages}</span><div class="pg-btns"><button ${objPage<=1?'disabled':''} data-d="-1">‹</button><button ${objPage>=pages?'disabled':''} data-d="1">›</button></div>`;
+  document.querySelectorAll('#objPager .pg-btns button').forEach(b=>b.onclick=()=>{objPage+=+b.dataset.d;renderObject();});
 }
 
-/* =================== ROUTER =================== */
-function render(){
-  if(curPage==='overview')renderOverview();
-  else if(curPage==='detail')renderDetail();
-  else if(curPage==='channel')renderChannel();
-  else if(curPage==='cost')renderCost();
-  else if(curPage==='object')renderObject();
+/* =============== DETAIL =============== */
+const GLAB={m:'Tháng',k:'Kênh',n1:'Nhóm N1',n2:'Hạng mục N2',ten:'Đối tượng'};
+function detailRows(){
+  const rows=rowsFor(F.period);const g={};
+  rows.forEach(r=>{const key=r[dGroup];if(!g[key])g[key]={k:key,cp:0,c:0};g[key].cp+=r.cp;g[key].c+=(r.c||1);});
+  let arr=Object.values(g);const tot=arr.reduce((s,x)=>s+x.cp,0)||1;arr.forEach(x=>x.pct=x.cp/tot*100);
+  if(dSearch){const q=dSearch.toLowerCase();arr=arr.filter(x=>{const lab=dGroup==='m'?mLabel(x.k):x.k;return String(lab).toLowerCase().includes(q);});}
+  arr.sort((a,b)=>{const v=dSort.col==='k'?String(a.k).localeCompare(b.k):a[dSort.col]-b[dSort.col];return v*dSort.dir;});
+  return {arr,tot};
+}
+function renderDetail(){
+  const {arr,tot}=detailRows();const pages=Math.max(1,Math.ceil(arr.length/PER));if(dPage>pages)dPage=pages;
+  const slice=arr.slice((dPage-1)*PER,dPage*PER);const max=arr.length?Math.max(...arr.map(x=>x.cp)):1;
+  const lab=x=>dGroup==='m'?mLabel(x.k):x.k;
+  const th=(c,t)=>`<th class="sortable ${dSort.col===c?'sorted':''}" data-c="${c}">${t}<span class="ar">${dSort.col===c?(dSort.dir<0?'▼':'▲'):'↕'}</span></th>`;
+  document.getElementById('detailTbl').innerHTML=arr.length?`<table><thead><tr>${th('k',GLAB[dGroup])}${th('cp','Chi phí')}${th('pct','Tỷ trọng')}${th('c','Số dòng')}</tr></thead><tbody>${slice.map(x=>`<tr><td>${lab(x)}</td><td class="num"><b>${fFull(x.cp)}</b></td><td><div class="bar-cell"><span class="pct-tag">${x.pct.toFixed(1)}%</span><div class="mini"><i style="width:${x.cp/max*100}%"></i></div></div></td><td class="num">${fInt(x.c)}</td></tr>`).join('')}<tr style="background:var(--primary-soft)"><td><b>Tổng cộng</b></td><td class="num"><b>${fFull(tot)}</b></td><td><b>100%</b></td><td class="num"><b>${fInt(arr.reduce((s,x)=>s+x.c,0))}</b></td></tr></tbody></table>`:`<div class="empty">Không có dữ liệu khớp.</div>`;
+  document.getElementById('detailPager').innerHTML=`<span>${arr.length} mục · trang ${dPage}/${pages}</span><div class="pg-btns"><button ${dPage<=1?'disabled':''} data-d="-1">‹</button><button ${dPage>=pages?'disabled':''} data-d="1">›</button></div>`;
+  document.querySelectorAll('#detailTbl thead th').forEach(t=>t.onclick=()=>{const c=t.dataset.c;if(dSort.col===c)dSort.dir*=-1;else dSort={col:c,dir:-1};dPage=1;renderDetail();});
+  document.querySelectorAll('#detailPager .pg-btns button').forEach(b=>b.onclick=()=>{dPage+=+b.dataset.d;renderDetail();});
 }
 
-/* =================== DROPDOWNS =================== */
+/* =============== ROUTER =============== */
+function render(){({overview:renderOverview,performance:renderPerformance,channel:renderChannel,cost:renderCost,object:renderObject,detail:renderDetail}[curPage]||renderOverview)();}
+
+/* =============== DROPDOWNS =============== */
 function buildPeriodDD(){
   const yrs=[...new Set(MONTHS.map(m=>m.slice(0,4)))].sort();
-  let html=`<div class="dd-list">
-    <div class="dd-opt" data-t="all"><span class="lab">🗓 Toàn bộ kỳ</span></div>`;
-  yrs.forEach(y=>{html+=`<div class="dd-opt head">Năm ${y}</div>
-    <div class="dd-opt" data-t="year" data-y="${y}"><span class="lab">Cả năm ${y}</span></div>`;
-    MONTHS.filter(m=>m.startsWith(y+'-')).forEach(m=>{html+=`<div class="dd-opt" data-t="month" data-m="${m}"><span class="lab">${mLabel(m)}</span></div>`;});});
-  html+='</div>';
-  const p=document.getElementById('dd-period');p.innerHTML=html;
-  p.querySelectorAll('.dd-opt[data-t]').forEach(o=>o.onclick=()=>{
-    const t=o.dataset.t;F.period=t==='all'?{type:'all'}:t==='year'?{type:'year',y:o.dataset.y}:{type:'month',m:o.dataset.m};
-    syncPeriod();closePanels();render();});
+  let html=`<div class="dd-list"><div class="dd-opt" data-t="all"><span class="lab">🗓 Toàn bộ kỳ</span></div>`;
+  yrs.forEach(y=>{html+=`<div class="dd-opt head">Năm ${y}</div><div class="dd-opt" data-t="year" data-y="${y}"><span class="lab">Cả năm ${y}</span></div>`;
+    MONTHS.filter(m=>m.startsWith(y+'-')).forEach(m=>html+=`<div class="dd-opt" data-t="month" data-m="${m}"><span class="lab">${mLabel(m)}</span></div>`);});
+  html+='</div>';const p=document.getElementById('dd-period');p.innerHTML=html;
+  p.querySelectorAll('.dd-opt[data-t]').forEach(o=>o.onclick=()=>{const t=o.dataset.t;F.period=t==='all'?{type:'all'}:t==='year'?{type:'year',y:o.dataset.y}:{type:'month',m:o.dataset.m};syncPeriod();pivotOpen.clear();closePanels();render();});
 }
 function syncPeriod(){document.getElementById('lbl-period').textContent=perLabel(F.period);}
-function buildMultiDD(panelId,field,values,labFn){
+function buildMultiDD(panelId,field,values){
   const p=document.getElementById(panelId);
   p.innerHTML=`<input class="dd-search" placeholder="Tìm…"><div class="dd-tools"><button data-a="all">Chọn tất cả</button><button data-a="none">Bỏ chọn</button></div><div class="dd-list"></div>`;
   const list=p.querySelector('.dd-list'),search=p.querySelector('.dd-search');
   function draw(q=''){const ql=q.toLowerCase();
-    list.innerHTML=values.filter(v=>String(labFn?labFn(v):v).toLowerCase().includes(ql)).map(v=>{
-      const lab=labFn?labFn(v):v;return `<label class="dd-opt"><input type="checkbox" value="${String(v).replace(/"/g,'&quot;')}" ${F[field].has(v)?'checked':''}><span class="lab">${lab}</span></label>`;}).join('')
-      ||`<div class="empty" style="padding:18px">Không tìm thấy</div>`;
-    list.querySelectorAll('input').forEach(cb=>cb.onchange=()=>{cb.checked?F[field].add(cb.value):F[field].delete(cb.value);updCnt(field);render();});}
+    list.innerHTML=values.filter(v=>String(v).toLowerCase().includes(ql)).map(v=>`<label class="dd-opt"><input type="checkbox" value="${String(v).replace(/"/g,'&quot;')}" ${F[field].has(v)?'checked':''}><span class="lab">${v||'(trống)'}</span></label>`).join('')||`<div class="empty" style="padding:18px">Không tìm thấy</div>`;
+    list.querySelectorAll('input').forEach(cb=>cb.onchange=()=>{cb.checked?F[field].add(cb.value):F[field].delete(cb.value);updCnt(field);pivotOpen.clear();render();});}
   search.oninput=()=>draw(search.value);
   p.querySelector('[data-a="all"]').onclick=()=>{values.forEach(v=>F[field].add(v));updCnt(field);draw(search.value);render();};
   p.querySelector('[data-a="none"]').onclick=()=>{F[field].clear();updCnt(field);draw(search.value);render();};
   p._draw=draw;draw();
 }
-function updCnt(field){const el=document.getElementById('cnt-'+field),btn=document.getElementById('ddb-'+field);
-  if(!el)return;const n=F[field].size;el.textContent=n?'· '+n:'';
-  btn.childNodes[0].textContent=n?(n+' đã chọn '):'Tất cả ';}
+function updCnt(field){const el=document.getElementById('cnt-'+field),btn=document.getElementById('ddb-'+field);if(!el)return;const n=F[field].size;el.textContent=n?'· '+n:'';btn.childNodes[0].textContent=n?(n+' đã chọn '):'Tất cả ';}
 function closePanels(){document.querySelectorAll('.dd-panel').forEach(p=>p.classList.remove('open'));}
 function wireDD(){
-  [['ddb-period','dd-period'],['ddb-n1','dd-n1'],['ddb-k','dd-k'],['ddb-n2','dd-n2'],['ddb-ten','dd-ten']].forEach(([b,p])=>{
-    document.getElementById(b).onclick=e=>{e.stopPropagation();const pan=document.getElementById(p);const open=pan.classList.contains('open');closePanels();if(!open)pan.classList.add('open');};});
+  [['ddb-period','dd-period'],['ddb-n1','dd-n1'],['ddb-k','dd-k'],['ddb-n2','dd-n2'],['ddb-ten','dd-ten']].forEach(([b,p])=>{document.getElementById(b).onclick=e=>{e.stopPropagation();const pan=document.getElementById(p);const open=pan.classList.contains('open');closePanels();if(!open)pan.classList.add('open');};});
   document.addEventListener('click',e=>{if(!e.target.closest('.dd-panel')&&!e.target.closest('.dd-btn'))closePanels();});
 }
 
-/* =================== EXPORT CSV =================== */
-function exportCSV(){
-  const {arr,tot}=detailRows();
-  const lab=x=>dGroup==='m'?mLabel(x.k):dGroup==='k'?chLabel(x.k):(dGroup==='n1'?n1Label(x.k):x.k);
-  const head=[GLAB[dGroup],'Chi phi (VND)','Ty trong %','So dong'];
+/* =============== EXPORT CSV =============== */
+function exportDetail(){
+  const {arr,tot}=detailRows();const lab=x=>dGroup==='m'?mLabel(x.k):x.k;
   const esc=v=>{v=String(v??'').replace(/"/g,'""');return /[",\n]/.test(v)?`"${v}"`:v;};
-  const lines=[head.join(',')];
+  const lines=[[GLAB[dGroup],'Chi phi (VND)','Ty trong %','So dong'].join(',')];
   arr.forEach(x=>lines.push([esc(lab(x)),x.cp,x.pct.toFixed(2),x.c].join(',')));
   lines.push([esc('TONG'),tot,'100',arr.reduce((s,x)=>s+x.c,0)].join(','));
-  const blob=new Blob(['\ufeff'+lines.join('\n')],{type:'text/csv;charset=utf-8'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
-  a.download='GUMAC_ChiPhi_'+GLAB[dGroup]+'_'+perLabel(F.period).replace(/[^\w]+/g,'_')+'.csv';a.click();
+  dl(lines,'GUMAC_ChiTiet_'+GLAB[dGroup]+'_'+perLabel(F.period));
 }
+function exportPivot(){
+  const cur=rowsFor(F.period);const tree=buildPivotTree(cur);const[d0,d1,d2]=pivotDims;
+  const esc=v=>{v=String(v??'').replace(/"/g,'""');return /[",\n]/.test(v)?`"${v}"`:v;};
+  const lines=[[GLAB[d0],GLAB[d1],GLAB[d2],'Chi phi (VND)'].join(',')];
+  Object.entries(tree).sort((a,b)=>b[1].cp-a[1].cp).forEach(([k0,v0])=>Object.entries(v0.ch).sort((a,b)=>b[1].cp-a[1].cp).forEach(([k1,v1])=>Object.entries(v1.ch).sort((a,b)=>b[1].cp-a[1].cp).forEach(([k2,v2])=>lines.push([esc(k0),esc(k1),esc(k2),Math.round(v2.cp)].join(',')))));
+  dl(lines,'GUMAC_Pivot_'+perLabel(F.period));
+}
+function dl(lines,name){const blob=new Blob(['\ufeff'+lines.join('\n')],{type:'text/csv;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name.replace(/[^\w]+/g,'_')+'.csv';a.click();}
 
-/* =================== EXCEL UPLOAD =================== */
-const SHEET_RE=/^(2024|2025|2026)([.\- ].*)?$/;
-const REAL_CH_LABEL={'T':'Cửa hàng (Offline)','S':'Tổng / Website','E':'Sàn TMĐT','BRANDING':'Branding','TIKTOK':'TikTok','GMOR':'GMORNING','OUTLET':'Outlet','POPUP':'Pop-up / Hội chợ','CONT':'Container / Kho','KHÁC':'Khác','ALEEVA':'Aleeva','Back Office':'Back Office','FRANCHISE':'Nhượng quyền','PB':'PB','FB':'Facebook Ads','GG':'Google Ads','KOL':'KOL/KOC','ZALO':'Zalo OA','SMS':'SMS','WEB':'Website'};
+/* =============== EXCEL UPLOAD: CHI PHÍ =============== */
 function vnorm(s){return s==null?'':String(s).trim().toLowerCase().normalize('NFC');}
-const HEAD={};
-[['tháng','m'],['thang','m'],['n1','n1'],['n2','n2'],['kenh','k'],['kênh','k'],
- ['cp','cp'],['st','cp'],['phát sinh','cp'],['số tiền','cp'],
- ['tên đối tượng','ten'],['ten doi tuong','ten'],['tên đt','ten']
-].forEach(p=>HEAD[p[0].normalize('NFC')]=p[1]);
-function excelToMonth(v){
-  if(v instanceof Date&&!isNaN(v))return v.getFullYear()+'-'+String(v.getMonth()+1).padStart(2,'0');
-  if(typeof v==='number'&&v>20000&&v<80000){const d=new Date(Math.round((v-25569)*86400*1000));return d.getUTCFullYear()+'-'+String(d.getUTCMonth()+1).padStart(2,'0');}
-  if(typeof v==='string'){const m=v.match(/(\d{4})[-/.](\d{1,2})/);if(m)return m[1]+'-'+String(+m[2]).padStart(2,'0');}
-  return null;
-}
-function findHeader(rows){let best=null,bs=-1;
-  for(let ri=0;ri<Math.min(5,rows.length);ri++){const keys=new Set();(rows[ri]||[]).forEach(c=>{const k=HEAD[vnorm(c)];if(k)keys.add(k);});
-    if(keys.has('n1')&&keys.has('k')&&keys.has('cp')){const sc=keys.size;if(sc>bs){bs=sc;best=ri;}}}
-  return best;}
-function parseWorkbook(buf){
-  const wb=XLSX.read(buf,{type:'array',cellDates:true});
-  const recs=[];const used=[];
-  wb.SheetNames.filter(sn=>SHEET_RE.test(sn.trim())).forEach(sn=>{
+const HEAD={};[['n1','n1'],['n2','n2'],['kenh','k'],['kênh','k'],['cp','cp'],['st','cp'],['phát sinh','cp'],['số tiền','cp'],['tên đối tượng','ten'],['ten doi tuong','ten'],['tên đt','ten']].forEach(p=>HEAD[p[0].normalize('NFC')]=p[1]);
+function isMonthHdr(s){s=vnorm(s);return s.startsWith('tháng')||s.startsWith('thang');}
+const CODE2DISP={'T':'OFFLINE','S':'SOCIAL','E':'ECOM','TIKTOK':'TIK TOK','CONT':'OUTLET','OUTLET':'OUTLET','GMOR':'GMORNING','BRANDING':'BRANDING','PB':'PB','KHÁC':'KHÁC','POPUP':'POP-UP','ALEEVA':'ALEEVA','Back Office':'BACK OFFICE','FRANCHISE':'FRANCHISE'};
+function kdisp(c){c=c==null?'':String(c).trim();return CODE2DISP[c]||(c||'KHÁC');}
+function n2group(s){if(s==null)return '';s=String(s).trim();const l=s.toLowerCase();return (l.includes('ads')&&!l.includes('web'))?'Chi phí quảng cáo':s;}
+function excelToMonth(v){if(v instanceof Date&&!isNaN(v))return v.getFullYear()+'-'+String(v.getMonth()+1).padStart(2,'0');if(typeof v==='number'&&v>20000&&v<80000){const d=new Date(Math.round((v-25569)*86400*1000));return d.getUTCFullYear()+'-'+String(d.getUTCMonth()+1).padStart(2,'0');}if(typeof v==='string'){const m=v.match(/(\d{4})[-/.](\d{1,2})/);if(m)return m[1]+'-'+String(+m[2]).padStart(2,'0');}return null;}
+function classifySheet(n){n=n.trim();let m=n.match(/^(20\d\d)$/);if(m&&+m[1]>=2024)return 0;m=n.match(/^(20\d\d)\.(\d{2})-(\d{2})$/);if(m&&+m[1]>=2024)return 1;m=n.match(/^(20\d\d)\.(\d{2})$/);if(m&&+m[1]>=2024)return 2;return null;}
+function findHeader(rows){let best=null,bs=-1;for(let ri=0;ri<Math.min(6,rows.length);ri++){const keys=new Set();(rows[ri]||[]).forEach(c=>{if(isMonthHdr(c))keys.add('m');else{const k=HEAD[vnorm(c)];if(k)keys.add(k);}});if(keys.has('n1')&&keys.has('k')&&keys.has('cp')){const sc=keys.size;if(sc>bs){bs=sc;best=ri;}}}return best;}
+function parseCost(buf){
+  const wb=XLSX.read(buf,{type:'array',cellDates:true});const raw=[];
+  wb.SheetNames.forEach(sn=>{const prio=classifySheet(sn);if(prio==null)return;
     const rows=XLSX.utils.sheet_to_json(wb.Sheets[sn],{header:1,raw:true,defval:null,blankrows:false});
-    const hr=findHeader(rows);if(hr==null)return;used.push(sn);
-    const cm={};rows[hr].forEach((c,ci)=>{const k=HEAD[vnorm(c)];if(k&&!(k in cm))cm[k]=ci;});
+    const hr=findHeader(rows);if(hr==null)return;const cm={};
+    rows[hr].forEach((c,ci)=>{if(isMonthHdr(c)&&!('m'in cm))cm.m=ci;else{const k=HEAD[vnorm(c)];if(k&&!(k in cm))cm[k]=ci;}});
     for(let ri=hr+1;ri<rows.length;ri++){const row=rows[ri]||[];const g=f=>{const i=cm[f];return(i!=null&&i<row.length)?row[i]:null;};
-      const m=excelToMonth(g('m'));if(m==null)continue;
-      let cp=g('cp'),cpv=0;if(cp!=null&&String(cp).trim()!==''){const n=parseFloat(String(cp).replace(/[^0-9.\-]/g,''));if(!isNaN(n))cpv=n;}
-      const S=v=>v!=null?String(v).trim():'';
-      recs.push({m,n1:S(g('n1')),n2:S(g('n2')),k:S(g('k')),ten:S(g('ten')),cp:cpv});}
-  });
-  if(!recs.length)throw new Error('Không thấy dữ liệu hợp lệ. Cần các sheet 2024/2025/2026 với cột Tháng, N1, Kênh, CP.');
+      const m=excelToMonth(g('m'));if(m==null)continue;let cp=g('cp'),cpv=0;if(cp!=null&&String(cp).trim()!==''){const n=parseFloat(String(cp).replace(/[^0-9.\-]/g,''));if(!isNaN(n))cpv=n;}
+      const S=v=>v!=null?String(v).trim():'';raw.push({m,n1:S(g('n1')),n2:n2group(g('n2')),k:kdisp(g('k')),ten:S(g('ten')),cp:cpv,prio});}});
+  if(!raw.length)throw new Error('Không thấy dữ liệu hợp lệ. Cần sheet 2024/2025.xx/2026.xx có cột Tháng, N1, Kênh, CP.');
+  // dedup theo tháng: giữ prio nhỏ nhất
+  const best={};raw.forEach(r=>{if(!(r.m in best)||r.prio<best[r.m])best[r.m]=r.prio;});
+  const recs=raw.filter(r=>r.prio===best[r.m]);
   const agg={};recs.forEach(r=>{const key=[r.m,r.n1,r.n2,r.k,r.ten].join('§');if(!agg[key])agg[key]={m:r.m,n1:r.n1,n2:r.n2,k:r.k,ten:r.ten,cp:0,c:0};agg[key].cp+=r.cp;agg[key].c++;});
   const data=Object.values(agg).map(x=>({...x,cp:Math.round(x.cp)}));
   const months=[...new Set(recs.map(r=>r.m))].sort();
   const ch={};recs.forEach(r=>ch[r.k]=(ch[r.k]||0)+r.cp);
   const channels=Object.keys(ch).sort((a,b)=>ch[b]-ch[a]);
-  const meta={generated:new Date().toLocaleDateString('vi-VN'),totalRows:recs.length,totalCombos:data.length,
-    months,channels,n1:[...new Set(recs.map(r=>r.n1))].sort(),n2:[...new Set(recs.map(r=>r.n2))].sort(),
-    ten:[...new Set(recs.map(r=>r.ten).filter(Boolean))].sort(),
-    channelLabels:REAL_CH_LABEL,n1Labels:{},source:'File Excel đã tải lên',demo:false};
-  return {meta,data};
+  return {data,months,channels,n1:[...new Set(recs.map(r=>r.n1))].sort(),n2:[...new Set(recs.map(r=>r.n2))].sort(),ten:[...new Set(recs.map(r=>r.ten).filter(Boolean))].sort(),totalRows:recs.length};
 }
-function applyData(raw){
-  RAW=raw;DATA=raw.data;META=raw.meta;MONTHS=META.months;
-  CHLAB=META.channelLabels||{};N1LAB=META.n1Labels||{};
-  F.n1.clear();F.k.clear();F.n2.clear();F.ten.clear();
+/* ===== UPLOAD: DOANH THU ===== */
+function parseRev(buf){
+  const wb=XLSX.read(buf,{type:'array',cellDates:true});const sh=wb.Sheets[wb.SheetNames[0]];
+  const rows=XLSX.utils.sheet_to_json(sh,{header:1,raw:true,defval:null,blankrows:false});
+  let hr=-1;for(let i=0;i<Math.min(5,rows.length);i++){if((rows[i]||[]).some(c=>isMonthHdr(c))){hr=i;break;}}
+  if(hr<0)throw new Error('Không thấy cột THÁNG trong file doanh thu.');
+  const cols={};rows[hr].forEach((c,ci)=>{if(c==null)return;if(isMonthHdr(c))cols.__m=ci;else cols[String(c).trim().toUpperCase()]=ci;});
+  if(cols.__m==null)throw new Error('Thiếu cột THÁNG.');
+  const rev={};for(let ri=hr+1;ri<rows.length;ri++){const row=rows[ri]||[];const m=excelToMonth(row[cols.__m]);if(!m)continue;const o={};
+    Object.entries(cols).forEach(([k,ci])=>{if(k==='__m')return;const v=row[ci];o[k]=typeof v==='number'?v:(parseFloat(String(v).replace(/[^0-9.\-]/g,''))||0);});rev[m]=o;}
+  if(!Object.keys(rev).length)throw new Error('Không đọc được dòng doanh thu nào.');
+  const revChannels=Object.keys(rows[hr].reduce((a,c)=>a,{})); // placeholder
+  const chs=Object.keys(cols).filter(k=>k!=='__m'&&k!=='TOTAL');
+  return {rev,revChannels:chs};
+}
+function applyCost(parsed){
+  DATA=parsed.data;MONTHS=parsed.months;CHANNELS=parsed.channels;
+  META={...META,totalRows:parsed.totalRows,totalCombos:parsed.data.length,months:parsed.months,channels:parsed.channels,n1:parsed.n1,n2:parsed.n2,ten:parsed.ten,source:'File Chi phí đã tải lên',demo:false};
+  RAW={meta:META,data:DATA,rev:REV};
+  F.n1.clear();F.k.clear();F.n2.clear();F.ten.clear();pivotOpen.clear();
   F.period={type:'month',m:MONTHS[MONTHS.length-1]};
-  document.getElementById('demoBanner').classList.toggle('show',!!META.demo);
+  document.getElementById('demoBanner').classList.remove('show');
   buildData();
 }
+function applyRev(parsed){REV=parsed.rev;RAW.rev=REV;if(parsed.revChannels&&parsed.revChannels.length)REVCH=parsed.revChannels;
+  document.getElementById('revBanner').classList.remove('show');
+  document.getElementById('sf-rev').textContent=Object.keys(REV).length+' tháng';
+  render();}
 
-/* =================== BUILD (mỗi lần có dữ liệu mới) =================== */
+/* =============== BUILD =============== */
 function buildData(){
   document.getElementById('sf-src').textContent=META.source;
   document.getElementById('sf-rows').textContent=fInt(META.totalRows);
   document.getElementById('sf-combo').textContent=fInt(META.totalCombos);
   document.getElementById('sf-gen').textContent=META.generated;
+  document.getElementById('sf-rev').textContent=hasRev()?Object.keys(REV).length+' tháng':'chưa nạp';
+  document.getElementById('revBanner').classList.toggle('show',!hasRev());
   Object.keys(charts).forEach(id=>{charts[id].destroy();delete charts[id];});
   buildPeriodDD();syncPeriod();
-  buildMultiDD('dd-n1','n1',META.n1,n1Label);
-  buildMultiDD('dd-k','k',META.channels,chLabel);
-  buildMultiDD('dd-n2','n2',META.n2);
-  buildMultiDD('dd-ten','ten',META.ten);
-  ['n1','k','n2','ten'].forEach(updCnt);
-  render();
+  buildMultiDD('dd-n1','n1',META.n1);buildMultiDD('dd-k','k',META.channels);buildMultiDD('dd-n2','n2',META.n2);buildMultiDD('dd-ten','ten',META.ten);
+  ['n1','k','n2','ten'].forEach(updCnt);render();
 }
 
-/* =================== STATIC BINDINGS =================== */
-const TITLES={overview:['Tổng quan chi phí','Bức tranh tổng thể ngân sách marketing GUMAC theo kỳ, so sánh kỳ trước và cùng kỳ năm trước.'],
-  detail:['Bảng chi tiết','Tra cứu chi phí theo nhiều chiều, gộp linh hoạt và xuất CSV.'],
+/* =============== STATIC BINDINGS =============== */
+const TITLES={overview:['Tổng quan chi phí','Bức tranh tổng thể ngân sách marketing GUMAC theo kỳ, so kỳ trước và cùng kỳ năm trước.'],
+  performance:['Hiệu suất Chi phí / Doanh thu','Tỷ lệ chi phí marketing trên doanh thu — tổng và theo từng kênh, so sánh giữa các tháng.'],
   channel:['Phân tích Kênh','Cơ cấu và diễn biến chi phí theo từng kênh.'],
-  cost:['Cơ cấu Chi phí','Phân rã ngân sách theo nhóm N1 và loại chi phí N2.'],
-  object:['Đối tượng / Cửa hàng','Xếp hạng các đối tượng chi tiết tiêu ngân sách marketing.']};
+  cost:['Cơ cấu Chi phí','Phân rã ngân sách theo N1, N2 và bảng pivot mở rộng nhiều cấp.'],
+  object:['Đối tượng','Xếp hạng các đối tượng chi tiết tiêu ngân sách.'],
+  detail:['Bảng chi tiết','Tra cứu chi phí theo nhiều chiều, gộp linh hoạt và xuất CSV.']};
 function bindStatic(){
   wireDD();
-  document.querySelectorAll('.nav-item').forEach(it=>it.onclick=()=>{
-    document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));it.classList.add('active');
-    curPage=it.dataset.page;document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-    document.getElementById('page-'+curPage).classList.add('active');
-    document.getElementById('pgTitle').textContent=TITLES[curPage][0];
-    document.getElementById('pgSub').textContent=TITLES[curPage][1];
-    closeMenu();render();});
-  document.getElementById('segTrend').onclick=e=>{const b=e.target.closest('button');if(!b)return;
-    document.querySelectorAll('#segTrend button').forEach(x=>x.classList.remove('on'));b.classList.add('on');trendMode=b.dataset.v;renderOverview();};
-  document.getElementById('segGroup').onclick=e=>{const b=e.target.closest('button');if(!b)return;
-    document.querySelectorAll('#segGroup button').forEach(x=>x.classList.remove('on'));b.classList.add('on');dGroup=b.dataset.v;dPage=1;dSort={col:'cp',dir:-1};renderDetail();};
-  document.getElementById('segChan').onclick=e=>{const b=e.target.closest('button');if(!b)return;
-    document.querySelectorAll('#segChan button').forEach(x=>x.classList.remove('on'));b.classList.add('on');chanMode=b.dataset.v;renderChannel();};
+  document.querySelectorAll('.nav-item').forEach(it=>it.onclick=()=>{document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));it.classList.add('active');curPage=it.dataset.page;document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+curPage).classList.add('active');document.getElementById('pgTitle').textContent=TITLES[curPage][0];document.getElementById('pgSub').textContent=TITLES[curPage][1];closeMenu();render();});
+  document.getElementById('segChan').onclick=e=>{const b=e.target.closest('button');if(!b)return;document.querySelectorAll('#segChan button').forEach(x=>x.classList.remove('on'));b.classList.add('on');chanMode=b.dataset.v;renderChannel();};
+  document.getElementById('segGroup').onclick=e=>{const b=e.target.closest('button');if(!b)return;document.querySelectorAll('#segGroup button').forEach(x=>x.classList.remove('on'));b.classList.add('on');dGroup=b.dataset.v;dPage=1;dSort={col:'cp',dir:-1};renderDetail();};
+  document.getElementById('segPivot').onclick=e=>{const b=e.target.closest('button');if(!b)return;document.querySelectorAll('#segPivot button').forEach(x=>x.classList.remove('on'));b.classList.add('on');pivotDims=b.dataset.v.split(',');pivotOpen.clear();renderPivot();};
+  document.getElementById('btnExpandAll').onclick=()=>{pivotOpen=pivotAllKeys();renderPivot();};
+  document.getElementById('btnCollapseAll').onclick=()=>{pivotOpen.clear();renderPivot();};
+  document.getElementById('btnExportPivot').onclick=exportPivot;
   document.getElementById('detailSearch').oninput=e=>{dSearch=e.target.value;dPage=1;renderDetail();};
-  document.getElementById('btnExport').onclick=exportCSV;
-  document.getElementById('btnReset').onclick=()=>{F.n1.clear();F.k.clear();F.n2.clear();F.ten.clear();
-    F.period={type:'month',m:MONTHS[MONTHS.length-1]};['n1','k','n2','ten'].forEach(updCnt);syncPeriod();
-    document.querySelectorAll('.dd-panel').forEach(p=>{if(p._draw)p._draw('');});render();};
-  document.getElementById('btnUpload').onclick=()=>document.getElementById('fileInput').click();
-  document.getElementById('fileInput').onchange=e=>{const file=e.target.files[0];if(!file)return;
-    const ov=document.getElementById('ov'),st=document.getElementById('upStatus');ov.classList.add('show');
-    const rd=new FileReader();
-    rd.onload=()=>{setTimeout(()=>{try{const raw=parseWorkbook(rd.result);applyData(raw);
-      st.className='up-status ok';st.textContent='✓ Đã nạp '+raw.meta.totalRows.toLocaleString('vi-VN')+' dòng';
-    }catch(err){st.className='up-status err';st.textContent='✕ '+(err.message||'Lỗi đọc file');console.error(err);}
-    finally{ov.classList.remove('show');e.target.value='';}},40);};
-    rd.onerror=()=>{ov.classList.remove('show');st.className='up-status err';st.textContent='✕ Không đọc được file';};
-    rd.readAsArrayBuffer(file);};
+  document.getElementById('objSearch').oninput=e=>{objSearch=e.target.value;objPage=1;renderObject();};
+  document.getElementById('btnExport').onclick=exportDetail;
+  document.getElementById('btnReset').onclick=()=>{F.n1.clear();F.k.clear();F.n2.clear();F.ten.clear();F.period={type:'month',m:MONTHS[MONTHS.length-1]};pivotOpen.clear();['n1','k','n2','ten'].forEach(updCnt);syncPeriod();document.querySelectorAll('.dd-panel').forEach(p=>{if(p._draw)p._draw('');});render();};
+  // uploads
+  function handleUpload(input,parser,apply,okmsg){input.onchange=e=>{const file=e.target.files[0];if(!file)return;const ov=document.getElementById('ov'),st=document.getElementById('upStatus');ov.classList.add('show');const rd=new FileReader();
+    rd.onload=()=>setTimeout(()=>{try{const r=parser(rd.result);apply(r);st.className='up-status ok';st.textContent=okmsg(r);document.getElementById('demoBanner').classList.add('show');}catch(err){st.className='up-status err';st.textContent='✕ '+(err.message||'Lỗi');console.error(err);document.getElementById('demoBanner').classList.add('show');}finally{ov.classList.remove('show');e.target.value='';}},40);
+    rd.onerror=()=>{ov.classList.remove('show');st.className='up-status err';st.textContent='✕ Không đọc được file';};rd.readAsArrayBuffer(file);};}
+  handleUpload(document.getElementById('fileCost'),parseCost,applyCost,r=>'✓ Chi phí: đã nạp '+r.totalRows.toLocaleString('vi-VN')+' dòng, '+r.months.length+' tháng');
+  handleUpload(document.getElementById('fileRev'),parseRev,applyRev,r=>'✓ Doanh thu: '+Object.keys(r.rev).length+' tháng');
+  document.getElementById('btnUploadCost').onclick=()=>document.getElementById('fileCost').click();
+  document.getElementById('btnUploadRev').onclick=()=>document.getElementById('fileRev').click();
   const sb=document.getElementById('sidebar'),bd=document.getElementById('backdrop');
-  document.getElementById('menuToggle').onclick=()=>{sb.classList.add('open');bd.classList.add('show');};
-  bd.onclick=closeMenu;
+  document.getElementById('menuToggle').onclick=()=>{sb.classList.add('open');bd.classList.add('show');};bd.onclick=closeMenu;
 }
 function closeMenu(){document.getElementById('sidebar').classList.remove('open');document.getElementById('backdrop').classList.remove('show');}
 
-/* =================== INIT =================== */
+/* =============== INIT =============== */
 document.getElementById('demoBanner').classList.toggle('show',!!META.demo);
-bindStatic();
-buildData();
+bindStatic();buildData();
 </script>
 </body>
 </html>
