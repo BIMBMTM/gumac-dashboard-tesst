@@ -138,15 +138,39 @@ tbody tr:hover{background:rgba(63,91,214,.04)}
   .main{padding:18px 16px 50px}.kpis{grid-template-columns:1fr 1fr}.pg-title p{display:none}
 }
 @media(max-width:520px){.kpis{grid-template-columns:1fr}}
+
+/* LOGIN */
+body.locked .app{display:none}
+body:not(.locked) .login-ov{display:none}
+.login-ov{position:fixed;inset:0;background:linear-gradient(135deg,#e7ecfb,#eaeef6);display:grid;place-items:center;z-index:200}
+.login-box{background:var(--card);border-radius:22px;box-shadow:var(--sh-out);padding:34px 30px;width:340px;max-width:90vw;text-align:center}
+.login-box .logo{width:54px;height:54px;border-radius:14px;margin:0 auto 14px;background:linear-gradient(135deg,var(--primary),#6b82e6);display:grid;place-items:center;color:#fff;font-weight:800;font-size:26px;box-shadow:var(--sh-out-sm)}
+.login-box h2{font-size:18px;font-weight:800;margin-bottom:4px}
+.login-box p{font-size:12px;color:var(--muted);margin-bottom:20px}
+.login-box input{width:100%;padding:12px 14px;border-radius:12px;border:none;background:var(--surface);box-shadow:var(--sh-in);font-family:inherit;font-size:14px;margin-bottom:12px;outline:none}
+.login-box .lbtn{width:100%;padding:12px;border-radius:12px;background:var(--primary);color:#fff;font-weight:700;font-size:14px;box-shadow:4px 4px 10px rgba(63,91,214,.35)}
+.login-err{color:var(--up);font-size:12px;font-weight:600;min-height:16px;margin-bottom:6px}
 </style>
 </head>
-<body>
+<body class="locked">
+<div class="login-ov" id="loginOv">
+  <div class="login-box">
+    <div class="logo">G</div>
+    <h2>GUMAC · Dashboard</h2>
+    <p>Chi phí Marketing — vui lòng đăng nhập</p>
+    <input id="liUser" placeholder="Tên đăng nhập" autocomplete="username">
+    <input id="liPass" type="password" placeholder="Mật khẩu" autocomplete="current-password">
+    <div class="login-err" id="liErr"></div>
+    <button class="lbtn" id="btnLogin">Đăng nhập</button>
+  </div>
+</div>
 <div class="app">
   <aside class="sidebar" id="sidebar">
     <div class="brand"><div class="logo">G</div><div><b>GUMAC</b><span>Chi phí Marketing</span></div></div>
     <div class="nav-label">Điều hành</div>
     <button class="nav-item active" data-page="overview"><span class="ic">◎</span> Tổng quan</button>
     <button class="nav-item" data-page="performance"><span class="ic">◇</span> Hiệu suất CP / DT</button>
+    <button class="nav-item" data-page="plan"><span class="ic">▣</span> Kế hoạch vs Thực</button>
     <div class="nav-label">Phân tích</div>
     <button class="nav-item" data-page="channel"><span class="ic">◢</span> Phân tích Kênh</button>
     <button class="nav-item" data-page="cost"><span class="ic">◔</span> Cơ cấu Chi phí</button>
@@ -162,10 +186,9 @@ tbody tr:hover{background:rgba(63,91,214,.04)}
       <div class="pg-title"><h1 id="pgTitle">Tổng quan chi phí</h1><p id="pgSub">Bức tranh tổng thể ngân sách marketing GUMAC theo kỳ.</p></div>
       <div class="topbar-actions">
         <button class="btn ghost" id="btnReset">↺ Đặt lại</button>
-        <button class="btn" id="btnUploadCost">⬆ File Chi phí</button>
-        <button class="btn primary" id="btnUploadRev">⬆ File Doanh thu</button>
-        <input type="file" id="fileCost" accept=".xlsx,.xls" hidden>
-        <input type="file" id="fileRev" accept=".xlsx,.xls" hidden>
+        <button class="btn" id="btnUploadAll">⬆ Tải file Excel</button>
+        <button class="btn primary" id="btnLink">⟳ Nạp từ link</button>
+        <input type="file" id="fileAll" accept=".xlsx,.xls" hidden>
       </div>
     </div>
 
@@ -181,6 +204,21 @@ tbody tr:hover{background:rgba(63,91,214,.04)}
     </div>
 
     <div class="pages">
+      <!-- PLAN vs ACTUAL -->
+      <div class="page" id="page-plan">
+        <div class="grid kpis" id="planKpi"></div>
+        <div class="card" style="margin-bottom:20px">
+          <h3>Kế hoạch · Dự báo · Đã chi theo tháng</h3>
+          <div class="sub">So sánh ngân sách kế hoạch, dự báo và thực chi 12 tháng gần nhất.</div>
+          <div class="chart-wrap lg"><canvas id="cPlan"></canvas></div>
+        </div>
+        <div class="card">
+          <h3 style="margin-bottom:6px">Bảng so sánh 3 cột</h3>
+          <div class="sub" style="margin-bottom:0">Kế hoạch / Dự báo / Đã chi và chênh lệch (vs kế hoạch, vs tháng trước, vs cùng kỳ).</div>
+          <div class="pivot-ctrl"><div class="seg" id="segPlanDim"><button class="on" data-v="k">Theo Kênh</button><button data-v="n1">Theo N1</button><button data-v="n2">Theo N2</button></div><button class="btn" id="btnExportPlan" style="margin-left:auto">⤓ Xuất CSV</button></div>
+          <div class="tbl-wrap" id="planTbl"></div>
+        </div>
+      </div>
       <!-- OVERVIEW -->
       <div class="page active" id="page-overview">
         <div class="grid kpis" id="kpiRow"></div>
@@ -259,10 +297,12 @@ tbody tr:hover{background:rgba(63,91,214,.04)}
 let RAW=JSON.parse(document.getElementById('DATA').textContent);
 let DATA=RAW.data, META=RAW.meta, REV=RAW.rev||{};
 let MONTHS=META.months, CHANNELS=META.channels, REVCH=META.revChannels||['OFFLINE','SOCIAL','ECOM','TIK TOK','OUTLET','GMORNING'];
+let PLAN=RAW.plan||[], FORECAST=RAW.forecast||[], REVPLAN=RAW.revplan||{};
+const LINK='https://docs.google.com/spreadsheets/d/e/2PACX-1vQh0rf6hIxw8-GFXB77cAIkeyTWfK1NdbfLkWo4ZHoZen3kmuev95eYwRsnnHv-iXOEUm-15j-mao9l/pub?output=xlsx';
 const charts={};
 const F={period:{type:'month',m:MONTHS[MONTHS.length-1]},n1:new Set(),k:new Set(),n2:new Set(),ten:new Set()};
 let curPage='overview',chanMode='bar',dGroup='k',dSort={col:'cp',dir:-1},dPage=1,dSearch='';
-let pivotDims=['n1','n2','k'],pivotOpen=new Set(),objSearch='',objPage=1;
+let pivotDims=['n1','n2','k'],pivotOpen=new Set(),objSearch='',objPage=1,planDim='k';
 const PER=14;
 const PAL=['#3f5bd6','#f76707','#2f9e6f','#ae3ec9','#1098ad','#f59f00','#e03131','#7048e8','#0ca678','#d6336c','#4c6ef5','#e8590c','#868e96','#12b886'];
 
@@ -288,7 +328,10 @@ function perLabel(p){if(p.type==='month')return mLabel(p.m);if(p.type==='year')r
 
 /* =============== FILTER / AGG =============== */
 function match(d){return (!F.n1.size||F.n1.has(d.n1))&&(!F.k.size||F.k.has(d.k))&&(!F.n2.size||F.n2.has(d.n2))&&(!F.ten.size||F.ten.has(d.ten));}
-function rowsFor(p){const ms=new Set(monthsIn(p));return DATA.filter(d=>ms.has(d.m)&&match(d));}
+function rowsOf(arr,p){const ms=new Set(monthsIn(p));return arr.filter(d=>ms.has(d.m)&&match(d));}
+function rowsFor(p){return rowsOf(DATA,p);}
+const hasPlan=()=>PLAN.length>0;
+const hasForecast=()=>FORECAST.length>0;
 function sumCP(r){return r.reduce((s,x)=>s+x.cp,0);}
 function gsum(rows,key){const m={};rows.forEach(r=>{m[r[key]]=(m[r[key]]||0)+r.cp;});return m;}
 function topEntries(o,n){return Object.entries(o).sort((a,b)=>b[1]-a[1]).slice(0,n);}
@@ -326,6 +369,7 @@ function renderOverview(){
       dh=`<div class="delta ${cls}">${ar} ${Math.abs(dd).toFixed(2)} điểm% <span>so với ${pp?perLabel(pp):'kỳ trước'}</span></div>`;}
     return {icn:'%',label:'Tỷ lệ CP / Doanh thu',val:fPct(ratio),delta:dh};
   }
+  if(hasPlan()){const pT=sumCP(rowsOf(PLAN,F.period));const dd=pT?(curT-pT)/pT*100:null;kpis[0].delta=`<div class="delta ${dd==null?'flat':(dd>=0?'up':'down')}">KH ${fVND(pT)}${dd==null?'':' · '+(dd>=0?'▲':'▼')+' '+Math.abs(dd).toFixed(0)+'% vs KH'}</div>`;}
   document.getElementById('kpiRow').innerHTML=kpis.map(k=>`<div class="card kpi"><div class="label"><span class="icn">${k.icn}</span>${k.label}</div><div class="val">${k.val}</div>${k.delta||''}</div>`).join('');
 
   // combo: spend bars + ratio line
@@ -495,8 +539,48 @@ function renderDetail(){
   document.querySelectorAll('#detailPager .pg-btns button').forEach(b=>b.onclick=()=>{dPage+=+b.dataset.d;renderDetail();});
 }
 
+
+/* =============== PLAN vs ACTUAL =============== */
+function renderPlan(){
+  const cur=rowsFor(F.period),actT=sumCP(cur);
+  const planT=sumCP(rowsOf(PLAN,F.period)),fcT=sumCP(rowsOf(FORECAST,F.period));
+  const pp=prevP(F.period),yy=yoyP(F.period);
+  const kpis=[
+    {icn:'\u20ab',label:'\u0110\u00e3 chi (th\u1ef1c t\u1ebf)',val:fVND(actT),sub:perLabel(F.period)},
+    {icn:'\u25c7',label:'K\u1ebf ho\u1ea1ch chi',val:hasPlan()?fVND(planT):'\u2014',sub:hasPlan()?('CL: '+(actT-planT>=0?'+':'')+fVND(actT-planT)):'ch\u01b0a nh\u1eadp k\u1ebf ho\u1ea1ch'},
+    {icn:'\u25c8',label:'D\u1ef1 b\u00e1o chi',val:hasForecast()?fVND(fcT):'\u2014',sub:hasForecast()?'':'ch\u01b0a nh\u1eadp d\u1ef1 b\u00e1o'},
+    {icn:'%',label:'% th\u1ef1c hi\u1ec7n k\u1ebf ho\u1ea1ch',val:(hasPlan()&&planT)?fPct(actT/planT*100):'\u2014',sub:(hasPlan()&&planT)?(actT<=planT?'trong ng\u00e2n s\u00e1ch':'v\u01b0\u1ee3t ng\u00e2n s\u00e1ch'):''},
+  ];
+  document.getElementById('planKpi').innerHTML=kpis.map(k=>`<div class="card kpi"><div class="label"><span class="icn">${k.icn}</span>${k.label}</div><div class="val">${k.val}</div><div class="delta flat">${k.sub||''}</div></div>`).join('');
+  const i=F.period.type==='month'?MONTHS.indexOf(F.period.m):MONTHS.length-1;
+  const tms=MONTHS.slice(Math.max(0,i-11),i+1);
+  const actM=tms.map(m=>sumCP(DATA.filter(d=>d.m===m&&match(d))));
+  const planM=tms.map(m=>sumCP(PLAN.filter(d=>d.m===m&&match(d))));
+  const fcM=tms.map(m=>sumCP(FORECAST.filter(d=>d.m===m&&match(d))));
+  const ds=[{label:'K\u1ebf ho\u1ea1ch',data:planM,backgroundColor:'#adb5bd',borderRadius:5,maxBarThickness:15},
+            {label:'D\u1ef1 b\u00e1o',data:fcM,backgroundColor:'#f59f00',borderRadius:5,maxBarThickness:15},
+            {label:'\u0110\u00e3 chi',data:actM,backgroundColor:'#3f5bd6',borderRadius:5,maxBarThickness:15}];
+  mk('cPlan',{type:'bar',data:{labels:tms.map(mLabel),datasets:ds},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top',labels:{boxWidth:12,font:{size:11}}},tooltip:{callbacks:{label:c=>c.dataset.label+': '+fFull(c.raw)}}},scales:{y:{ticks:moneyTick,grid:{color:'#e2e7f2'}},x:{grid:{display:false}}}}});
+  const dim=planDim;
+  const aMap=gsum(cur,dim),pMap=gsum(rowsOf(PLAN,F.period),dim),fMap=gsum(rowsOf(FORECAST,F.period),dim);
+  const ppMap=pp?gsum(rowsFor(pp),dim):{},yyMap=yy?gsum(rowsFor(yy),dim):{};
+  const keys=[...new Set([...Object.keys(aMap),...Object.keys(pMap),...Object.keys(fMap)])].sort((a,b)=>(aMap[b]||0)-(aMap[a]||0));
+  const lab=k=>dim==='m'?mLabel(k):k;
+  const dcell=(a,b)=>{if(b==null||b===0)return '<span class="pct-tag">\u2014</span>';const d=(a-b)/b*100;return `<span class="${d>=0?'tag-up':'tag-down'}">${d>=0?'\u25b2':'\u25bc'} ${Math.abs(d).toFixed(0)}%</span>`;};
+  const dvar=(a,b)=>{if(b==null||b===0)return '<span class="pct-tag">\u2014</span>';const diff=a-b,d=diff/b*100;return `<span class="${diff>=0?'tag-up':'tag-down'}">${diff>=0?'+':''}${fVND(diff)} (${d>=0?'+':''}${d.toFixed(0)}%)</span>`;};
+  document.getElementById('planTbl').innerHTML=keys.length?`<table><thead><tr><th>${GLAB[dim]}</th><th>K\u1ebf ho\u1ea1ch</th><th>D\u1ef1 b\u00e1o</th><th>\u0110\u00e3 chi</th><th>CL vs KH</th><th>vs th\u00e1ng tr\u01b0\u1edbc</th><th>vs c\u00f9ng k\u1ef3</th></tr></thead><tbody>${keys.map(k=>{const a=aMap[k]||0,p=pMap[k]||0,f=fMap[k]||0;return `<tr><td>${lab(k)}</td><td class="num">${hasPlan()?fVND(p):'\u2014'}</td><td class="num">${hasForecast()?fVND(f):'\u2014'}</td><td class="num"><b>${fVND(a)}</b></td><td class="num">${hasPlan()?dvar(a,p):'\u2014'}</td><td class="num">${pp?dcell(a,ppMap[k]):'\u2014'}</td><td class="num">${yy?dcell(a,yyMap[k]):'\u2014'}</td></tr>`;}).join('')}<tr style="background:var(--primary-soft)"><td><b>T\u1ed4NG</b></td><td class="num"><b>${hasPlan()?fVND(planT):'\u2014'}</b></td><td class="num"><b>${hasForecast()?fVND(fcT):'\u2014'}</b></td><td class="num"><b>${fVND(actT)}</b></td><td class="num"><b>${hasPlan()?dvar(actT,planT):'\u2014'}</b></td><td></td><td></td></tr></tbody></table>`:`<div class="empty">Kh\u00f4ng c\u00f3 d\u1eef li\u1ec7u.</div>`;
+}
+function exportPlan(){
+  const dim=planDim,cur=rowsFor(F.period);
+  const aMap=gsum(cur,dim),pMap=gsum(rowsOf(PLAN,F.period),dim),fMap=gsum(rowsOf(FORECAST,F.period),dim);
+  const keys=[...new Set([...Object.keys(aMap),...Object.keys(pMap),...Object.keys(fMap)])];
+  const esc=v=>{v=String(v==null?'':v).replace(/"/g,'""');return /[",\n]/.test(v)?'"'+v+'"':v;};
+  const lines=[[GLAB[dim],'Ke hoach','Du bao','Da chi','CL vs KH'].join(',')];
+  keys.forEach(k=>{const a=aMap[k]||0,p=pMap[k]||0,f=fMap[k]||0;lines.push([esc(dim==='m'?mLabel(k):k),Math.round(p),Math.round(f),Math.round(a),Math.round(a-p)].join(','));});
+  dl(lines,'GUMAC_KeHoach_vs_Thuc_'+GLAB[dim]+'_'+perLabel(F.period));
+}
 /* =============== ROUTER =============== */
-function render(){({overview:renderOverview,performance:renderPerformance,channel:renderChannel,cost:renderCost,object:renderObject,detail:renderDetail}[curPage]||renderOverview)();}
+function render(){({overview:renderOverview,performance:renderPerformance,plan:renderPlan,channel:renderChannel,cost:renderCost,object:renderObject,detail:renderDetail}[curPage]||renderOverview)();}
 
 /* =============== DROPDOWNS =============== */
 function buildPeriodDD(){
@@ -559,25 +643,58 @@ function excelToMonth(v){
   return null;}
 function classifySheet(n){n=n.trim();let m=n.match(/^(20\d\d)$/);if(m&&+m[1]>=2024)return 0;m=n.match(/^(20\d\d)\.(\d{2})-(\d{2})$/);if(m&&+m[1]>=2024)return 1;m=n.match(/^(20\d\d)\.(\d{2})$/);if(m&&+m[1]>=2024)return 2;return null;}
 function findHeader(rows){let best=null,bs=-1;for(let ri=0;ri<Math.min(6,rows.length);ri++){const keys=new Set();(rows[ri]||[]).forEach(c=>{if(isMonthHdr(c))keys.add('m');else{const k=HEAD[vnorm(c)];if(k)keys.add(k);}});if(keys.has('n1')&&keys.has('k')&&keys.has('cp')){const sc=keys.size;if(sc>bs){bs=sc;best=ri;}}}return best;}
-function parseCost(buf){
-  const wb=XLSX.read(buf,{type:'array'});const raw=[];
-  wb.SheetNames.forEach(sn=>{const prio=classifySheet(sn);if(prio==null)return;
+function findHeaderG(rows,HM,need){for(let ri=0;ri<Math.min(6,rows.length);ri++){const ks=new Set();(rows[ri]||[]).forEach(c=>{if(isMonthHdr(c))ks.add('m');else{const k=HM[vnorm(c)];if(k)ks.add(k);}});let ok=true;need.forEach(n=>{if(!ks.has(n))ok=false;});if(ok)return ri;}return -1;}
+function colmap(rowHdr,HM){const cm={};rowHdr.forEach((c,ci)=>{if(isMonthHdr(c)&&!('m'in cm))cm.m=ci;else{const k=HM[vnorm(c)];if(k&&!(k in cm))cm[k]=ci;}});return cm;}
+function num(v){if(v==null||String(v).trim()==='')return 0;const n=parseFloat(String(v).replace(/[^0-9.\-]/g,''));return isNaN(n)?0:n;}
+const PLANHM={};[['n1','n1'],['n2','n2'],['kenh','k'],['k\u00eanh','k'],['t\u00ean \u0111\u1ed1i t\u01b0\u1ee3ng','ten'],['ten doi tuong','ten'],['k\u1ebf ho\u1ea1ch chi','pcp'],['ke hoach chi','pcp'],['k\u1ebf ho\u1ea1ch doanh thu','pdt'],['ke hoach doanh thu','pdt']].forEach(p=>PLANHM[p[0].normalize('NFC')]=p[1]);
+const FCHM={};[['n1','n1'],['n2','n2'],['kenh','k'],['k\u00eanh','k'],['t\u00ean \u0111\u1ed1i t\u01b0\u1ee3ng','ten'],['ten doi tuong','ten'],['d\u1ef1 b\u00e1o chi','fcp'],['du bao chi','fcp'],['d\u1ef1 b\u00e1o','fcp']].forEach(p=>FCHM[p[0].normalize('NFC')]=p[1]);
+function parseRevRows(rows){let hr=-1;for(let i=0;i<Math.min(5,rows.length);i++){if((rows[i]||[]).some(c=>isMonthHdr(c))){hr=i;break;}}if(hr<0)return null;const cols={};rows[hr].forEach((c,ci)=>{if(c==null)return;if(isMonthHdr(c))cols.__m=ci;else cols[String(c).trim().toUpperCase()]=ci;});if(cols.__m==null)return null;const rev={};for(let ri=hr+1;ri<rows.length;ri++){const row=rows[ri]||[];const m=excelToMonth(row[cols.__m]);if(!m)continue;const o={};Object.entries(cols).forEach(([k,ci])=>{if(k==='__m')return;const v=row[ci];o[k]=typeof v==='number'?v:num(v);});rev[m]=o;}if(!Object.keys(rev).length)return null;const chs=Object.keys(cols).filter(k=>k!=='__m'&&k!=='TOTAL');return {rev,revChannels:chs};}
+function parsePlanRows(rows){const hr=findHeaderG(rows,PLANHM,['m','pcp']);if(hr<0)return {plan:[],revplan:{}};const cm=colmap(rows[hr],PLANHM);const plan=[],revplan={};for(let ri=hr+1;ri<rows.length;ri++){const row=rows[ri]||[];const g=f=>{const i=cm[f];return(i!=null&&i<row.length)?row[i]:null;};const m=excelToMonth(g('m'));if(!m)continue;const S=v=>v!=null?String(v).trim():'';const pcp=num(g('pcp'));if(pcp)plan.push({m,n1:S(g('n1')),n2:n2group(g('n2')),k:kdisp(g('k')),ten:S(g('ten')),cp:pcp});const pdt=num(g('pdt'));if(pdt){const k=kdisp(g('k'));revplan[m]=revplan[m]||{};revplan[m][k]=(revplan[m][k]||0)+pdt;revplan[m].TOTAL=(revplan[m].TOTAL||0)+pdt;}}return {plan,revplan};}
+function parseFcRows(rows){const hr=findHeaderG(rows,FCHM,['m','fcp']);if(hr<0)return [];const cm=colmap(rows[hr],FCHM);const fc=[];for(let ri=hr+1;ri<rows.length;ri++){const row=rows[ri]||[];const g=f=>{const i=cm[f];return(i!=null&&i<row.length)?row[i]:null;};const m=excelToMonth(g('m'));if(!m)continue;const S=v=>v!=null?String(v).trim():'';const v=num(g('fcp'));if(v)fc.push({m,n1:S(g('n1')),n2:n2group(g('n2')),k:kdisp(g('k')),ten:S(g('ten')),cp:v});}return fc;}
+function deacc(s){return (s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\u0111/g,'d').replace(/\u0110/g,'D').trim().toUpperCase();}
+function processWorkbook(wb){
+  const raw=[];let rev=null,plan=[],forecast=[],revplan={};
+  wb.SheetNames.forEach(sn=>{
+    const prio=classifySheet(sn);const dn=deacc(sn);
     const rows=XLSX.utils.sheet_to_json(wb.Sheets[sn],{header:1,raw:true,defval:null,blankrows:false});
-    const hr=findHeader(rows);if(hr==null)return;const cm={};
-    rows[hr].forEach((c,ci)=>{if(isMonthHdr(c)&&!('m'in cm))cm.m=ci;else{const k=HEAD[vnorm(c)];if(k&&!(k in cm))cm[k]=ci;}});
-    for(let ri=hr+1;ri<rows.length;ri++){const row=rows[ri]||[];const g=f=>{const i=cm[f];return(i!=null&&i<row.length)?row[i]:null;};
-      const m=excelToMonth(g('m'));if(m==null)continue;let cp=g('cp'),cpv=0;if(cp!=null&&String(cp).trim()!==''){const n=parseFloat(String(cp).replace(/[^0-9.\-]/g,''));if(!isNaN(n))cpv=n;}
-      const S=v=>v!=null?String(v).trim():'';raw.push({m,n1:S(g('n1')),n2:n2group(g('n2')),k:kdisp(g('k')),ten:S(g('ten')),cp:cpv,prio});}});
-  if(!raw.length)throw new Error('Không thấy dữ liệu hợp lệ. Cần sheet 2024/2025.xx/2026.xx có cột Tháng, N1, Kênh, CP.');
-  // dedup theo tháng: giữ prio nhỏ nhất
-  const best={};raw.forEach(r=>{if(!(r.m in best)||r.prio<best[r.m])best[r.m]=r.prio;});
-  const recs=raw.filter(r=>r.prio===best[r.m]);
-  const agg={};recs.forEach(r=>{const key=[r.m,r.n1,r.n2,r.k,r.ten].join('§');if(!agg[key])agg[key]={m:r.m,n1:r.n1,n2:r.n2,k:r.k,ten:r.ten,cp:0,c:0};agg[key].cp+=r.cp;agg[key].c++;});
+    if(prio!=null){
+      const hr=findHeader(rows);if(hr==null)return;const cm={};
+      rows[hr].forEach((c,ci)=>{if(isMonthHdr(c)&&!('m'in cm))cm.m=ci;else{const k=HEAD[vnorm(c)];if(k&&!(k in cm))cm[k]=ci;}});
+      for(let ri=hr+1;ri<rows.length;ri++){const row=rows[ri]||[];const g=f=>{const i=cm[f];return(i!=null&&i<row.length)?row[i]:null;};
+        const m=excelToMonth(g('m'));if(m==null)continue;const cpv=num(g('cp'));
+        const S=v=>v!=null?String(v).trim():'';raw.push({m,n1:S(g('n1')),n2:n2group(g('n2')),k:kdisp(g('k')),ten:S(g('ten')),cp:cpv,sheet:sn});}
+    } else if(dn.includes('DTHU')||dn.includes('DOANH THU')){const r=parseRevRows(rows);if(r)rev=r;}
+    else if(dn.includes('KE HOACH')){const r=parsePlanRows(rows);plan=r.plan;revplan=r.revplan;}
+    else if(dn.includes('DU BAO')){forecast=parseFcRows(rows);}
+  });
+  if(!raw.length)throw new Error('Kh\u00f4ng th\u1ea5y sheet chi ph\u00ed h\u1ee3p l\u1ec7 (2024/2025.xx/2026.xx).');
+  const cnt={};raw.forEach(r=>{const key=r.m+'|'+r.sheet;cnt[key]=(cnt[key]||0)+1;});
+  const pick={};raw.forEach(r=>{const c=cnt[r.m+'|'+r.sheet],pr=classifySheet(r.sheet),cur=pick[r.m];if(!cur||c>cur.c||(c===cur.c&&pr<cur.pr))pick[r.m]={sheet:r.sheet,c,pr};});
+  const recs=raw.filter(r=>pick[r.m].sheet===r.sheet);
+  const agg={};recs.forEach(r=>{const key=[r.m,r.n1,r.n2,r.k,r.ten].join('\u00a7');if(!agg[key])agg[key]={m:r.m,n1:r.n1,n2:r.n2,k:r.k,ten:r.ten,cp:0,c:0};agg[key].cp+=r.cp;agg[key].c++;});
   const data=Object.values(agg).map(x=>({...x,cp:Math.round(x.cp)}));
   const months=[...new Set(recs.map(r=>r.m))].sort();
   const ch={};recs.forEach(r=>ch[r.k]=(ch[r.k]||0)+r.cp);
   const channels=Object.keys(ch).sort((a,b)=>ch[b]-ch[a]);
-  return {data,months,channels,n1:[...new Set(recs.map(r=>r.n1))].sort(),n2:[...new Set(recs.map(r=>r.n2))].sort(),ten:[...new Set(recs.map(r=>r.ten).filter(Boolean))].sort(),totalRows:recs.length};
+  return {data,months,channels,n1:[...new Set(recs.map(r=>r.n1))].sort(),n2:[...new Set(recs.map(r=>r.n2))].sort(),ten:[...new Set(recs.map(r=>r.ten).filter(Boolean))].sort(),totalRows:recs.length,rev,plan,forecast,revplan};
+}
+function loadFromArrayBuffer(buf){const wb=XLSX.read(buf,{type:'array'});const p=processWorkbook(wb);applyAll(p);return p;}
+async function loadFromLink(){const st=document.getElementById('upStatus'),ov=document.getElementById('ov');ov.classList.add('show');st.className='up-status';st.textContent='\u0110ang n\u1ea1p t\u1eeb link\u2026';
+  try{const res=await fetch(LINK,{redirect:'follow'});if(!res.ok)throw new Error('HTTP '+res.status);const buf=await res.arrayBuffer();const p=loadFromArrayBuffer(buf);
+    st.className='up-status ok';st.textContent='\u2713 \u0110\u00e3 n\u1ea1p t\u1eeb link: '+p.totalRows.toLocaleString('vi-VN')+' d\u00f2ng, '+p.months.length+' th\u00e1ng'+(p.plan.length?', c\u00f3 KH':'')+(p.forecast.length?', c\u00f3 DB':'')+(p.rev?', c\u00f3 DT':'');
+    document.getElementById('demoBanner').classList.remove('show');
+  }catch(err){console.error(err);st.className='up-status err';st.textContent='\u2715 Kh\u00f4ng n\u1ea1p \u0111\u01b0\u1ee3c t\u1eeb link (tr\u00ecnh duy\u1ec7t ch\u1eb7n CORS ho\u1eb7c m\u1ea1ng). H\u00e3y t\u1ea3i file .xlsx t\u1eeb link r\u1ed3i b\u1ea5m \u201cT\u1ea3i file Excel\u201d.';document.getElementById('demoBanner').classList.add('show');}
+  finally{ov.classList.remove('show');}
+}
+function applyAll(p){
+  DATA=p.data;MONTHS=p.months;CHANNELS=p.channels;
+  if(p.rev){REV=p.rev.rev;if(p.rev.revChannels&&p.rev.revChannels.length)REVCH=p.rev.revChannels;}
+  PLAN=p.plan||[];FORECAST=p.forecast||[];REVPLAN=p.revplan||{};
+  META={...META,totalRows:p.totalRows,totalCombos:p.data.length,months:p.months,channels:p.channels,n1:p.n1,n2:p.n2,ten:p.ten,source:'D\u1eef li\u1ec7u \u0111\u00e3 n\u1ea1p',demo:false,generated:new Date().toLocaleDateString('vi-VN')};
+  RAW={meta:META,data:DATA,rev:{rev:REV},plan:PLAN,forecast:FORECAST,revplan:REVPLAN};
+  F.n1.clear();F.k.clear();F.n2.clear();F.ten.clear();pivotOpen.clear();
+  F.period={type:'month',m:MONTHS[MONTHS.length-1]};
+  buildData();
 }
 /* ===== UPLOAD: DOANH THU ===== */
 function parseRev(buf){
@@ -593,20 +710,6 @@ function parseRev(buf){
   const chs=Object.keys(cols).filter(k=>k!=='__m'&&k!=='TOTAL');
   return {rev,revChannels:chs};
 }
-function applyCost(parsed){
-  DATA=parsed.data;MONTHS=parsed.months;CHANNELS=parsed.channels;
-  META={...META,totalRows:parsed.totalRows,totalCombos:parsed.data.length,months:parsed.months,channels:parsed.channels,n1:parsed.n1,n2:parsed.n2,ten:parsed.ten,source:'File Chi phí đã tải lên',demo:false};
-  RAW={meta:META,data:DATA,rev:REV};
-  F.n1.clear();F.k.clear();F.n2.clear();F.ten.clear();pivotOpen.clear();
-  F.period={type:'month',m:MONTHS[MONTHS.length-1]};
-  document.getElementById('demoBanner').classList.remove('show');
-  buildData();
-}
-function applyRev(parsed){REV=parsed.rev;RAW.rev=REV;if(parsed.revChannels&&parsed.revChannels.length)REVCH=parsed.revChannels;
-  document.getElementById('revBanner').classList.remove('show');
-  document.getElementById('sf-rev').textContent=Object.keys(REV).length+' tháng';
-  render();}
-
 /* =============== BUILD =============== */
 function buildData(){
   document.getElementById('sf-src').textContent=META.source;
@@ -624,6 +727,7 @@ function buildData(){
 /* =============== STATIC BINDINGS =============== */
 const TITLES={overview:['Tổng quan chi phí','Bức tranh tổng thể ngân sách marketing GUMAC theo kỳ, so kỳ trước và cùng kỳ năm trước.'],
   performance:['Hiệu suất Chi phí / Doanh thu','Tỷ lệ chi phí marketing trên doanh thu — tổng và theo từng kênh, so sánh giữa các tháng.'],
+  plan:['Kế hoạch vs Thực chi','So sánh Kế hoạch · Dự báo · Đã chi và chênh lệch theo kênh/N1/N2.'],
   channel:['Phân tích Kênh','Cơ cấu và diễn biến chi phí theo từng kênh.'],
   cost:['Cơ cấu Chi phí','Phân rã ngân sách theo N1, N2 và bảng pivot mở rộng nhiều cấp.'],
   object:['Đối tượng','Xếp hạng các đối tượng chi tiết tiêu ngân sách.'],
@@ -641,22 +745,27 @@ function bindStatic(){
   document.getElementById('objSearch').oninput=e=>{objSearch=e.target.value;objPage=1;renderObject();};
   document.getElementById('btnExport').onclick=exportDetail;
   document.getElementById('btnReset').onclick=()=>{F.n1.clear();F.k.clear();F.n2.clear();F.ten.clear();F.period={type:'month',m:MONTHS[MONTHS.length-1]};pivotOpen.clear();['n1','k','n2','ten'].forEach(updCnt);syncPeriod();document.querySelectorAll('.dd-panel').forEach(p=>{if(p._draw)p._draw('');});render();};
-  // uploads
-  function handleUpload(input,parser,apply,okmsg){input.onchange=e=>{const file=e.target.files[0];if(!file)return;const ov=document.getElementById('ov'),st=document.getElementById('upStatus');ov.classList.add('show');const rd=new FileReader();
-    rd.onload=()=>setTimeout(()=>{try{const r=parser(rd.result);apply(r);st.className='up-status ok';st.textContent=okmsg(r);document.getElementById('demoBanner').classList.add('show');}catch(err){st.className='up-status err';st.textContent='✕ '+(err.message||'Lỗi');console.error(err);document.getElementById('demoBanner').classList.add('show');}finally{ov.classList.remove('show');e.target.value='';}},40);
-    rd.onerror=()=>{ov.classList.remove('show');st.className='up-status err';st.textContent='✕ Không đọc được file';};rd.readAsArrayBuffer(file);};}
-  handleUpload(document.getElementById('fileCost'),parseCost,applyCost,r=>'✓ Chi phí: đã nạp '+r.totalRows.toLocaleString('vi-VN')+' dòng, '+r.months.length+' tháng');
-  handleUpload(document.getElementById('fileRev'),parseRev,applyRev,r=>'✓ Doanh thu: '+Object.keys(r.rev).length+' tháng');
-  document.getElementById('btnUploadCost').onclick=()=>document.getElementById('fileCost').click();
-  document.getElementById('btnUploadRev').onclick=()=>document.getElementById('fileRev').click();
+  // t\u1ea3i file g\u1ed9p + n\u1ea1p t\u1eeb link
+  document.getElementById('fileAll').onchange=e=>{const file=e.target.files[0];if(!file)return;const ov=document.getElementById('ov'),st=document.getElementById('upStatus');ov.classList.add('show');const rd=new FileReader();
+    rd.onload=()=>setTimeout(()=>{try{const p=loadFromArrayBuffer(rd.result);st.className='up-status ok';st.textContent='\u2713 \u0110\u00e3 n\u1ea1p '+p.totalRows.toLocaleString('vi-VN')+' d\u00f2ng, '+p.months.length+' th\u00e1ng'+(p.plan.length?', c\u00f3 KH':'')+(p.forecast.length?', c\u00f3 DB':'')+(p.rev?', c\u00f3 DT':'');document.getElementById('demoBanner').classList.remove('show');}catch(err){st.className='up-status err';st.textContent='\u2715 '+(err.message||'Loi');console.error(err);}finally{ov.classList.remove('show');e.target.value='';}},40);
+    rd.onerror=()=>{ov.classList.remove('show');st.className='up-status err';st.textContent='\u2715 Khong doc duoc file';};rd.readAsArrayBuffer(file);};
+  document.getElementById('btnUploadAll').onclick=()=>document.getElementById('fileAll').click();
+  document.getElementById('btnLink').onclick=loadFromLink;
+  document.getElementById('btnLogin').onclick=doLogin;
+  ['liUser','liPass'].forEach(id=>document.getElementById(id).addEventListener('keydown',ev=>{if(ev.key==='Enter')doLogin();}));
+  document.getElementById('segPlanDim').onclick=e=>{const b=e.target.closest('button');if(!b)return;document.querySelectorAll('#segPlanDim button').forEach(x=>x.classList.remove('on'));b.classList.add('on');planDim=b.dataset.v;renderPlan();};
+  document.getElementById('btnExportPlan').onclick=exportPlan;
   const sb=document.getElementById('sidebar'),bd=document.getElementById('backdrop');
   document.getElementById('menuToggle').onclick=()=>{sb.classList.add('open');bd.classList.add('show');};bd.onclick=closeMenu;
 }
 function closeMenu(){document.getElementById('sidebar').classList.remove('open');document.getElementById('backdrop').classList.remove('show');}
 
 /* =============== INIT =============== */
+function doLogin(){const u=document.getElementById('liUser').value.trim();const p=document.getElementById('liPass').value;
+  if(u==='GUMACMKT'&&p==='GUMAC@#$%2026'){document.body.classList.remove('locked');buildData();loadFromLink();}
+  else{document.getElementById('liErr').textContent='Sai tên đăng nhập hoặc mật khẩu.';}}
 document.getElementById('demoBanner').classList.toggle('show',!!META.demo);
-bindStatic();buildData();
+bindStatic();
 </script>
 </body>
 </html>
