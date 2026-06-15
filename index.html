@@ -552,11 +552,15 @@ function isMonthHdr(s){s=vnorm(s);return s.startsWith('tháng')||s.startsWith('t
 const CODE2DISP={'T':'OFFLINE','S':'SOCIAL','E':'ECOM','TIKTOK':'TIK TOK','CONT':'OUTLET','OUTLET':'OUTLET','GMOR':'GMORNING','BRANDING':'BRANDING','PB':'PB','KHÁC':'KHÁC','POPUP':'POP-UP','ALEEVA':'ALEEVA','Back Office':'BACK OFFICE','FRANCHISE':'FRANCHISE'};
 function kdisp(c){c=c==null?'':String(c).trim();return CODE2DISP[c]||(c||'KHÁC');}
 function n2group(s){if(s==null)return '';s=String(s).trim();const l=s.toLowerCase();return (l.includes('ads')&&!l.includes('web'))?'Chi phí quảng cáo':s;}
-function excelToMonth(v){if(v instanceof Date&&!isNaN(v))return v.getFullYear()+'-'+String(v.getMonth()+1).padStart(2,'0');if(typeof v==='number'&&v>20000&&v<80000){const d=new Date(Math.round((v-25569)*86400*1000));return d.getUTCFullYear()+'-'+String(d.getUTCMonth()+1).padStart(2,'0');}if(typeof v==='string'){const m=v.match(/(\d{4})[-/.](\d{1,2})/);if(m)return m[1]+'-'+String(+m[2]).padStart(2,'0');}return null;}
+function excelToMonth(v){
+  if(typeof v==='number'&&v>20000&&v<80000){const d=new Date(Math.round((v-25569)*86400*1000));return d.getUTCFullYear()+'-'+String(d.getUTCMonth()+1).padStart(2,'0');}
+  if(v instanceof Date&&!isNaN(v)){const d=new Date(v.getTime()+12*3600*1000);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');}
+  if(typeof v==='string'){let m=v.match(/(\d{4})[-/.](\d{1,2})/);if(m)return m[1]+'-'+String(+m[2]).padStart(2,'0');m=v.match(/^(\d{1,2})[/.\-](\d{1,2})[/.\-](\d{4})/);if(m)return m[3]+'-'+String(+m[2]).padStart(2,'0');}
+  return null;}
 function classifySheet(n){n=n.trim();let m=n.match(/^(20\d\d)$/);if(m&&+m[1]>=2024)return 0;m=n.match(/^(20\d\d)\.(\d{2})-(\d{2})$/);if(m&&+m[1]>=2024)return 1;m=n.match(/^(20\d\d)\.(\d{2})$/);if(m&&+m[1]>=2024)return 2;return null;}
 function findHeader(rows){let best=null,bs=-1;for(let ri=0;ri<Math.min(6,rows.length);ri++){const keys=new Set();(rows[ri]||[]).forEach(c=>{if(isMonthHdr(c))keys.add('m');else{const k=HEAD[vnorm(c)];if(k)keys.add(k);}});if(keys.has('n1')&&keys.has('k')&&keys.has('cp')){const sc=keys.size;if(sc>bs){bs=sc;best=ri;}}}return best;}
 function parseCost(buf){
-  const wb=XLSX.read(buf,{type:'array',cellDates:true});const raw=[];
+  const wb=XLSX.read(buf,{type:'array'});const raw=[];
   wb.SheetNames.forEach(sn=>{const prio=classifySheet(sn);if(prio==null)return;
     const rows=XLSX.utils.sheet_to_json(wb.Sheets[sn],{header:1,raw:true,defval:null,blankrows:false});
     const hr=findHeader(rows);if(hr==null)return;const cm={};
@@ -577,7 +581,7 @@ function parseCost(buf){
 }
 /* ===== UPLOAD: DOANH THU ===== */
 function parseRev(buf){
-  const wb=XLSX.read(buf,{type:'array',cellDates:true});const sh=wb.Sheets[wb.SheetNames[0]];
+  const wb=XLSX.read(buf,{type:'array'});const sh=wb.Sheets[wb.SheetNames[0]];
   const rows=XLSX.utils.sheet_to_json(sh,{header:1,raw:true,defval:null,blankrows:false});
   let hr=-1;for(let i=0;i<Math.min(5,rows.length);i++){if((rows[i]||[]).some(c=>isMonthHdr(c))){hr=i;break;}}
   if(hr<0)throw new Error('Không thấy cột THÁNG trong file doanh thu.');
