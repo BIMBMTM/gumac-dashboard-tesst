@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>GUMAC · Atelier CRM v4.6</title>
+<title>GUMAC · Atelier CRM v4.7</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
@@ -14,60 +14,60 @@
 <style>
 /* ============ CORE ============ */
 :root, :root[data-theme="dark"]{
-  --bg: #0a0a0c;
-  --bg-2: #14141a;
-  --bg-3: #1a1a22;
-  --surface: #18181f;
-  --surface-2: #1e1e27;
-  --surface-3: #24242e;
-  --line: rgba(245, 181, 68, 0.08);
-  --line-2: rgba(245, 181, 68, 0.18);
+  --bg: #0a0e1a;
+  --bg-2: #0f1626;
+  --bg-3: #141b2d;
+  --surface: #131a2a;
+  --surface-2: #1a2335;
+  --surface-3: #212c42;
+  --line: rgba(255, 255, 255, 0.07);
+  --line-2: rgba(59, 130, 246, 0.28);
   --line-soft: rgba(255,255,255,0.06);
-  --amber: #f5b544;
-  --amber-bright: #ffc560;
-  --amber-deep: #d49032;
-  --amber-glow: rgba(245, 181, 68, 0.25);
-  --amber-soft: rgba(245, 181, 68, 0.08);
+  --amber: #3b82f6;
+  --amber-bright: #60a5fa;
+  --amber-deep: #2563eb;
+  --amber-glow: rgba(59, 130, 246, 0.3);
+  --amber-soft: rgba(59, 130, 246, 0.12);
   --ink: #ffffff;
-  --ink-2: #e8e8ec;
-  --muted: #9095a0;
-  --muted-2: #6b7080;
-  --muted-3: #4a4e5c;
-  --green: #5fd49a;
-  --red: #ff6e7a;
-  --blue: #6ba3ff;
-  --violet: #b89aff;
-  --shadow-amber: 0 0 30px -8px rgba(245, 181, 68, 0.4);
+  --ink-2: #e2e8f0;
+  --muted: #94a3b8;
+  --muted-2: #64748b;
+  --muted-3: #475569;
+  --green: #22c55e;
+  --red: #ef4444;
+  --blue: #3b82f6;
+  --violet: #a855f7;
+  --shadow-amber: 0 0 30px -8px rgba(59, 130, 246, 0.4);
   --shadow-soft: 0 8px 32px -8px rgba(0,0,0,0.6);
 }
 :root[data-theme="light"]{
-  --bg: #fafaf7;
-  --bg-2: #f3f1ea;
-  --bg-3: #ede9de;
+  --bg: #f1f5f9;
+  --bg-2: #e9eef5;
+  --bg-3: #dfe6ef;
   --surface: #ffffff;
-  --surface-2: #faf8f2;
-  --surface-3: #f3f1ea;
-  --line: rgba(212, 144, 50, 0.14);
-  --line-2: rgba(212, 144, 50, 0.28);
+  --surface-2: #f8fafc;
+  --surface-3: #eef2f7;
+  --line: rgba(59, 130, 246, 0.14);
+  --line-2: rgba(59, 130, 246, 0.3);
   --line-soft: rgba(0,0,0,0.06);
-  --amber: #c97c1a;
-  --amber-bright: #d49032;
-  --amber-deep: #a8650e;
-  --amber-glow: rgba(212, 144, 50, 0.3);
-  --amber-soft: rgba(212, 144, 50, 0.1);
-  --ink: #1a1a1f;
-  --ink-2: #2d2d35;
-  --muted: #6b7080;
-  --muted-2: #8b8f9c;
-  --muted-3: #b0b3bd;
-  --green: #2da172;
-  --red: #d04555;
-  --blue: #3b7bd9;
-  --violet: #7c5fd9;
-  --shadow-amber: 0 0 24px -8px rgba(212, 144, 50, 0.25);
+  --amber: #2563eb;
+  --amber-bright: #3b82f6;
+  --amber-deep: #1d4ed8;
+  --amber-glow: rgba(59, 130, 246, 0.3);
+  --amber-soft: rgba(59, 130, 246, 0.1);
+  --ink: #0f172a;
+  --ink-2: #1e293b;
+  --muted: #64748b;
+  --muted-2: #94a3b8;
+  --muted-3: #cbd5e1;
+  --green: #16a34a;
+  --red: #dc2626;
+  --blue: #2563eb;
+  --violet: #9333ea;
+  --shadow-amber: 0 0 24px -8px rgba(59, 130, 246, 0.25);
   --shadow-soft: 0 8px 24px -10px rgba(0,0,0,0.12);
 }
-*{ box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
+*{ box-sizing: border-box; font-family: 'Inter', sans-serif; }
 /* Tắt mọi transition khi đang đổi theme để tránh lag (hàng trăm element transition cùng lúc) */
 html.theme-switching *{ transition: none !important; }
 html, body{ margin:0; padding:0; background: var(--bg); color: var(--ink); }
@@ -111,7 +111,7 @@ body{
   color: var(--bg); font-weight: 800; font-size: 22px;
   margin-bottom: 20px;
   box-shadow: 0 0 24px -4px var(--amber-glow);
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Inter', sans-serif;
   letter-spacing: -0.02em;
 }
 .login-title{ font-size: 24px; font-weight: 700; margin: 0 0 6px 0; letter-spacing: -0.01em;}
@@ -350,15 +350,20 @@ main{ padding: 24px 32px 80px 32px; max-width: 1600px; }
 }
 .ms-dropdown{
   display: none; position: absolute; top: 100%; left: 0; right: 0;
-  margin-top: 4px; max-height: 280px; overflow-y: auto;
+  margin-top: 6px; max-height: 320px; overflow-y: auto;
   background: var(--surface-2);
-  border: 1px solid var(--line-2);
+  border: 1.5px solid var(--amber);
   border-radius: 10px;
-  box-shadow: var(--shadow-soft);
-  z-index: 100;
-  padding: 4px;
+  box-shadow: 0 18px 50px -8px rgba(0,0,0,0.55), 0 0 0 1px rgba(0,0,0,0.2);
+  z-index: 9999;
+  padding: 6px;
+  min-width: 220px;
 }
-.ms-dropdown.show{ display: block;}
+.ms-dropdown.show{ display: block; backdrop-filter: blur(8px); }
+:root .ms-dropdown{ background: #1a2335; }
+[data-theme="light"] .ms-dropdown{ background: #ffffff; border-color: var(--amber); }
+.ms-wrap:has(.ms-dropdown.show){ z-index: 9999; }
+.filter-bar, .zns-filter-bar{ position: relative; z-index: 50; }
 .ms-search{
   width: 100%; padding: 8px 10px; margin-bottom: 4px;
   background: var(--bg-2); border: 1px solid var(--line);
@@ -446,6 +451,22 @@ main{ padding: 24px 32px 80px 32px; max-width: 1600px; }
 
 .kpi-grid{ display:grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
 @media (max-width: 1100px){ .kpi-grid{ grid-template-columns: repeat(2,1fr);} }
+
+/* KPI cards màu gradient theo vị trí (như Auto Ads dashboard) */
+.kpi-grid > .card{ overflow: hidden; }
+.kpi-grid > .card::before{
+  content: ""; position: absolute; inset: 0; border-radius: 14px;
+  opacity: 0.16; pointer-events: none; z-index: 0;
+}
+.kpi-grid > .card > *{ position: relative; z-index: 1; }
+.kpi-grid > .card:nth-child(4n+1){ border-color: rgba(59,130,246,0.35); }
+.kpi-grid > .card:nth-child(4n+1)::before{ background: radial-gradient(circle at 0% 0%, #3b82f6, transparent 70%); }
+.kpi-grid > .card:nth-child(4n+2){ border-color: rgba(34,197,94,0.35); }
+.kpi-grid > .card:nth-child(4n+2)::before{ background: radial-gradient(circle at 0% 0%, #22c55e, transparent 70%); }
+.kpi-grid > .card:nth-child(4n+3){ border-color: rgba(168,85,247,0.35); }
+.kpi-grid > .card:nth-child(4n+3)::before{ background: radial-gradient(circle at 0% 0%, #a855f7, transparent 70%); }
+.kpi-grid > .card:nth-child(4n+4){ border-color: rgba(249,115,22,0.35); }
+.kpi-grid > .card:nth-child(4n+4)::before{ background: radial-gradient(circle at 0% 0%, #f97316, transparent 70%); }
 
 .grid-2{ display:grid; grid-template-columns: 1fr 1fr; gap: 14px;}
 .grid-3{ display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px;}
@@ -1718,7 +1739,7 @@ td.num, th.num{ text-align: right; font-variant-numeric: tabular-nums;}
       <div class="page-header">
         <div>
           <div class="section-no">Mục 05 · Birthday Offline Campaign</div>
-          <h1 class="page-title">Chiến dịch sinh nhật OFFLINE · VCSN05.26</h1>
+          <h1 class="page-title" id="sec5Title">Chiến dịch sinh nhật OFFLINE</h1>
           <p class="page-sub">Phân tích 2 điều kiện kép áp dụng offline: tặng áo thun (khi ra cửa hàng) + giảm 10% hóa đơn 499K (khi dùng voucher). VCSN ONLINE được phân tích ở Mục 1.</p>
         </div>
       </div>
@@ -2338,7 +2359,7 @@ td.num, th.num{ text-align: right; font-variant-numeric: tabular-nums;}
     </div>
 
     <div style="margin-top: 60px; padding-top: 24px; border-top: 1px solid var(--line); color: var(--muted); font-size: 11.5px; display:flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
-      <div>© GUMAC · Atelier CRM v4.6 · Digital Marketing Team</div>
+      <div>© GUMAC · Atelier CRM v4.7 · Digital Marketing Team</div>
       <div>Master Artisan · Live data from Google Sheets</div>
     </div>
   </main>
@@ -2602,15 +2623,15 @@ const toNum = s => {
 };
 
 const COLORS = {
-  amber: '#f5b544', amberBright: '#ffc560', amberDeep: '#d49032',
-  green: '#5fd49a', red: '#ff6e7a', blue: '#6ba3ff', violet: '#b89aff',
-  ink: '#ffffff', muted: '#9095a0', mutedDeep: '#4a4e5c',
-  bg: '#0a0a0c', bg2: '#14141a', surface: '#18181f'
+  amber: '#3b82f6', amberBright: '#60a5fa', amberDeep: '#2563eb',
+  green: '#22c55e', red: '#ef4444', blue: '#3b82f6', violet: '#a855f7',
+  ink: '#ffffff', muted: '#94a3b8', mutedDeep: '#475569',
+  bg: '#0a0e1a', bg2: '#0f1626', surface: '#131a2a'
 };
-const PALETTE = [COLORS.amber, COLORS.violet, COLORS.blue, COLORS.green, COLORS.amberBright, COLORS.amberDeep, '#e8a83a', '#c9a875'];
+const PALETTE = ['#3b82f6', '#22c55e', '#a855f7', '#f97316', '#60a5fa', '#14b8a6', '#ec4899', '#eab308'];
 
 Chart.register(ChartDataLabels);
-Chart.defaults.font.family = 'Montserrat, sans-serif';
+Chart.defaults.font.family = 'Inter, sans-serif';
 Chart.defaults.font.size = 11;
 Chart.defaults.color = COLORS.muted;
 Chart.defaults.plugins.legend.labels.boxWidth = 10;
@@ -2618,10 +2639,10 @@ Chart.defaults.plugins.legend.labels.boxHeight = 10;
 Chart.defaults.plugins.legend.labels.usePointStyle = true;
 Chart.defaults.plugins.legend.labels.padding = 14;
 Chart.defaults.plugins.legend.labels.color = COLORS.muted;
-Chart.defaults.plugins.tooltip.backgroundColor = 'rgba(36, 36, 46, 0.95)';
+Chart.defaults.plugins.tooltip.backgroundColor = 'rgba(26, 35, 53, 0.96)';
 Chart.defaults.plugins.tooltip.padding = 12;
 Chart.defaults.plugins.tooltip.cornerRadius = 10;
-Chart.defaults.plugins.tooltip.borderColor = 'rgba(245, 181, 68, 0.2)';
+Chart.defaults.plugins.tooltip.borderColor = 'rgba(59, 130, 246, 0.3)';
 Chart.defaults.plugins.tooltip.borderWidth = 1;
 Chart.defaults.plugins.tooltip.titleColor = COLORS.amber;
 Chart.defaults.plugins.tooltip.bodyColor = COLORS.ink;
@@ -2636,12 +2657,12 @@ function getNeutralBg(opacity){
   return t === 'light' ? `rgba(0,0,0,${opacity*1.2})` : `rgba(255,255,255,${opacity})`;
 }
 const gridStyle = { color: 'rgba(255,255,255,0.04)', drawBorder: false, drawTicks: false };
-const xAxisNice = { grid: { display: false }, border: { display: false }, ticks: { padding: 6, color: COLORS.muted, font: { family: 'Montserrat', size: 10.5 } } };
-const yAxisNice = { grid: gridStyle, border: { display: false }, ticks: { padding: 8, color: COLORS.muted, font: { family: 'Montserrat', size: 10.5 } } };
+const xAxisNice = { grid: { display: false }, border: { display: false }, ticks: { padding: 6, color: COLORS.muted, font: { family: 'Inter', size: 10.5 } } };
+const yAxisNice = { grid: gridStyle, border: { display: false }, ticks: { padding: 8, color: COLORS.muted, font: { family: 'Inter', size: 10.5 } } };
 
-const dlNum = { display: true, color: COLORS.ink, font: { family: 'Montserrat', size: 10, weight: 700 }, formatter: v => fmtN(v) };
-const dlVN = { display: true, color: COLORS.ink, font: { family: 'Montserrat', size: 10, weight: 700 }, formatter: v => fmtVN(v) };
-const dlPct = { display: true, color: COLORS.ink, font: { family: 'Montserrat', size: 10, weight: 700 }, formatter: v => v.toFixed(2) + '%' };
+const dlNum = { display: true, color: COLORS.ink, font: { family: 'Inter', size: 10, weight: 700 }, formatter: v => fmtN(v) };
+const dlVN = { display: true, color: COLORS.ink, font: { family: 'Inter', size: 10, weight: 700 }, formatter: v => fmtVN(v) };
+const dlPct = { display: true, color: COLORS.ink, font: { family: 'Inter', size: 10, weight: 700 }, formatter: v => v.toFixed(2) + '%' };
 
 /* ============== STATE ============== */
 const STATE = {
@@ -2817,6 +2838,34 @@ function isVoucherCamp(campName){
   return c.includes('LOYALTY') || c.includes('VCSN');
 }
 
+// Xác định kênh của chiến dịch qua tên: 'online' | 'offline' | null (không rõ → nhận cả 2)
+function campChannel(campName){
+  const c = (campName||'').toUpperCase();
+  if (c.includes('ONLINE')) return 'online';
+  if (c.includes('OFFLINE')) return 'offline';
+  return null;
+}
+
+// Trích ngưỡng giá trị đơn tối thiểu từ tên chiến dịch (vd "ÁO THUN 559K" → 559000)
+// Trả về 0 nếu không có ngưỡng (không lọc theo giá trị)
+function campMinOrderValue(campName){
+  const c = (campName||'').toUpperCase();
+  // Override đặc biệt: camp ÁO THUN ngưỡng thực 599K (tên ghi 559K)
+  if (c.includes('ÁO THUN') || c.includes('AO THUN')) return 599000;
+  const m = (campName||'').match(/(\d{2,4})\s*K\b/i);
+  if (m) return parseInt(m[1]) * 1000;
+  return 0;
+}
+
+// So khớp kênh của 1 dòng B3 với kênh chiến dịch
+function b3ChannelMatch(b3row, campCh){
+  if (!campCh) return true; // chiến dịch không rõ kênh → nhận tất cả
+  const k = (b3row.kenh||'').toLowerCase();
+  if (campCh === 'online') return k.includes('online');
+  if (campCh === 'offline') return k.includes('offline');
+  return true;
+}
+
 // Tính metrics chuẩn cho 1 chiến dịch (dùng chung khắp dashboard)
 // b1Camp: rows của camp này trong B1, b2All: Bảng 2, b3All: Bảng 3
 function getCampMetrics(camp, b1All, b2All, b3All){
@@ -2834,8 +2883,14 @@ function getCampMetrics(camp, b1All, b2All, b3All){
     rev = b2matched.reduce((s,x) => s + x.tongThanhToan, 0);
     source = 'voucher_b2';
   } else {
-    // Không phải voucher camp HOẶC voucher camp nhưng B2 trống → fallback match B3 bằng Mã KH
-    const matched = b3All.filter(x => sentKH.has(x.maKH));
+    // Fallback match B3 bằng Mã KH, có lọc theo kênh (online/offline) + ngưỡng giá trị đơn
+    const campCh = campChannel(camp);
+    const minVal = campMinOrderValue(camp);
+    const matched = b3All.filter(x =>
+      sentKH.has(x.maKH) &&
+      b3ChannelMatch(x, campCh) &&
+      (minVal === 0 || x.doanhThu >= minVal)
+    );
     buyers = new Set(matched.map(x => x.maKH));
     orders = new Set(matched.map(x => x.maDH).filter(Boolean)).size;
     rev = matched.reduce((s,x) => s + x.doanhThu, 0);
@@ -3428,7 +3483,7 @@ function resetZNSFilter(){
 const ZNS_GROUPS = [
   { key: 'sale',     name: 'Đơn bán ONLINE · 228525',        idTemp: '228525', idtCol: 8,  noCol: 9,  phoneCol: 10, dateCol: 11, ratingCol: 15, reasonStart: 17, reasonEnd: 29, color: '#6ba3ff' },
   { key: 'exchange', name: 'Đơn đổi ONLINE · 462809',        idTemp: '462809', idtCol: 31, noCol: 32, phoneCol: 33, dateCol: 34, ratingCol: 38, reasonStart: 40, reasonEnd: 46, color: '#5fd49a' },
-  { key: 'offline',  name: 'Trải nghiệm OFFLINE · 578937',   idTemp: '578937', idtCol: 48, noCol: 49, phoneCol: 50, dateCol: 51, ratingCol: 55, reasonStart: 57, reasonEnd: 65, color: '#f5b544' },
+  { key: 'offline',  name: 'Trải nghiệm OFFLINE · 578937',   idTemp: '578937', idtCol: 48, noCol: 49, phoneCol: 50, dateCol: 51, ratingCol: 55, reasonStart: 57, reasonEnd: 65, color: '#3b82f6' },
   { key: 'exp',      name: 'Trải nghiệm OFFLINE · 585523',   idTemp: '585523', idtCol: 67, noCol: 68, phoneCol: 69, dateCol: 70, ratingCol: 74, reasonStart: 76, reasonEnd: 83, color: '#b89aff' }
 ];
 
@@ -3784,7 +3839,7 @@ function renderOverview(){
 
 /* ============== MULTI-METRIC OVERVIEW CHART ============== */
 const OV_METRICS = [
-  { key: 'totalRev', label: 'Doanh thu toàn HT', color: '#f5b544', axis: 'y', unit: 'vnd' },
+  { key: 'totalRev', label: 'Doanh thu toàn HT', color: '#3b82f6', axis: 'y', unit: 'vnd' },
   { key: 'smsRev', label: 'Doanh thu từ SMS', color: '#b89aff', axis: 'y', unit: 'vnd' },
   { key: 'orders', label: 'Tổng số đơn', color: '#6ba3ff', axis: 'y1', unit: 'num' },
   { key: 'customers', label: 'Số KH unique', color: '#5fd49a', axis: 'y1', unit: 'num' },
@@ -3886,7 +3941,7 @@ function renderMultiMetricChart(b1, b2, b3){
       maintainAspectRatio: false,
       interaction: { mode: 'index', intersect: false },
       plugins: { 
-        legend: { display: true, position: 'top', labels: { color: COLORS.muted, font: { family: 'Montserrat', size: 11 }, usePointStyle: true, padding: 12 }},
+        legend: { display: true, position: 'top', labels: { color: COLORS.muted, font: { family: 'Inter', size: 11 }, usePointStyle: true, padding: 12 }},
         datalabels: { display: false },
         tooltip: { 
           callbacks: { 
@@ -3902,13 +3957,13 @@ function renderMultiMetricChart(b1, b2, b3){
         y: { 
           ...yAxisNice, position: 'left', display: hasVnd,
           ticks: { ...yAxisNice.ticks, callback: v => fmtVN(v) },
-          title: { display: hasVnd, text: 'VND', color: COLORS.muted, font: { family: 'Montserrat', size: 10 }}
+          title: { display: hasVnd, text: 'VND', color: COLORS.muted, font: { family: 'Inter', size: 10 }}
         },
         y1: {
           position: 'right', display: hasNum,
           grid: { display: false }, border: { display: false },
-          ticks: { callback: v => fmtN(v), padding: 8, color: COLORS.muted, font: { family: 'Montserrat', size: 10.5 }},
-          title: { display: hasNum, text: 'Số lượng', color: COLORS.muted, font: { family: 'Montserrat', size: 10 }}
+          ticks: { callback: v => fmtN(v), padding: 8, color: COLORS.muted, font: { family: 'Inter', size: 10.5 }},
+          title: { display: hasNum, text: 'Số lượng', color: COLORS.muted, font: { family: 'Inter', size: 10 }}
         }
       }
     }
@@ -4146,7 +4201,7 @@ function renderCampaignsTab(){
         tooltip:{ callbacks:{ label: ctx => ctx.dataset.label + ': ' + fmtN(ctx.parsed.y) }}},
       scales:{ x: xAxisNice,
         y: { ...yAxisNice, position:'left', ticks: {...yAxisNice.ticks, callback: v => fmtN(v)}, title: {display:true, text: 'SMS gửi', color: COLORS.muted}},
-        y1:{ position:'right', grid:{display:false}, border:{display:false}, ticks:{callback: v => fmtN(v), padding:8, color: COLORS.muted, font:{family:'Montserrat',size:10.5}}, title:{display:true, text:'KH chuyển đổi', color: COLORS.muted}}}
+        y1:{ position:'right', grid:{display:false}, border:{display:false}, ticks:{callback: v => fmtN(v), padding:8, color: COLORS.muted, font:{family:'Inter',size:10.5}}, title:{display:true, text:'KH chuyển đổi', color: COLORS.muted}}}
     }
   });
 
@@ -4179,7 +4234,7 @@ function renderCampaignsTab(){
     options: {
       maintainAspectRatio: false,
       plugins:{ legend:{display:false},
-        datalabels: { display: true, color: COLORS.ink, font: { family:'Montserrat', size: 11, weight: 700 },
+        datalabels: { display: true, color: COLORS.ink, font: { family:'Inter', size: 11, weight: 700 },
           formatter: v => v.toFixed(1) + 'x', anchor:'end', align:'end', offset:-4},
         tooltip:{ callbacks:{ label: ctx => 'ROI: ' + ctx.parsed.y.toFixed(1) + 'x' }}},
       scales:{ x: xAxisNice, y: { ...yAxisNice, ticks: {...yAxisNice.ticks, callback: v => v.toFixed(0)+'x'}}}
@@ -4235,7 +4290,7 @@ function renderCampaignsTab(){
             return v === Math.max(...data) && v > 0;
           },
           color: ctx => ctx.dataset.borderColor,
-          font: { family: 'Montserrat', size: 10, weight: 700 },
+          font: { family: 'Inter', size: 10, weight: 700 },
           formatter: v => fmtN(v),
           anchor: 'end', align: 'top', offset: 4
         },
@@ -4343,7 +4398,7 @@ function renderCompare(){
     type: 'bar',
     data: { labels, datasets: [{ label: 'Doanh thu SMS', data: metricsByMonth.map(m=>m.campRev),
       backgroundColor: COLORS.amber, borderRadius: 10, barThickness: 60,
-      datalabels: { anchor:'end', align:'end', offset:-2, color: COLORS.ink, font:{family:'Montserrat',size:11,weight:700}, formatter: v => fmtVN(v) }}]},
+      datalabels: { anchor:'end', align:'end', offset:-2, color: COLORS.ink, font:{family:'Inter',size:11,weight:700}, formatter: v => fmtVN(v) }}]},
     options: { maintainAspectRatio:false,
       plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: ctx => fmtVN(ctx.parsed.y) }}},
       scales:{ x: xAxisNice, y: { ...yAxisNice, ticks:{...yAxisNice.ticks, callback: v=>fmtVN(v)}}}}
@@ -4354,13 +4409,13 @@ function renderCompare(){
     type: 'bar',
     data: { labels, datasets: [
       { label: 'SMS gửi', data: metricsByMonth.map(m=>m.totalSent), backgroundColor: 'rgba(245,181,68,0.3)', borderColor: COLORS.amber, borderWidth:1.5, borderRadius:8, barThickness:34, yAxisID:'y',
-        datalabels:{ anchor:'end',align:'end',offset:-2,color:COLORS.ink,font:{family:'Montserrat',size:10,weight:700},formatter:v=>fmtN(v)}},
+        datalabels:{ anchor:'end',align:'end',offset:-2,color:COLORS.ink,font:{family:'Inter',size:10,weight:700},formatter:v=>fmtN(v)}},
       { label: 'KH chuyển đổi', data: metricsByMonth.map(m=>m.uniqueBuy), backgroundColor: COLORS.green, borderRadius:8, barThickness:20, yAxisID:'y1',
-        datalabels:{ anchor:'end',align:'end',offset:-2,color:COLORS.ink,font:{family:'Montserrat',size:10,weight:700},formatter:v=>fmtN(v)}}
+        datalabels:{ anchor:'end',align:'end',offset:-2,color:COLORS.ink,font:{family:'Inter',size:10,weight:700},formatter:v=>fmtN(v)}}
     ]},
     options: { maintainAspectRatio:false,
       plugins:{ legend:{display:true,position:'top'}, tooltip:{ callbacks:{ label: ctx => ctx.dataset.label+': '+fmtN(ctx.parsed.y) }}},
-      scales:{ x: xAxisNice, y:{...yAxisNice,position:'left',ticks:{...yAxisNice.ticks,callback:v=>fmtN(v)}}, y1:{position:'right',grid:{display:false},border:{display:false},ticks:{callback:v=>fmtN(v),color:COLORS.muted,font:{family:'Montserrat',size:10}}}}}
+      scales:{ x: xAxisNice, y:{...yAxisNice,position:'left',ticks:{...yAxisNice.ticks,callback:v=>fmtN(v)}}, y1:{position:'right',grid:{display:false},border:{display:false},ticks:{callback:v=>fmtN(v),color:COLORS.muted,font:{family:'Inter',size:10}}}}}
   });
 
   // 3. CR & ROI
@@ -4368,13 +4423,13 @@ function renderCompare(){
     type: 'line',
     data: { labels, datasets: [
       { label: 'CR (%)', data: metricsByMonth.map(m=>m.cr), borderColor: COLORS.amber, backgroundColor:'transparent', borderWidth:3, pointRadius:5, pointBackgroundColor:COLORS.amber, tension:0.3, yAxisID:'y',
-        datalabels:{ align:'top',color:COLORS.amber,font:{family:'Montserrat',size:11,weight:700},formatter:v=>v.toFixed(2)+'%'}},
+        datalabels:{ align:'top',color:COLORS.amber,font:{family:'Inter',size:11,weight:700},formatter:v=>v.toFixed(2)+'%'}},
       { label: 'ROI (x)', data: metricsByMonth.map(m=>m.roi), borderColor: COLORS.green, backgroundColor:'transparent', borderWidth:3, pointRadius:5, pointBackgroundColor:COLORS.green, tension:0.3, yAxisID:'y1',
-        datalabels:{ align:'bottom',color:COLORS.green,font:{family:'Montserrat',size:11,weight:700},formatter:v=>v.toFixed(1)+'x'}}
+        datalabels:{ align:'bottom',color:COLORS.green,font:{family:'Inter',size:11,weight:700},formatter:v=>v.toFixed(1)+'x'}}
     ]},
     options: { maintainAspectRatio:false,
       plugins:{ legend:{display:true,position:'top'}, tooltip:{mode:'index'}},
-      scales:{ x: xAxisNice, y:{...yAxisNice,position:'left',ticks:{...yAxisNice.ticks,callback:v=>v+'%'}}, y1:{position:'right',grid:{display:false},border:{display:false},ticks:{callback:v=>v.toFixed(0)+'x',color:COLORS.muted,font:{family:'Montserrat',size:10}}}}}
+      scales:{ x: xAxisNice, y:{...yAxisNice,position:'left',ticks:{...yAxisNice.ticks,callback:v=>v+'%'}}, y1:{position:'right',grid:{display:false},border:{display:false},ticks:{callback:v=>v.toFixed(0)+'x',color:COLORS.muted,font:{family:'Inter',size:10}}}}}
   });
 
   // 4. ATV & Cost
@@ -4382,9 +4437,9 @@ function renderCompare(){
     type: 'bar',
     data: { labels, datasets: [
       { label: 'ATV', data: metricsByMonth.map(m=>m.atv), backgroundColor: COLORS.violet, borderRadius:8, barThickness:34,
-        datalabels:{ anchor:'end',align:'end',offset:-2,color:COLORS.ink,font:{family:'Montserrat',size:10,weight:700},formatter:v=>fmtVN(v)}},
+        datalabels:{ anchor:'end',align:'end',offset:-2,color:COLORS.ink,font:{family:'Inter',size:10,weight:700},formatter:v=>fmtVN(v)}},
       { label: 'Chi phí SMS', data: metricsByMonth.map(m=>m.cost), backgroundColor: COLORS.red, borderRadius:8, barThickness:20,
-        datalabels:{ anchor:'end',align:'end',offset:-2,color:COLORS.ink,font:{family:'Montserrat',size:10,weight:700},formatter:v=>fmtVN(v)}}
+        datalabels:{ anchor:'end',align:'end',offset:-2,color:COLORS.ink,font:{family:'Inter',size:10,weight:700},formatter:v=>fmtVN(v)}}
     ]},
     options: { maintainAspectRatio:false,
       plugins:{ legend:{display:true,position:'top'}, tooltip:{ callbacks:{ label: ctx => ctx.dataset.label+': '+fmtVN(ctx.parsed.y) }}},
@@ -4443,7 +4498,13 @@ function getCampMetricsForMonth(camp, mb1, mb2, mb3){
       rev: b2matched.reduce((s,x) => s + x.tongThanhToan, 0)
     };
   } else {
-    const matched = mb3.filter(x => sentKH.has(x.maKH));
+    const campCh = campChannel(camp);
+    const minVal = campMinOrderValue(camp);
+    const matched = mb3.filter(x =>
+      sentKH.has(x.maKH) &&
+      b3ChannelMatch(x, campCh) &&
+      (minVal === 0 || x.doanhThu >= minVal)
+    );
     return {
       buyers: new Set(matched.map(x => x.maKH)),
       orders: new Set(matched.map(x => x.maDH).filter(Boolean)).size,
@@ -4520,7 +4581,7 @@ function renderSection1(){
       plugins:{ tooltip:{ callbacks:{ label: ctx => ctx.dataset.label + ': ' + fmtVN(ctx.parsed.y) }}},
       scales:{ x: xAxisNice,
         y: { ...yAxisNice, position:'left', ticks: {...yAxisNice.ticks, callback: v => fmtVN(v)}},
-        y1:{ position:'right', grid:{display:false}, border:{display:false}, ticks:{callback: v => fmtVN(v), padding:8, color: COLORS.muted, font:{family:'Montserrat',size:10.5}}}}
+        y1:{ position:'right', grid:{display:false}, border:{display:false}, ticks:{callback: v => fmtVN(v), padding:8, color: COLORS.muted, font:{family:'Inter',size:10.5}}}}
     }
   });
 
@@ -4556,7 +4617,7 @@ function renderSection1(){
     options: {
       maintainAspectRatio:false, cutout:'66%',
       plugins:{ legend:{position:'bottom', labels: { color: COLORS.muted }},
-        datalabels: { color: COLORS.ink, font: { family: 'Montserrat', size: 11, weight: 700 },
+        datalabels: { color: COLORS.ink, font: { family: 'Inter', size: 11, weight: 700 },
           formatter: (v, ctx) => {
             const total = ctx.dataset.data.reduce((s,x)=>s+x,0);
             const p = total ? v/total*100 : 0;
@@ -4642,7 +4703,7 @@ function renderSection2(){
       plugins:{ legend:{display:false},
         datalabels: { ...dlNum, anchor:'end', align:'end', offset: 4, color: COLORS.ink },
         tooltip:{ callbacks:{ label: ctx => fmtN(ctx.parsed.x) + ' SMS' }}},
-      scales:{ x:{...yAxisNice, ticks:{...yAxisNice.ticks, callback: v => fmtN(v)}}, y:{...xAxisNice, ticks:{font:{family:'Montserrat',size:10}, color: COLORS.muted}}}
+      scales:{ x:{...yAxisNice, ticks:{...yAxisNice.ticks, callback: v => fmtN(v)}}, y:{...xAxisNice, ticks:{font:{family:'Inter',size:10}, color: COLORS.muted}}}
     }
   });
 
@@ -4655,10 +4716,10 @@ function renderSection2(){
       indexAxis:'y', maintainAspectRatio: false,
       plugins:{ legend:{display:false},
         datalabels: { anchor:'end', align:'end', offset: 4, color: COLORS.ink,
-          font: { family: 'Montserrat', size: 10, weight: 700 },
+          font: { family: 'Inter', size: 10, weight: 700 },
           formatter: v => fmtFull(v) },
         tooltip:{ callbacks:{ label: ctx => fmtFull(ctx.parsed.x) }}},
-      scales:{ x:{...yAxisNice, ticks:{...yAxisNice.ticks, callback: v => fmtVN(v)}}, y:{...xAxisNice, ticks:{font:{family:'Montserrat',size:10}, color: COLORS.muted}}}
+      scales:{ x:{...yAxisNice, ticks:{...yAxisNice.ticks, callback: v => fmtVN(v)}}, y:{...xAxisNice, ticks:{font:{family:'Inter',size:10}, color: COLORS.muted}}}
     }
   });
 
@@ -4674,15 +4735,15 @@ function renderSection2(){
       maintainAspectRatio: false,
       plugins:{ legend:{display:false},
         datalabels: { display: ctx => ctx.dataset.data[ctx.dataIndex].r > 8,
-          font: { family: 'Montserrat', size: 9, weight: 600 }, color: COLORS.ink,
+          font: { family: 'Inter', size: 9, weight: 600 }, color: COLORS.ink,
           formatter: (v, ctx) => ctx.dataset.data[ctx.dataIndex].name},
         tooltip:{ callbacks:{ label: ctx => {
           const d = ctx.raw;
           return [d.name, 'SMS: ' + fmtN(d.x), 'DT: ' + fmtVN(d.y)];
         }}}},
       scales:{
-        x: { ...yAxisNice, title:{display:true, text:'Số SMS gửi', color: COLORS.muted, font:{family:'Montserrat',size:11}}, ticks: {...yAxisNice.ticks, callback: v => fmtN(v)}},
-        y: { ...yAxisNice, title:{display:true, text:'Doanh thu từ SMS', color: COLORS.muted, font:{family:'Montserrat',size:11}}, ticks: {...yAxisNice.ticks, callback: v => fmtVN(v)}}}
+        x: { ...yAxisNice, title:{display:true, text:'Số SMS gửi', color: COLORS.muted, font:{family:'Inter',size:11}}, ticks: {...yAxisNice.ticks, callback: v => fmtN(v)}},
+        y: { ...yAxisNice, title:{display:true, text:'Doanh thu từ SMS', color: COLORS.muted, font:{family:'Inter',size:11}}, ticks: {...yAxisNice.ticks, callback: v => fmtVN(v)}}}
     }
   });
 
@@ -4789,11 +4850,11 @@ function renderSection3(){
     options: {
       indexAxis: 'y', maintainAspectRatio: false,
       plugins:{ legend:{display:true, position:'top'},
-        datalabels: { color: COLORS.ink, font: { family:'Montserrat', size: 10, weight: 700 },
+        datalabels: { color: COLORS.ink, font: { family:'Inter', size: 10, weight: 700 },
           formatter: (v, ctx) => v >= 80 ? fmtN(v) : '' },
         tooltip:{ callbacks:{ label: ctx => ctx.dataset.label + ': ' + fmtN(ctx.parsed.x) }}},
       scales:{ x:{...yAxisNice, stacked:true, ticks:{...yAxisNice.ticks, callback: v => fmtN(v)}},
-               y:{...xAxisNice, stacked:true, ticks:{font:{family:'Montserrat',size:10.5}, color: COLORS.muted}}}
+               y:{...xAxisNice, stacked:true, ticks:{font:{family:'Inter',size:10.5}, color: COLORS.muted}}}
     }
   });
 
@@ -4814,7 +4875,7 @@ function renderSection3(){
       plugins:{ legend:{display:false},
         datalabels: { ...dlPct, anchor:'end', align:'end', offset: 4, color: COLORS.ink },
         tooltip:{ callbacks:{ label: ctx => 'CR: ' + ctx.parsed.x.toFixed(2) + '%' }}},
-      scales:{ x:{...yAxisNice, ticks:{...yAxisNice.ticks, callback: v => v+'%'}}, y:{...xAxisNice, ticks:{font:{family:'Montserrat',size:10.5}, color: COLORS.muted}}}
+      scales:{ x:{...yAxisNice, ticks:{...yAxisNice.ticks, callback: v => v+'%'}}, y:{...xAxisNice, ticks:{font:{family:'Inter',size:10.5}, color: COLORS.muted}}}
     }
   });
 
@@ -4831,7 +4892,7 @@ function renderSection3(){
       plugins:{ legend:{display:false},
         datalabels: { ...dlVN, anchor:'end', align:'end', offset: 4, color: COLORS.ink },
         tooltip:{ callbacks:{ label: ctx => fmtVN(ctx.parsed.x) }}},
-      scales:{ x:{...yAxisNice, ticks:{...yAxisNice.ticks, callback: v => fmtVN(v)}}, y:{...xAxisNice, ticks:{font:{family:'Montserrat',size:10.5}, color: COLORS.muted}}}
+      scales:{ x:{...yAxisNice, ticks:{...yAxisNice.ticks, callback: v => fmtVN(v)}}, y:{...xAxisNice, ticks:{font:{family:'Inter',size:10.5}, color: COLORS.muted}}}
     }
   });
 
@@ -4849,7 +4910,7 @@ function renderSection3(){
       plugins:{ legend:{display:false},
         datalabels: { ...dlVN, anchor:'end', align:'end', offset: 4, color: COLORS.ink },
         tooltip:{ callbacks:{ label: ctx => 'ATV: ' + fmtVN(ctx.parsed.x) }}},
-      scales:{ x:{...yAxisNice, ticks:{...yAxisNice.ticks, callback: v => fmtVN(v)}}, y:{...xAxisNice, ticks:{font:{family:'Montserrat',size:10.5}, color: COLORS.muted}}}
+      scales:{ x:{...yAxisNice, ticks:{...yAxisNice.ticks, callback: v => fmtVN(v)}}, y:{...xAxisNice, ticks:{font:{family:'Inter',size:10.5}, color: COLORS.muted}}}
     }
   });
 
@@ -4870,7 +4931,7 @@ function renderSection3(){
     options: {
       maintainAspectRatio: false, cutout: '64%',
       plugins:{ legend:{position:'right', labels: { color: COLORS.muted }},
-        datalabels: { color: COLORS.ink, font: { family:'Montserrat', size: 12, weight: 700 },
+        datalabels: { color: COLORS.ink, font: { family:'Inter', size: 12, weight: 700 },
           formatter: (v, ctx) => {
             const total = ctx.dataset.data.reduce((s,x)=>s+x,0);
             return total ? (v/total*100).toFixed(1)+'%' : '';
@@ -4948,13 +5009,13 @@ const SEGMENT_STRATEGY = {
   'Champions': { camp: 'VIP Exclusive · Early Access', offer: 'Quà tặng riêng, ưu tiên hàng mới', priority: 'high', color: '#5fd49a' },
   'Loyal Customers': { camp: 'Loyalty Reward · Tích điểm', offer: 'Voucher tích lũy, freeship', priority: 'high', color: '#5fd49a' },
   'Loyal': { camp: 'Loyalty Reward · Tích điểm', offer: 'Voucher tích lũy, freeship', priority: 'high', color: '#5fd49a' },
-  'Potential Loyalists': { camp: 'Upsell · Cross-sell', offer: 'Voucher tăng tần suất mua', priority: 'high', color: '#f5b544' },
-  'Potential Loyalist': { camp: 'Upsell · Cross-sell', offer: 'Voucher tăng tần suất mua', priority: 'high', color: '#f5b544' },
+  'Potential Loyalists': { camp: 'Upsell · Cross-sell', offer: 'Voucher tăng tần suất mua', priority: 'high', color: '#3b82f6' },
+  'Potential Loyalist': { camp: 'Upsell · Cross-sell', offer: 'Voucher tăng tần suất mua', priority: 'high', color: '#3b82f6' },
   'New Customers': { camp: 'Welcome Journey', offer: 'Voucher 1st order + intro brand', priority: 'high', color: '#6ba3ff' },
   'New Customer': { camp: 'Welcome Journey', offer: 'Voucher 1st order + intro brand', priority: 'high', color: '#6ba3ff' },
   'Promising': { camp: 'Nurturing · Educate', offer: 'Voucher nhỏ + storytelling brand', priority: 'med', color: '#6ba3ff' },
-  'Need Attention': { camp: 'Re-engage', offer: 'Voucher giá trị TB, reminder', priority: 'med', color: '#f5b544' },
-  'About to Sleep': { camp: 'Wake-up · Time-limited', offer: 'Voucher hấp dẫn 7-14 ngày', priority: 'high', color: '#f5b544' },
+  'Need Attention': { camp: 'Re-engage', offer: 'Voucher giá trị TB, reminder', priority: 'med', color: '#3b82f6' },
+  'About to Sleep': { camp: 'Wake-up · Time-limited', offer: 'Voucher hấp dẫn 7-14 ngày', priority: 'high', color: '#3b82f6' },
   'At Risk': { camp: 'Win-back · High-value Offer', offer: 'Voucher LỚN (HD 199K-299K)', priority: 'high', color: '#ff6e7a' },
   'Cannot Lose Them': { camp: 'VIP Win-back · Personal', offer: 'Gọi điện + voucher cá nhân hóa', priority: 'high', color: '#ff6e7a' },
   "Can't Lose Them": { camp: 'VIP Win-back · Personal', offer: 'Gọi điện + voucher cá nhân hóa', priority: 'high', color: '#ff6e7a' },
@@ -5044,11 +5105,11 @@ function renderAudienceBuilder(b1, b2, b3){
       indexAxis: 'y', maintainAspectRatio: false,
       plugins: { legend: { display: false },
         datalabels: { anchor: 'end', align: 'end', offset: 4, color: COLORS.ink,
-          font: { family: 'Montserrat', size: 10.5, weight: 700 },
+          font: { family: 'Inter', size: 10.5, weight: 700 },
           formatter: (v, ctx) => fmtN(v) + ' KH (' + (top12[ctx.dataIndex].pctSize).toFixed(1) + '%)' },
         tooltip: { callbacks: { label: ctx => fmtN(ctx.parsed.x) + ' KH' }}},
       scales: { x: { ...yAxisNice, ticks: { ...yAxisNice.ticks, callback: v => fmtN(v) }},
-                y: { ...xAxisNice, ticks: { font: { family: 'Montserrat', size: 10 }, color: COLORS.muted }}}
+                y: { ...xAxisNice, ticks: { font: { family: 'Inter', size: 10 }, color: COLORS.muted }}}
     }
   });
 
@@ -5070,7 +5131,7 @@ function renderAudienceBuilder(b1, b2, b3){
       maintainAspectRatio: false,
       plugins: { legend: { display: false },
         datalabels: { display: ctx => ctx.dataset.data[0].r > 8,
-          color: COLORS.ink, font: { family: 'Montserrat', size: 9, weight: 700 },
+          color: COLORS.ink, font: { family: 'Inter', size: 9, weight: 700 },
           formatter: (v, ctx) => ctx.dataset.data[0].name },
         tooltip: { callbacks: { label: ctx => {
           const d = ctx.raw;
@@ -5110,7 +5171,7 @@ function renderAudienceBuilder(b1, b2, b3){
       maintainAspectRatio: false,
       plugins: { legend: { display: true, position: 'right', labels: { color: COLORS.muted, font: { size: 10.5 }, boxWidth: 12 }},
         datalabels: { display: ctx => ctx.dataset.data[ctx.dataIndex] >= 200,
-          color: COLORS.ink, font: { family: 'Montserrat', size: 9, weight: 700 },
+          color: COLORS.ink, font: { family: 'Inter', size: 9, weight: 700 },
           formatter: v => fmtN(v) },
         tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + fmtN(ctx.parsed.y) + ' KH' }}},
       scales: {
@@ -5136,7 +5197,7 @@ function renderAudienceBuilder(b1, b2, b3){
       indexAxis: 'y', maintainAspectRatio: false,
       plugins: { legend: { display: true, position: 'top' },
         datalabels: { display: ctx => ctx.dataset.data[ctx.dataIndex] >= 100,
-          color: COLORS.ink, font: { family: 'Montserrat', size: 9, weight: 700 },
+          color: COLORS.ink, font: { family: 'Inter', size: 9, weight: 700 },
           formatter: v => fmtN(v) },
         tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + fmtN(ctx.parsed.x) }}},
       scales: { x: { ...yAxisNice, stacked: true, ticks: { ...yAxisNice.ticks, callback: v => fmtN(v) }},
@@ -5157,7 +5218,7 @@ function renderAudienceBuilder(b1, b2, b3){
       indexAxis: 'y', maintainAspectRatio: false,
       plugins: { legend: { display: false },
         datalabels: { anchor: 'end', align: 'end', offset: 4, color: COLORS.ink,
-          font: { family: 'Montserrat', size: 10, weight: 700 },
+          font: { family: 'Inter', size: 10, weight: 700 },
           formatter: v => fmtVN(v) },
         tooltip: { callbacks: { label: ctx => 'RPM: ' + fmtVN(ctx.parsed.x) }}},
       scales: { x: { ...yAxisNice, ticks: { ...yAxisNice.ticks, callback: v => fmtVN(v) }},
@@ -5223,7 +5284,7 @@ function renderSection4(){
           const data = ctx.dataset.data;
           const max = Math.max(...data);
           return ctx.dataset.data[ctx.dataIndex] === max;
-        }, color: COLORS.amber, font: { family:'Montserrat', size: 10, weight: 700 }, formatter: v => fmtVN(v), anchor:'end', align:'top'},
+        }, color: COLORS.amber, font: { family:'Inter', size: 10, weight: 700 }, formatter: v => fmtVN(v), anchor:'end', align:'top'},
         tooltip:{ callbacks:{ label: ctx => fmtVN(ctx.parsed.y) }}},
       scales:{ x: xAxisNice, y: { ...yAxisNice, ticks: {...yAxisNice.ticks, callback: v => fmtVN(v)}}}
     }
@@ -5237,7 +5298,7 @@ function renderSection4(){
     options: {
       maintainAspectRatio: false, cutout: '58%',
       plugins:{ legend:{position:'bottom', labels:{color: COLORS.muted}},
-        datalabels: { color: COLORS.ink, font: { family:'Montserrat', size: 11, weight: 700 },
+        datalabels: { color: COLORS.ink, font: { family:'Inter', size: 11, weight: 700 },
           formatter: (v, ctx) => {
             const total = ctx.dataset.data.reduce((s,x)=>s+x,0);
             const p = total ? v/total*100 : 0;
@@ -5349,6 +5410,19 @@ function renderSection5(){
   const sentKH = new Set(vcsnSent.map(x => x.maKH));
   const totalSent = sentKH.size;
 
+  // Cập nhật tiêu đề động theo tên chiến dịch VCSN OFFLINE thực tế (theo tháng đang lọc)
+  const titleEl = document.getElementById('sec5Title');
+  if (titleEl){
+    const camps = [...new Set(vcsnSent.map(x => x.camp))];
+    if (camps.length === 1){
+      titleEl.textContent = 'Chiến dịch sinh nhật OFFLINE · ' + camps[0];
+    } else if (camps.length > 1){
+      titleEl.textContent = `Chiến dịch sinh nhật OFFLINE · ${camps.length} chiến dịch`;
+    } else {
+      titleEl.textContent = 'Chiến dịch sinh nhật OFFLINE';
+    }
+  }
+
   if (totalSent === 0){
     document.getElementById('vcsnSent').textContent = '0';
     document.getElementById('vcsnShirt').textContent = '0';
@@ -5413,7 +5487,7 @@ function renderSection5(){
     options: {
       maintainAspectRatio: false, cutout: '62%',
       plugins:{ legend:{position:'bottom', labels:{color: COLORS.muted}},
-        datalabels: { color: COLORS.ink, font: { family:'Montserrat', size: 12, weight: 700 },
+        datalabels: { color: COLORS.ink, font: { family:'Inter', size: 12, weight: 700 },
           formatter: (v, ctx) => {
             const total = ctx.dataset.data.reduce((s,x)=>s+x,0);
             const p = total ? v/total*100 : 0;
@@ -5439,7 +5513,7 @@ function renderSection5(){
       plugins:{ tooltip:{ callbacks:{ label: ctx => ctx.dataset.label + ': ' + fmtVN(ctx.parsed.y) }}},
       scales:{ x: xAxisNice,
         y: { ...yAxisNice, position:'left', ticks: {...yAxisNice.ticks, callback: v => fmtVN(v)}},
-        y1:{ position:'right', grid:{display:false}, border:{display:false}, ticks:{callback: v => fmtVN(v), padding:8, color: COLORS.muted, font:{family:'Montserrat',size:10.5}}}}
+        y1:{ position:'right', grid:{display:false}, border:{display:false}, ticks:{callback: v => fmtVN(v), padding:8, color: COLORS.muted, font:{family:'Inter',size:10.5}}}}
     }
   });
 
@@ -5465,7 +5539,7 @@ function renderSection5(){
       plugins:{ legend:{display:false},
         datalabels: { ...dlNum, anchor:'end', align:'end', offset: 4, color: COLORS.ink },
         tooltip:{ callbacks:{ label: ctx => fmtN(ctx.parsed.x) + ' KH · ' + fmtVN(topBranchVCSN[ctx.dataIndex].rev) }}},
-      scales:{ x:{...yAxisNice, ticks:{...yAxisNice.ticks, callback: v => fmtN(v)}}, y:{...xAxisNice, ticks:{font:{family:'Montserrat',size:10}, color: COLORS.muted}}}
+      scales:{ x:{...yAxisNice, ticks:{...yAxisNice.ticks, callback: v => fmtN(v)}}, y:{...xAxisNice, ticks:{font:{family:'Inter',size:10}, color: COLORS.muted}}}
     }
   });
 
@@ -5588,7 +5662,7 @@ function renderVCSNTiers(b2){
       maintainAspectRatio: false,
       plugins: { legend: { display: false },
         datalabels: { anchor: 'end', align: 'end', offset: -2, color: COLORS.ink,
-          font: { family: 'Montserrat', size: 12, weight: 700 },
+          font: { family: 'Inter', size: 12, weight: 700 },
           formatter: (v, ctx) => {
             const pct = onlineStats.total ? v/onlineStats.total*100 : 0;
             return fmtN(v) + ' đơn\n(' + pct.toFixed(1) + '%)';
@@ -5597,7 +5671,7 @@ function renderVCSNTiers(b2){
           label: ctx => fmtN(ctx.parsed.y) + ' đơn',
           afterLabel: ctx => 'DT mốc: ' + fmtVN(onlineStats.buckets[ctx.dataIndex].revenue)
         }}},
-      scales: { x: { ...xAxisNice, ticks: { font: { family: 'Montserrat', size: 10.5 }, color: COLORS.muted }},
+      scales: { x: { ...xAxisNice, ticks: { font: { family: 'Inter', size: 10.5 }, color: COLORS.muted }},
                 y: { ...yAxisNice, ticks: { ...yAxisNice.ticks, callback: v => fmtN(v) }}}
     }
   });
@@ -5617,7 +5691,7 @@ function renderVCSNTiers(b2){
       maintainAspectRatio: false,
       plugins: { legend: { display: false },
         datalabels: { anchor: 'end', align: 'end', offset: -2, color: COLORS.ink,
-          font: { family: 'Montserrat', size: 12, weight: 700 },
+          font: { family: 'Inter', size: 12, weight: 700 },
           formatter: (v, ctx) => {
             const pct = offlineStats.total ? v/offlineStats.total*100 : 0;
             return fmtN(v) + ' đơn\n(' + pct.toFixed(1) + '%)';
@@ -5626,7 +5700,7 @@ function renderVCSNTiers(b2){
           label: ctx => fmtN(ctx.parsed.y) + ' đơn',
           afterLabel: ctx => 'DT mốc: ' + fmtVN(offlineStats.buckets[ctx.dataIndex].revenue)
         }}},
-      scales: { x: { ...xAxisNice, ticks: { font: { family: 'Montserrat', size: 10.5 }, color: COLORS.muted }},
+      scales: { x: { ...xAxisNice, ticks: { font: { family: 'Inter', size: 10.5 }, color: COLORS.muted }},
                 y: { ...yAxisNice, ticks: { ...yAxisNice.ticks, callback: v => fmtN(v) }}}
     }
   });
@@ -5919,7 +5993,7 @@ function renderSection6(){
       plugins:{ legend:{display:true, position:'top'},
         datalabels: { 
           display: true, color: ctx => ctx.dataset.borderColor,
-          font: { family: 'Montserrat', size: 10, weight: 700 },
+          font: { family: 'Inter', size: 10, weight: 700 },
           formatter: v => v.toFixed(0),
           backgroundColor: ctx => {
             const t = document.documentElement.getAttribute('data-theme') || 'dark';
@@ -5933,7 +6007,7 @@ function renderSection6(){
         ticks: { display: false, stepSize: 25 },
         grid: { color: getGridColor() },
         angleLines: { color: getGridColor() },
-        pointLabels: { color: COLORS.muted, font: { family: 'Montserrat', size: 11, weight: 600 }}
+        pointLabels: { color: COLORS.muted, font: { family: 'Inter', size: 11, weight: 600 }}
       }}
     }
   });
@@ -6239,12 +6313,12 @@ function _renderZNSOverview(){
       indexAxis: 'y', maintainAspectRatio: false,
       plugins: { legend: { display: true, position: 'top' },
         datalabels: { display: ctx => Math.abs(ctx.dataset.data[ctx.dataIndex]) >= 6,
-          color: COLORS.ink, font: { family:'Montserrat', size:10, weight:700 },
+          color: COLORS.ink, font: { family:'Inter', size:10, weight:700 },
           formatter: v => Math.abs(v).toFixed(0)+'%' },
         tooltip: { callbacks: { label: ctx => ctx.dataset.label+': '+Math.abs(ctx.parsed.x).toFixed(1)+'%' }}},
       scales: {
         x: { stacked:true, min:-30, max:100, grid:{color:getGridColor()}, border:{display:false},
-             ticks:{callback:v=>Math.abs(v)+'%',color:COLORS.muted,font:{family:'Montserrat',size:10}} },
+             ticks:{callback:v=>Math.abs(v)+'%',color:COLORS.muted,font:{family:'Inter',size:10}} },
         y: { ...xAxisNice, stacked:true, ticks:{font:{size:11},color:COLORS.muted}}
       }
     }
@@ -6257,9 +6331,9 @@ function _renderZNSOverview(){
       labels: glist.map(g => g.name),
       datasets: [
         { label: 'ZNS gửi', data: glist.map(g=>g.sentCount), backgroundColor: 'rgba(245,181,68,0.25)', borderColor: COLORS.amber, borderWidth:1.5, borderRadius:6, barThickness:22, yAxisID:'y',
-          datalabels:{anchor:'end',align:'end',offset:-2,color:COLORS.ink,font:{family:'Montserrat',size:10,weight:700},formatter:v=>fmtN(v)}},
+          datalabels:{anchor:'end',align:'end',offset:-2,color:COLORS.ink,font:{family:'Inter',size:10,weight:700},formatter:v=>fmtN(v)}},
         { label: 'Phản hồi', data: glist.map(g=>g.respCount), backgroundColor: COLORS.green, borderRadius:6, barThickness:22, yAxisID:'y',
-          datalabels:{anchor:'end',align:'end',offset:-2,color:COLORS.ink,font:{family:'Montserrat',size:10,weight:700},formatter:v=>fmtN(v)}}
+          datalabels:{anchor:'end',align:'end',offset:-2,color:COLORS.ink,font:{family:'Inter',size:10,weight:700},formatter:v=>fmtN(v)}}
       ]
     },
     options: {
@@ -6295,7 +6369,7 @@ function _renderZNSOverview(){
       backgroundColor: COLORS.green, borderRadius:6, barThickness:22 }]},
     options: { indexAxis:'y', maintainAspectRatio:false,
       plugins:{ legend:{display:false},
-        datalabels:{anchor:'end',align:'end',offset:4,color:COLORS.ink,font:{family:'Montserrat',size:11,weight:700},formatter:v=>fmtN(v)},
+        datalabels:{anchor:'end',align:'end',offset:4,color:COLORS.ink,font:{family:'Inter',size:11,weight:700},formatter:v=>fmtN(v)},
         tooltip:{callbacks:{label:ctx=>fmtN(ctx.parsed.x)+' lượt khen'}}},
       scales:{ x:{...yAxisNice,ticks:{...yAxisNice.ticks,callback:v=>fmtN(v)}}, y:{...xAxisNice,ticks:{font:{size:11},color:COLORS.muted}}}}
   });
@@ -6306,7 +6380,7 @@ function _renderZNSOverview(){
       backgroundColor: COLORS.red, borderRadius:6, barThickness:22 }]},
     options: { indexAxis:'y', maintainAspectRatio:false,
       plugins:{ legend:{display:false},
-        datalabels:{anchor:'end',align:'end',offset:4,color:COLORS.ink,font:{family:'Montserrat',size:11,weight:700},formatter:v=>fmtN(v)},
+        datalabels:{anchor:'end',align:'end',offset:4,color:COLORS.ink,font:{family:'Inter',size:11,weight:700},formatter:v=>fmtN(v)},
         tooltip:{callbacks:{label:ctx=>fmtN(ctx.parsed.x)+' lượt chê'}}},
       scales:{ x:{...yAxisNice,ticks:{...yAxisNice.ticks,callback:v=>fmtN(v)}}, y:{...xAxisNice,ticks:{font:{size:11},color:COLORS.muted}}}}
   });
@@ -6372,7 +6446,7 @@ function _renderZNSBranch(){
       backgroundColor: top15.map(r=>r.unsatPct>2?COLORS.red:COLORS.amber), borderRadius:6, barThickness:16 }]},
     options: { indexAxis:'y', maintainAspectRatio:false,
       plugins:{ legend:{display:false},
-        datalabels:{anchor:'end',align:'end',offset:4,color:COLORS.ink,font:{family:'Montserrat',size:10,weight:700},formatter:(v,ctx)=>v.toFixed(1)+'% ('+top15[ctx.dataIndex].unsat+')'},
+        datalabels:{anchor:'end',align:'end',offset:4,color:COLORS.ink,font:{family:'Inter',size:10,weight:700},formatter:(v,ctx)=>v.toFixed(1)+'% ('+top15[ctx.dataIndex].unsat+')'},
         tooltip:{callbacks:{label:ctx=>'Chưa HL: '+ctx.parsed.x.toFixed(1)+'%',afterLabel:ctx=>'Phản hồi: '+top15[ctx.dataIndex].total}}},
       scales:{ x:{...yAxisNice,ticks:{...yAxisNice.ticks,callback:v=>v+'%'}}, y:{...xAxisNice,ticks:{font:{size:9.5},color:COLORS.muted}}},
       annotation: {}
@@ -6500,7 +6574,7 @@ function _renderZNSRfm(){
       backgroundColor: '#b89aff', borderRadius:6, barThickness:18 }]},
     options: { indexAxis:'y', maintainAspectRatio:false,
       plugins:{ legend:{display:false},
-        datalabels:{anchor:'end',align:'end',offset:4,color:COLORS.ink,font:{family:'Montserrat',size:10,weight:700},formatter:v=>fmtN(v)},
+        datalabels:{anchor:'end',align:'end',offset:4,color:COLORS.ink,font:{family:'Inter',size:10,weight:700},formatter:v=>fmtN(v)},
         tooltip:{callbacks:{label:ctx=>fmtN(ctx.parsed.x)+' phản hồi'}}},
       scales:{ x:{...yAxisNice,ticks:{...yAxisNice.ticks,callback:v=>fmtN(v)}}, y:{...xAxisNice,ticks:{font:{size:10},color:COLORS.muted}}}}
   });
@@ -6512,7 +6586,7 @@ function _renderZNSRfm(){
       backgroundColor: grpRows.map(r=>r.satPct>=95?COLORS.green:r.satPct>=85?COLORS.amber:COLORS.red), borderRadius:6, barThickness:18 }]},
     options: { indexAxis:'y', maintainAspectRatio:false,
       plugins:{ legend:{display:false},
-        datalabels:{anchor:'end',align:'end',offset:4,color:COLORS.ink,font:{family:'Montserrat',size:10,weight:700},formatter:(v,ctx)=>v.toFixed(0)+'% ('+grpRows[ctx.dataIndex].n+')'},
+        datalabels:{anchor:'end',align:'end',offset:4,color:COLORS.ink,font:{family:'Inter',size:10,weight:700},formatter:(v,ctx)=>v.toFixed(0)+'% ('+grpRows[ctx.dataIndex].n+')'},
         tooltip:{callbacks:{label:ctx=>'CSAT: '+ctx.parsed.x.toFixed(1)+'%'}}},
       scales:{ x:{...yAxisNice,max:100,ticks:{...yAxisNice.ticks,callback:v=>v+'%'}}, y:{...xAxisNice,ticks:{font:{size:10},color:COLORS.muted}}}}
   });
@@ -6527,9 +6601,9 @@ function _renderZNSRfm(){
       labels: srcStats.map(s=>'KH mua '+s.src),
       datasets: [
         { label:'Hài lòng (4-5★)', data: srcStats.map(s=>s.sat), backgroundColor: COLORS.green, borderRadius:6, barThickness:44, stack:'a',
-          datalabels:{color:COLORS.ink,font:{family:'Montserrat',size:11,weight:700},formatter:v=>v>0?fmtN(v):''}},
+          datalabels:{color:COLORS.ink,font:{family:'Inter',size:11,weight:700},formatter:v=>v>0?fmtN(v):''}},
         { label:'Chưa hài lòng (1-3★)', data: srcStats.map(s=>s.unsat), backgroundColor: COLORS.red, borderRadius:6, barThickness:44, stack:'a',
-          datalabels:{color:COLORS.ink,font:{family:'Montserrat',size:11,weight:700},formatter:v=>v>0?fmtN(v):''}}
+          datalabels:{color:COLORS.ink,font:{family:'Inter',size:11,weight:700},formatter:v=>v>0?fmtN(v):''}}
       ]
     },
     options: { maintainAspectRatio:false,
@@ -6626,7 +6700,7 @@ function _renderZNSCompare(){
       backgroundColor: COLORS.green, borderRadius:6, barThickness:16 }]},
     options:{ indexAxis:'y', maintainAspectRatio:false,
       plugins:{legend:{display:false},
-        datalabels:{anchor:'end',align:'end',offset:4,color:COLORS.ink,font:{family:'Montserrat',size:10,weight:700},formatter:v=>'-'+v.toFixed(1)+'%'},
+        datalabels:{anchor:'end',align:'end',offset:4,color:COLORS.ink,font:{family:'Inter',size:10,weight:700},formatter:v=>'-'+v.toFixed(1)+'%'},
         tooltip:{callbacks:{label:ctx=>'Giảm '+ctx.parsed.x.toFixed(1)+'% chưa HL'}}},
       scales:{x:{...yAxisNice,ticks:{...yAxisNice.ticks,callback:v=>v+'%'}},y:{...xAxisNice,ticks:{font:{size:9.5},color:COLORS.muted}}}}
   });
@@ -6637,7 +6711,7 @@ function _renderZNSCompare(){
       backgroundColor: COLORS.red, borderRadius:6, barThickness:16 }]},
     options:{ indexAxis:'y', maintainAspectRatio:false,
       plugins:{legend:{display:false},
-        datalabels:{anchor:'end',align:'end',offset:4,color:COLORS.ink,font:{family:'Montserrat',size:10,weight:700},formatter:v=>'+'+v.toFixed(1)+'%'},
+        datalabels:{anchor:'end',align:'end',offset:4,color:COLORS.ink,font:{family:'Inter',size:10,weight:700},formatter:v=>'+'+v.toFixed(1)+'%'},
         tooltip:{callbacks:{label:ctx=>'Tăng '+ctx.parsed.x.toFixed(1)+'% chưa HL'}}},
       scales:{x:{...yAxisNice,ticks:{...yAxisNice.ticks,callback:v=>v+'%'}},y:{...xAxisNice,ticks:{font:{size:9.5},color:COLORS.muted}}}}
   });
